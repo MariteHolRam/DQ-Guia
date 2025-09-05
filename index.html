@@ -36,50 +36,20 @@
 
         .header {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-top: 20px;
-            font-weight: 600;
-            font-size: 1.1em;
-        }
-
-        .stats div {
-            padding: 10px 20px;
-            border-radius: 10px;
-        }
-
-        .stats .correct {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .stats .incorrect {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .stats .question-count {
-            background-color: #e2e3e5;
-            color: #383d41;
+            gap: 10px;
         }
 
         h1 {
             color: #d81b60;
             font-weight: 700;
             font-size: 2.5em;
-            margin-bottom: 10px;
         }
 
         p.subtitle {
             color: #444;
-            margin-bottom: 30px;
             font-size: 1.1em;
         }
 
@@ -118,6 +88,18 @@
             margin-bottom: 20px;
             line-height: 1.5;
         }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            .question-text {
+                font-size: 1.2em;
+            }
+            .game-container {
+                padding: 20px;
+            }
+        }
 
         .options-container {
             display: grid;
@@ -143,6 +125,7 @@
             transition: all 0.3s ease;
             text-align: left;
             font-weight: 600;
+            white-space: normal;
         }
 
         .option-btn:hover {
@@ -203,6 +186,37 @@
             color: #dc3545;
         }
 
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            width: 100%;
+            margin-top: 20px;
+            font-weight: 600;
+            font-size: 1.1em;
+            gap: 10px;
+        }
+
+        .stats div {
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .stats .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .stats .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .stats .question-count {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+
         #start-screen, #result-screen {
             animation: fadeIn 0.8s ease-out;
         }
@@ -226,6 +240,27 @@
             font-size: 1.2em;
             color: #555;
             margin-bottom: 15px;
+        }
+
+        .results-summary .evaluation {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .results-summary .evaluation.basico {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .results-summary .evaluation.intermedio {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .results-summary .evaluation.avanzado {
+            background-color: #d4edda;
+            color: #155724;
         }
 
         .results-summary ul {
@@ -269,18 +304,16 @@
         </div>
         
         <div class="question-box">
-            <div id="question-content"></div>
+            <p class="question-text" id="question-content"></p>
         </div>
 
-        <div class="button-group">
-            <button id="submit-btn" class="btn" style="display: none;">Enviar Respuesta</button>
-            <button id="show-answer-btn" class="btn" style="display: none;">Mostrar Respuesta</button>
-            <button id="correct-btn" class="btn" style="display: none;">Correcta</button>
-            <button id="incorrect-btn" class="btn" style="display: none;">Incorrecta</button>
-            <button id="next-btn" class="btn" style="display: none;">Siguiente Pregunta</button>
-        </div>
+        <div id="options-container" class="options-container"></div>
 
         <div id="answer-result"></div>
+
+        <div class="button-group">
+            <button id="next-btn" class="btn" style="display: none;">Siguiente Pregunta</button>
+        </div>
 
         <div class="stats">
             <div class="question-count">Pregunta <span id="current-question">0</span> / <span id="total-questions">150</span></div>
@@ -298,169 +331,174 @@
                 <li><span class="label">Aciertos:</span> <span class="value" id="final-correct"></span></li>
                 <li><span class="label">Errores:</span> <span class="value" id="final-incorrect"></span></li>
             </ul>
+            <div id="evaluation-level" class="evaluation"></div>
         </div>
         <button id="restart-btn" class="btn" style="margin-top: 20px;">Reiniciar Cuestionario</button>
     </div>
 </div>
 
 <script>
-    // Preguntas del cuestionario
+    // Lista completa de preguntas de opción múltiple
     const allQuestions = [
-        // Parte 1: Verdadero o Falso
-        { type: 'vf', question: 'El manual de empleados de Dairy Queen® es un contrato de empleo.', answer: 'Falso' },
-        { type: 'vf', question: 'Un objetivo principal del trabajo en DQ® es ofrecer una experiencia muy agradable a los clientes.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La guía puede ser fotocopiada y sacada de la sucursal.', answer: 'Falso' },
-        { type: 'vf', question: 'El éxito de cada tienda DQ® depende de la actitud de todos los empleados.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El tiempo de saludo en el servicio a autos debe ser de 5 segundos como máximo.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El tiempo de toma de orden se mide desde que el auto es detectado hasta que el auto se retira del menú.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La meta para el tiempo de toma de orden es de un minuto.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El tiempo de entrega inicia cuando el auto se retiró del menú.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La meta para el tiempo de entrega es de 3 minutos.', answer: 'Falso' },
-        { type: 'vf', question: 'El tiempo total de servicio es de 3 minutos.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La guía de empleados sirve como apoyo para la certificación.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El manual está disponible para consulta con fines informativos en la tienda.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El éxito en el trabajo se logra cuando te diviertes.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El tiempo de saludo termina cuando el cajero emite un sonido por la diadema.', answer: 'Verdadero' },
-        { type: 'vf', question: 'Mantener un alto nivel de calidad, servicio y limpieza es una prioridad.', answer: 'Verdadero' },
-        { type: 'vf', question: 'Un "Gran Empleado DQ®" está lleno de conocimientos y tiene una buena actitud.', answer: 'Verdadero' },
-        { type: 'vf', question: 'Las sugerencias y dudas deben enviarse a la dirección indicada en el manual.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El tiempo de entrega termina cuando el auto se retira de la ventanilla.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La actitud no influye en el éxito de una tienda.', answer: 'Falso' },
-        { type: 'vf', question: 'El manual de empleados es la única fuente de información para un empleado.', answer: 'Falso' },
-        { type: 'vf', question: 'Es aceptable que un empleado se lleve el manual a casa para estudiarlo.', answer: 'Falso' },
-        { type: 'vf', question: 'El trabajo en DQ® puede ser temporal o una carrera.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La meta de tiempo para el saludo es de 10 segundos.', answer: 'Falso' },
-        { type: 'vf', question: 'El tiempo de servicio total concluye cuando el auto se retira de la ventanilla.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La habilidad de un empleado es un factor en el éxito del negocio.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El manual fue escrito para responder a las preguntas de los empleados.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El tiempo de toma de orden es de 2 minutos.', answer: 'Falso' },
-        { type: 'vf', question: 'La limpieza es uno de los pilares del sistema Dairy Queen®.', answer: 'Verdadero' },
-        { type: 'vf', question: 'Los clientes deben tener una experiencia placentera al visitar la tienda.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El manual es un documento legal que no se puede cambiar.', answer: 'Falso' },
-        { type: 'vf', question: 'La versión del manual es del 4 de marzo de 2025.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La diversión es uno de los valores del sistema DQ®.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El éxito de un DQ® depende de la suerte.', answer: 'Falso' },
-        { type: 'vf', question: 'La motivación para el éxito debe venir del interior del empleado.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La guía contiene la respuesta a casi todas las dudas del empleado.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El tiempo de entrega es el tiempo entre que se toma la orden y se entrega el producto.', answer: 'Falso' },
-        { type: 'vf', question: 'La cooperación de los empleados es crucial para el éxito.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El saludo al cliente debe hacerse en menos de 5 segundos.', answer: 'Verdadero' },
-        { type: 'vf', question: 'Los valores de la marca DQ® son bienestar y éxito.', answer: 'Verdadero' },
-        { type: 'vf', question: 'Se puede compartir el manual con otras personas fuera de la sucursal.', answer: 'Falso' },
-        { type: 'vf', question: 'La habilidad es un factor menos importante que el entusiasmo.', answer: 'Falso' },
-        { type: 'vf', question: 'La meta de tiempo para el saludo es de 5 segundos.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La calidad es un factor clave para la satisfacción del cliente.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La guía de empleados es un documento público.', answer: 'Falso' },
-        { type: 'vf', question: 'El desarrollo profesional de los empleados es importante para la compañía.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La guía solo es útil para los empleados de nuevo ingreso.', answer: 'Falso' },
-        { type: 'vf', question: 'Un buen empleado se caracteriza por tener una buena actitud.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El manual te ayuda a estar bien entrenado.', answer: 'Verdadero' },
-        { type: 'vf', question: 'El tiempo de servicio incluye el tiempo de saludo.', answer: 'Verdadero' },
-        { type: 'vf', question: 'La comunicación de dudas y sugerencias es bienvenida.', answer: 'Verdadero' },
+        // Sección 1: Introducción a la Empresa
+        { question: '¿En qué año se vendió el primer producto de Dairy Queen®?', answer: '1938', options: ['1938', '1945', '1950', '1920'] },
+        { question: '¿Cuál es el eslogan de Dairy Queen®?', answer: 'El sabor de la alegría', options: ['El sabor de la alegría', 'El mejor postre', 'La dulzura de la vida', 'El sabor de la felicidad'] },
+        { question: '¿A qué grupo empresarial pertenece DQ en México?', answer: 'Grupo Ganfer', options: ['Grupo Ganfer', 'Grupo Femsa', 'Grupo Alsea', 'Grupo Bimbo'] },
+        { question: '¿Cuáles son los 4 pilares más importantes para DQ?', answer: 'Clientes, empleados, comunidad, dueños', options: ['Clientes, empleados, comunidad, dueños', 'Calidad, servicio, limpieza, rapidez', 'Ventas, costos, publicidad, marketing', 'Gerentes, supervisores, staff, limpieza'] },
+        { question: '¿Qué significa PRIDE?', answer: 'Personal Responsibility In Delivery Excellence', options: ['Personal Responsibility In Delivery Excellence', 'Personal Response Is Delicious Everyday', 'Proudly Respectful In Dairy Excellence', 'Proudly Reliable In Delivering Everything'] },
+        { question: '¿Qué días se elaboran pasteles de chocolate?', answer: 'Martes y jueves', options: ['Martes y jueves', 'Lunes y viernes', 'Miércoles y sábado', 'Todos los días'] },
+        { question: '¿Cuántos días de vacaciones corresponden tras 1 año de trabajo?', answer: '12 días', options: ['12 días', '6 días', '10 días', '15 días'] },
+        { question: '¿Qué hacer si se sufre acoso laboral?', answer: 'Reportarlo a un gerente o al correo bsantos@ggef.mx', options: ['Reportarlo a un gerente o al correo bsantos@ggef.mx', 'Ignorarlo', 'Reportarlo a un compañero', 'Renunciar'] },
+        { question: '¿Cuál es la política sobre uso de celulares?', answer: 'No usarlos durante el turno. Se guardan en una caja.', options: ['No usarlos durante el turno. Se guardan en una caja.', 'Se pueden usar en los descansos', 'Se pueden usar en caso de emergencia', 'Se pueden usar si no hay clientes'] },
+        { question: '¿Qué pasa si se pierde o rompe parte del uniforme?', answer: 'Se descuenta de sueldo y se repone', options: ['Se descuenta de sueldo y se repone', 'Se regala uno nuevo', 'No pasa nada', 'Se le presta uno al empleado'] },
+        { question: '¿Cuántos descuentos de empleado tienes al día?', answer: '1 en bebida y 1 en producto de nieve', options: ['1 en bebida y 1 en producto de nieve', '2 en bebida', '2 en producto de nieve', '3 en cualquier producto'] },
+        { question: '¿Se puede usar el descuento en horario laboral?', answer: 'No, solo antes o después del turno', options: ['No, solo antes o después del turno', 'Sí, en el descanso', 'Sí, si hay permiso del gerente', 'Sí, si es un producto pequeño'] },
+        { question: '¿Qué pasa si faltas sin avisar?', answer: 'Pierdes el bono indefinidamente', options: ['Pierdes el bono indefinidamente', 'Se descuenta del sueldo', 'No pasa nada', 'Te despiden'] },
+        { question: '¿Cuánto tiempo de descanso tienes si trabajas 7 horas?', answer: '30 minutos con goce de sueldo', options: ['30 minutos con goce de sueldo', '20 minutos sin goce de sueldo', '15 minutos con goce de sueldo', '45 minutos sin goce de sueldo'] },
+        { question: '¿Puedes comer en el comedor con uniforme?', answer: 'No, porque el cliente puede malinterpretar', options: ['No, porque el cliente puede malinterpretar', 'Sí, siempre y cuando sea en el comedor', 'Sí, pero sin que te vean los clientes', 'Sí, pero solo si es un producto de DQ'] },
+        { question: '¿Qué hacer en caso de una crisis psicológica?', answer: 'Escucha activa, respiración, preguntar qué necesita, canalizar a profesional', options: ['Escucha activa, respiración, preguntar qué necesita, canalizar a profesional', 'Llamar a los padres del empleado', 'Decirle que se tranquilice', 'No hacer nada'] },
+        { question: '¿Cuáles son los 5 valores de DQ?', answer: 'Responsabilidad, respeto, honestidad, lealtad, actitud positiva', options: ['Responsabilidad, respeto, honestidad, lealtad, actitud positiva', 'Calidad, servicio, limpieza, rapidez, eficiencia', 'Puntualidad, honestidad, limpieza, lealtad, respeto', 'Actitud positiva, respeto, responsabilidad, honestidad, amabilidad'] },
+        { question: '¿Qué hacer si un cliente se queja?', answer: 'Escuchar, ofrecer solución, agradecer, reportar al gerente', options: ['Escuchar, ofrecer solución, agradecer, reportar al gerente', 'Ignorar al cliente', 'Llamar a seguridad', 'Decirle que la queja no es válida'] },
+        { question: '¿Qué es el overrun?', answer: 'Cantidad de aire en la nieve (debe ser 40%)', options: ['Cantidad de aire en la nieve (debe ser 40%)', 'Cantidad de nieve en el cono', 'Cantidad de chocolate en la nieve', 'Cantidad de sabor en la nieve'] },
+        { question: '¿A qué temperatura debe salir la nieve de la máquina?', answer: '-7.8°C', options: ['-7.8°C', '-5°C', '-10°C', '-2°C'] },
+        { question: '¿Qué hacer si recibes un billete falso?', answer: 'Revisar con luz y marcador, reportar al supervisor', options: ['Revisar con luz y marcador, reportar al supervisor', 'Aceptarlo y no decir nada', 'No aceptarlo y devolverlo', 'Llamar a la policía'] },
+        { question: '¿Quién puede autorizar un descuento?', answer: 'Solo supervisores o gerentes', options: ['Solo supervisores o gerentes', 'Cualquier empleado', 'Solo el cajero', 'El cliente'] },
+        { question: '¿Qué hacer si un cliente olvida su tarjeta?', answer: 'Guardarla y destruirla si no regresa', options: ['Guardarla y destruirla si no regresa', 'Llamar al banco', 'Guardarla por 1 año', 'Darle la tarjeta a otro cliente'] },
+        { question: '¿Cuál es la política de higiene de manos?', answer: 'Lavarse cada 30 minutos', options: ['Lavarse cada 30 minutos', 'Lavarse cada hora', 'Lavarse al inicio y final del turno', 'Lavarse cuando están sucias'] },
+        { question: '¿Se permiten uñas postizas o esmalte?', answer: 'No', options: ['No', 'Sí, si son cortas', 'Sí, si es transparente', 'Sí, si es discreto'] },
+        { question: '¿Qué hacer si se derrama producto?', answer: 'Limpiar de inmediato y señalizar', options: ['Limpiar de inmediato y señalizar', 'Limpiar después', 'Dejar que el supervisor limpie', 'Dejar que se seque'] },
+        { question: '¿Cómo se debe portar el cabello?', answer: 'Recogido y dentro de la gorra/cofia', options: ['Recogido y dentro de la gorra/cofia', 'Suelto', 'Con una red para el cabello', 'Como uno quiera'] },
+        { question: '¿Qué hacer si un equipo no enciende?', answer: 'Reportar de inmediato al supervisor', options: ['Reportar de inmediato al supervisor', 'Intentar arreglarlo', 'Dejarlo para después', 'Pedirle a un compañero que lo vea'] },
+        { question: '¿Qué hacer si un cliente se intoxica?', answer: 'Avisar al gerente y llamar a emergencias', options: ['Avisar al gerente y llamar a emergencias', 'Ofrecerle un vaso de agua', 'Decirle que no fue por la comida', 'No hacer nada'] },
+        { question: '¿Qué es el sistema TAPS?', answer: 'Asignación de puestos en horas pico (llenador, preparador, etc.)', options: ['Asignación de puestos en horas pico (llenador, preparador, etc.)', 'Sistema de pedidos automatizado', 'Sistema de limpieza de equipos', 'Sistema de rotación de empleados'] },
 
-        // Parte 2: Opción Múltiple
-        { type: 'mc', question: 'La meta para el tiempo de toma de orden es:', options: ['A) 5 segundos', 'B) 1 minuto', 'C) 2 minutos', 'D) 3 minutos'], answer: 'B) 1 minuto' },
-        { type: 'mc', question: '¿Qué se necesita para que los clientes tengan una experiencia agradable?', options: ['A) Precios bajos', 'B) Gran variedad de productos', 'C) Alto nivel de calidad, servicio y limpieza', 'D) Descuentos y promociones'], answer: 'C) Alto nivel de calidad, servicio y limpieza' },
-        { type: 'mc', question: 'El tiempo de saludo termina cuando:', options: ['A) El cliente ordena', 'B) El auto se retira', 'C) El cajero emite un sonido por la diadema', 'D) Se abre la ventana'], answer: 'C) El cajero emite un sonido por la diadema' },
-        { type: 'mc', question: 'El tiempo de entrega inicia cuando el auto:', options: ['A) Se retira del menú', 'B) Llega al menú', 'C) Se retira de la ventanilla', 'D) Llega a la ventanilla'], answer: 'A) Se retira del menú' },
-        { type: 'mc', question: 'El tiempo de servicio total tiene una meta de:', options: ['A) 1 minuto', 'B) 2 minutos', 'C) 3 minutos', 'D) 5 minutos'], answer: 'C) 3 minutos' },
-        { type: 'mc', question: 'Un Gran Empleado DQ® debe tener:', options: ['A) Conocimientos, entrenamiento y buena actitud', 'B) Mucho dinero', 'C) Poca responsabilidad', 'D) Un horario flexible'], answer: 'A) Conocimientos, entrenamiento y buena actitud' },
-        { type: 'mc', question: '¿Qué no está permitido hacer con el manual de empleados?', options: ['A) Leerlo en la tienda', 'B) Consultarlo', 'C) Fotocopiarlo', 'D) Usarlo para la certificación'], answer: 'C) Fotocopiarlo' },
-        { type: 'mc', question: 'El éxito de cada Dairy Queen® es el resultado de la actitud, habilidad y ______ de todos los empleados.', options: ['A) Suerte', 'B) Cooperación', 'C) Velocidad', 'D) Popularidad'], answer: 'B) Cooperación' },
-        { type: 'mc', question: 'La gente más exitosa se logra:', options: ['A) Haciendo poco trabajo', 'B) Siendo motivada por el gerente', 'C) Motivándose a sí misma', 'D) Haciendo lo que los demás le dicen'], answer: 'C) Motivándose a sí misma' },
-        { type: 'mc', question: '¿Cuál de los siguientes no es un valor de DQ® mencionado en el manual?', options: ['A) Bienestar', 'B) Éxito', 'C) Diversión', 'D) Fama'], answer: 'D) Fama' },
-        { type: 'mc', question: '¿Qué es lo que busca un cliente al visitar Dairy Queen®?', options: ['A) Un producto económico', 'B) Una experiencia muy agradable', 'C) Una visita rápida', 'D) Comida de calidad'], answer: 'B) Una experiencia muy agradable' },
-        { type: 'mc', question: '¿Cuándo se considera que el tiempo de saludo ha comenzado?', options: ['A) Cuando el auto es detectado', 'B) Cuando el cajero saluda al cliente', 'C) Cuando el auto llega a la ventanilla', 'D) Cuando el cliente habla por primera vez'], answer: 'A) Cuando el auto es detectado' },
-        { type: 'mc', question: 'El tiempo de entrega termina cuando el auto:', options: ['A) Se retira del menú', 'B) Llega a la ventanilla', 'C) Se retira de la ventanilla', 'D) El cajero entrega el producto'], answer: 'C) Se retira de la ventanilla' },
-        { type: 'mc', question: 'El manual de empleados sirve como apoyo para:', options: ['A) Contrataciones', 'B) La certificación de empleado', 'C) Decisiones de la gerencia', 'D) El registro de ventas'], answer: 'B) La certificación de empleado' },
-        { type: 'mc', question: 'El tiempo de servicio total es la suma de:', options: ['A) Saludo, toma de orden y entrega', 'B) Saludo y entrega', 'C) Toma de orden y entrega', 'D) Saludo y toma de orden'], answer: 'A) Saludo, toma de orden y entrega' },
-        { type: 'mc', question: 'Para tener una experiencia agradable, el cliente espera un alto nivel de:', options: ['A) Salario, horarios y propinas', 'B) Limpieza, rapidez y eficiencia', 'C) Calidad, servicio y limpieza', 'D) Promociones, publicidad y descuentos'], answer: 'C) Calidad, servicio y limpieza' },
-        { type: 'mc', question: 'El manual de empleados está diseñado para:', options: ['A) Ser un documento legal', 'B) Responder a las dudas de los empleados', 'C) Ser un manual de recetas', 'D) Ser un contrato de trabajo'], answer: 'B) Responder a las dudas de los empleados' },
-        { type: 'mc', question: '¿En qué año es la versión del manual?', options: ['A) 2024', 'B) 2025', 'C) 2026', 'D) 2023'], answer: 'B) 2025' },
-        { type: 'mc', question: 'El éxito de una tienda Dairy Queen® es el resultado de:', options: ['A) Un buen gerente', 'B) Una buena actitud y habilidad de los empleados', 'C) Las promociones', 'D) El clima'], answer: 'B) Una buena actitud y habilidad de los empleados' },
-        { type: 'mc', question: '¿Qué se menciona como un factor de éxito en el manual?', options: ['A) La experiencia previa', 'B) El entusiasmo', 'C) El nivel de educación', 'D) La edad'], answer: 'B) El entusiasmo' },
-        { type: 'mc', question: 'El tiempo de saludo es un indicador de:', options: ['A) La velocidad de la cocina', 'B) La eficiencia del cajero', 'C) La calidad del producto', 'D) La limpieza del lugar'], answer: 'B) La eficiencia del cajero' },
-        { type: 'mc', question: '¿Qué proceso incluye el tiempo de toma de orden?', options: ['A) Desde que el auto es detectado hasta que el auto se retira del menú', 'B) Desde que el auto llega al menú hasta que el cliente ordena', 'C) Desde que el cliente habla hasta que el cajero le responde', 'D) Desde que el cliente llega a la ventanilla hasta que paga'], answer: 'A) Desde que el auto es detectado hasta que el auto se retira del menú' },
-        { type: 'mc', question: 'La meta de 2 minutos se aplica a:', options: ['A) El tiempo de saludo', 'B) El tiempo de toma de orden', 'C) El tiempo de entrega', 'D) El tiempo total de servicio'], answer: 'C) El tiempo de entrega' },
-        { type: 'mc', question: 'El manual indica que el trabajo puede ser:', options: ['A) Solo temporal', 'B) Solo de carrera', 'C) Temporal o de carrera', 'D) Solo para jóvenes'], answer: 'C) Temporal o de carrera' },
-        { type: 'mc', question: 'La gente exitosa se caracteriza por:', options: ['A) Ser motivada por los demás', 'B) Ser motivada por sí misma', 'C) Ser motivada por el salario', 'D) Ser motivada por el horario'], answer: 'B) Ser motivada por sí misma' },
-        { type: 'mc', question: '¿Cuál es uno de los valores que la guía fomenta en los empleados?', options: ['A) La apatía', 'B) El desinterés', 'C) El entusiasmo', 'D) La indiferencia'], answer: 'C) El entusiasmo' },
-        { type: 'mc', question: 'La meta de 1 minuto se aplica a:', options: ['A) El tiempo de saludo', 'B) El tiempo de toma de orden', 'C) El tiempo de entrega', 'D) El tiempo total de servicio'], answer: 'B) El tiempo de toma de orden' },
-        { type: 'mc', question: '¿Qué tipo de información se proporciona en el manual?', options: ['A) Contratos legales', 'B) Información detallada del negocio', 'C) Recetas secretas', 'D) Información personal de los empleados'], answer: 'B) Información detallada del negocio' },
-        { type: 'mc', question: 'La cooperación de los empleados es un factor para el éxito de:', options: ['A) La competencia', 'B) La tienda', 'C) La gerencia', 'D) El cliente'], answer: 'B) La tienda' },
-        { type: 'mc', question: '¿Cómo se mide el tiempo de toma de orden?', options: ['A) Con un cronómetro manual', 'B) Desde que el auto es detectado hasta que se retira del menú', 'C) Con la hora del reloj', 'D) Con un sonido de la diadema'], answer: 'B) Desde que el auto es detectado hasta que se retira del menú' },
-        { type: 'mc', question: '¿Qué se menciona como una de las habilidades necesarias en un empleado?', options: ['A) La rapidez', 'B) La fuerza física', 'C) La contabilidad', 'D) La programación'], answer: 'A) La rapidez' },
-        { type: 'mc', question: 'El tiempo total de servicio es de:', options: ['A) 2 minutos', 'B) 1 minuto', 'C) 3 minutos', 'D) No se especifica'], answer: 'C) 3 minutos' },
-        { type: 'mc', question: 'La calidad de la experiencia del cliente es responsabilidad de:', options: ['A) El gerente', 'B) El empleado', 'C) El cliente', 'D) El dueño de la franquicia'], answer: 'B) El empleado' },
-        { type: 'mc', question: 'La guía de empleados también sirve para:', options: ['A) Contratos de trabajo', 'B) Consultas informativas', 'C) Documentos legales', 'D) Manuales de finanzas'], answer: 'B) Consultas informativas' },
-        { type: 'mc', question: 'Un Gran Empleado DQ® debe estar bien:', options: ['A) Pagado', 'B) Entrenado', 'C) Vestido', 'D) Alimentado'], answer: 'B) Entrenado' },
-        { type: 'mc', question: 'La meta de 5 segundos es para:', options: ['A) El tiempo de saludo', 'B) El tiempo de entrega', 'C) El tiempo de toma de orden', 'D) El tiempo total de servicio'], answer: 'A) El tiempo de saludo' },
-        { type: 'mc', question: 'El manual es para ser consultado en:', options: ['A) Casa', 'B) La tienda', 'C) Un café internet', 'D) La oficina del dueño'], answer: 'B) La tienda' },
-        { type: 'mc', question: 'El manual te ayudará a encontrar la respuesta a:', options: ['A) Todas tus dudas', 'B) Casi todas tus dudas', 'C) Pocas dudas', 'D) Ninguna duda'], answer: 'B) Casi todas tus dudas' },
-        { type: 'mc', question: 'El éxito en el trabajo se logra cuando:', options: ['A) Haces tu mejor esfuerzo', 'B) Trabajas poco', 'C) El trabajo es fácil', 'D) Tienes a alguien que te motive'], answer: 'A) Haces tu mejor esfuerzo' },
-        { type: 'mc', question: 'La guía es un documento con fines:', options: ['A) De capacitación', 'B) De contratación', 'C) Informativos', 'D) De auditoría'], answer: 'C) Informativos' },
-        { type: 'mc', question: '¿Qué se necesita del empleado para tener éxito en el trabajo?', options: ['A) Interés, habilidades, conocimientos y entusiasmo', 'B) Interés, amigos, familia y dinero', 'C) Dinero, habilidad, suerte y entusiasmo', 'D) Habilidad, dinero, amigos y suerte'], answer: 'A) Interés, habilidades, conocimientos y entusiasmo' },
-        { type: 'mc', question: 'El tiempo de servicio es crucial para la experiencia del cliente en el:', options: ['A) Drive-thru', 'B) Servicio en mesa', 'C) Kiosco de pedidos', 'D) Mostrador'], answer: 'A) Drive-thru' },
-        { type: 'mc', question: 'Un empleado debe ser un miembro activo del equipo para:', options: ['A) Salir del trabajo temprano', 'B) Lograr el éxito de la tienda', 'C) Recibir un aumento de salario', 'D) Evitar problemas'], answer: 'B) Lograr el éxito de la tienda' },
-        { type: 'mc', question: 'El tiempo de entrega se mide desde que el auto se retira del menú hasta que se retira de la:', options: ['A) Tienda', 'B) Ventanilla', 'C) Estacionamiento', 'D) Salida'], answer: 'B) Ventanilla' },
-        { type: 'mc', question: 'Un Gran Empleado DQ® debe tener:', options: ['A) Buena actitud', 'B) Mucha fuerza', 'C) Un buen auto', 'D) Mucho dinero'], answer: 'A) Buena actitud' },
-        { type: 'mc', question: 'La gente más exitosa disfruta trabajando en:', options: ['A) Algo que disfrutan', 'B) Algo que es difícil', 'C) Algo que es aburrido', 'D) Algo que no les gusta'], answer: 'A) Algo que disfrutan' },
-        { type: 'mc', question: 'La guía te sirve como apoyo para:', options: ['A) Pedir un aumento', 'B) Realizar tu certificación de empleado', 'C) Entrenar a nuevos empleados', 'D) Saber tus horarios'], answer: 'B) Realizar tu certificación de empleado' },
-        { type: 'mc', question: 'Los valores de la compañía incluyen bienestar y:', options: ['A) Felicidad', 'B) Éxito', 'C) Dinero', 'D) Fama'], answer: 'B) Éxito' },
-        { type: 'mc', question: 'El manual de empleados no puede salir de:', options: ['A) La casa', 'B) La oficina', 'C) La sucursal', 'D) El país'], answer: 'C) La sucursal' },
-        { type: 'mc', question: '¿Qué se necesita de un empleado para lograr una carrera en la administración?', options: ['A) Interés, habilidades, conocimientos y entusiasmo', 'B) Un alto nivel de educación', 'C) Un auto', 'D) Suerte'], answer: 'A) Interés, habilidades, conocimientos y entusiasmo' },
+        // Sección 2: Productos y Preparación
+        { question: '¿Cuántas onzas lleva un cono chico?', answer: '4 oz', options: ['4 oz', '6 oz', '3 oz', '5 oz'] },
+        { question: '¿Cómo se forma el “curl” en un cono?', answer: 'Movimiento circular: 9 – 1 – 7 en sentido horario', options: ['Movimiento circular: 9 – 1 – 7 en sentido horario', 'Movimiento de arriba a abajo', 'Movimiento de lado a lado', 'Movimiento en forma de S'] },
+        { question: '¿Qué hacer si un Blizzard® no se voltea?', answer: 'Se regala al cliente y el empleado paga el producto', options: ['Se regala al cliente y el empleado paga el producto', 'Se le da al cliente de todos modos', 'Se vuelve a batir', 'Se desecha y no se cobra'] },
+        { question: '¿Cuánto tiempo se bate un Blizzard®?', answer: '8 segundos', options: ['8 segundos', '15 segundos', '5 segundos', '10 segundos'] },
+        { question: '¿Qué ingredientes lleva un Banana Split?', answer: '3 bolas de nieve, piña, fresa, chocolate, plátano, chantilly', options: ['3 bolas de nieve, piña, fresa, chocolate, plátano, chantilly', '2 bolas de nieve, fresa, piña, plátano, chantilly', '4 bolas de nieve, chocolate, fresa, plátano, piña', '3 bolas de nieve, piña, fresa, plátano, cereza, chocolate'] },
+        { question: '¿Cómo se prepara la base de Slush?', answer: '15L agua + 2.3kg azúcar + polvo base, completar hasta 19L', options: ['15L agua + 2.3kg azúcar + polvo base, completar hasta 19L', '20L agua + 2.3kg azúcar + polvo base', '15L agua + 1.5kg azúcar + polvo base', '19L agua + 2.3kg azúcar + polvo base'] },
+        { question: '¿Qué temperatura debe tener el chocolate para Dilly Bar?', answer: '49°C', options: ['49°C', '30°C', '55°C', '40°C'] },
+        { question: '¿Cuánto pesa una Dilly Bar?', answer: '3 oz', options: ['3 oz', '4 oz', '2 oz', '5 oz'] },
+        { question: '¿Cómo se almacenan los Novelties®?', answer: 'En bolsas individuales o six packs en congelador', options: ['En bolsas individuales o six packs en congelador', 'En cajas grandes', 'En bolsas al aire libre', 'En el refrigerador'] },
+        { question: '¿Qué es el “TAPS”?', answer: 'Sistema de asignación de puestos en horas pico', options: ['Sistema de asignación de puestos en horas pico', 'Sistema de preparación de alimentos', 'Sistema de limpieza de equipos', 'Sistema de inventario'] },
+        { question: '¿Cuánto mix lleva un Blizzard® grande?', answer: '21 oz', options: ['21 oz', '16 oz', '12 oz', '24 oz'] },
+        { question: '¿Qué hacer si la nieve tiene poco aire?', answer: 'Ajustar aerómetro o revisar bombas', options: ['Ajustar aerómetro o revisar bombas', 'Aumentar la temperatura', 'Bajar la temperatura', 'No hacer nada'] },
+        { question: '¿Cómo se sirve un Pecan Mudslide®?', answer: 'En vaso transparente con nueces y toppings', options: ['En vaso transparente con nueces y toppings', 'En cono', 'En vaso opaco', 'En plato'] },
+        { question: '¿Qué lleva un Triple Chocolate Parfait®?', answer: 'Cocoa, brownies, choco chunks', options: ['Cocoa, brownies, choco chunks', 'Chocolate, fresa, crema', 'Nieve, chocolate, nueces', 'Leche, chocolate, plátano'] },
+        { question: '¿Cómo se prepara una malteada?', answer: 'Leche + topping + nieve, batir a velocidad 30', options: ['Leche + topping + nieve, batir a velocidad 30', 'Solo con leche y topping', 'Leche + topping + nieve, batir a velocidad 50', 'Solo con nieve y topping'] },
+        { question: '¿Qué hacer si un producto se ve feo?', answer: 'No entregarlo, rehacerlo', options: ['No entregarlo, rehacerlo', 'Entregarlo y disculparse', 'Regalarlo al cliente', 'Tirarlo a la basura'] },
+        { question: '¿Cómo se almacena la mix?', answer: 'En refrigeración a 0-4°C por 14 días', options: ['En refrigeración a 0-4°C por 14 días', 'En el congelador', 'En la despensa', 'En la barra de servicio'] },
+        { question: '¿Qué hacer si un ingrediente está vencido?', answer: 'Desecharlo y notificar al supervisor', options: ['Desecharlo y notificar al supervisor', 'Usarlo de todas formas', 'Preguntar a un compañero', 'Guardarlo para después'] },
+        { question: '¿Cómo se decora un pastel?', answer: 'Con chantilly, fruta, chocolate, según sabor', options: ['Con chantilly, fruta, chocolate, según sabor', 'Solo con chantilly', 'Solo con chocolate', 'Solo con fruta'] },
+        { question: '¿Qué hacer si un pastel se cae?', answer: 'Reportar y hacer uno nuevo', options: ['Reportar y hacer uno nuevo', 'Levantarlo y ponerlo en la vitrina', 'Regalarlo al cliente', 'Tirarlo a la basura'] },
+        { question: '¿Cómo se mide el overrun?', answer: 'Con vaso de 6 oz y báscula', options: ['Con vaso de 6 oz y báscula', 'A ojo', 'Con una taza de medir', 'Con la máquina de nieve'] },
+        { question: '¿Qué hacer si la máquina de Blizzard® hace ruido?', answer: 'Apagar y reportar', options: ['Apagar y reportar', 'Seguir usándola', 'Echarle aceite', 'Golpearla'] },
+        { question: '¿Cómo se limpia la máquina de nieve?', answer: 'Con agua y sanitizante, sin lubricar partes incorrectas', options: ['Con agua y sanitizante, sin lubricar partes incorrectas', 'Con jabón y agua', 'Con trapos húmedos', 'Solo con agua'] },
+        { question: '¿Qué hacer si no hay suficiente mix?', answer: 'Preparar cilindros de reserva', options: ['Preparar cilindros de reserva', 'Esperar a que llegue el mix', 'Usar menos mix en los productos', 'Cerrar la tienda'] },
+        { question: '¿Cómo se hace un Café Frappé?', answer: 'Base slush + café + nieve + chantilly', options: ['Base slush + café + nieve + chantilly', 'Solo base slush y café', 'Solo nieve y café', 'Café + leche + azúcar'] },
+        { question: '¿Qué hacer si un cliente pide un sabor no disponible?', answer: 'Ofrecer alternativa', options: ['Ofrecer alternativa', 'Decirle que no hay y no hacer nada más', 'Decirle que espere a que haya', 'Ignorarlo'] },
+        { question: '¿Cómo se almacenan los toppings?', answer: 'En recipientes tapados con fecha de apertura', options: ['En recipientes tapados con fecha de apertura', 'Al aire libre', 'En el piso', 'En cajas sin tapa'] },
+        { question: '¿Qué hacer si un producto se quema en la waflera?', answer: 'Desechar y ajustar tiempo', options: ['Desechar y ajustar tiempo', 'Raspar la parte quemada', 'Servirlo de todos modos', 'Regalarlo al cliente'] },
+        { question: '¿Cómo se sirve un Royal Treat®?', answer: 'En copa con toppings y chantilly', options: ['En copa con toppings y chantilly', 'En cono', 'En vaso de plástico', 'En plato'] },
+        { question: '¿Qué hacer si un cliente alérgico pide un producto?', answer: 'Notificar al supervisor y evitar contaminación', options: ['Notificar al supervisor y evitar contaminación', 'Decirle que no es un problema', 'Hacerlo de todos modos', 'Decirle que no se puede'] },
+        { question: '¿Cuánto chocolate se usa para cubrir una Dilly Bar?', answer: '1 oz', options: ['1 oz', '2 oz', '0.5 oz', '3 oz'] },
+        { question: '¿Qué es un Blizzard® de cuarto de galón?', answer: 'El doble de un Blizzard® mediano', options: ['El doble de un Blizzard® mediano', 'La mitad de un Blizzard® chico', 'El doble de un Blizzard® chico', 'Un Blizzard® grande'] },
+        { question: '¿Cómo se prepara la galleta Crunch para pasteles?', answer: '5 partes de galleta + 1 parte de chocolate', options: ['5 partes de galleta + 1 parte de chocolate', '3 partes de galleta + 1 parte de chocolate', '10 partes de galleta + 2 partes de chocolate', 'Solo galleta'] },
+        { question: '¿Qué hacer si la nieve está granulada?', answer: 'Revisar overrun y temperatura', options: ['Revisar overrun y temperatura', 'Ajustar la máquina', 'Servirla de todos modos', 'Desecharla'] },
+        { question: '¿Cómo se bate la crema para decoración?', answer: '7-8 minutos a velocidad media', options: ['7-8 minutos a velocidad media', '3-4 minutos a velocidad alta', '10 minutos a velocidad baja', '1 minuto a velocidad alta'] },
+        { question: '¿Qué hacer si la crema batida queda líquida?', answer: 'Batir más tiempo', options: ['Batir más tiempo', 'Agregar más azúcar', 'Agregar más leche', 'Desecharla'] },
+        { question: '¿Cómo se almacenan los pasteles?', answer: 'En congelador a -18°C a -23°C', options: ['En congelador a -18°C a -23°C', 'En el refrigerador', 'En la despensa', 'En la vitrina'] },
+        { question: '¿Qué hacer si un pastel no se desmolda?', answer: 'Usar secadora de pelo en el aro', options: ['Usar secadora de pelo en el aro', 'Usar un cuchillo', 'Golpearlo', 'Dejar que se descongele'] },
+        { question: '¿Cómo se identifica el lote de un pastel?', answer: 'Con clave: inicial de quien lo hizo + día + inicial de quien decoró', options: ['Con clave: inicial de quien lo hizo + día + inicial de quien decoró', 'Con el nombre del pastel', 'Con el sabor', 'Con la fecha de caducidad'] },
+        { question: '¿Qué hacer si un cliente pide un pastel personalizado?', answer: 'Anotar en cuaderno de pedidos', options: ['Anotar en cuaderno de pedidos', 'Decirle que no se puede', 'Hacerlo de inmediato', 'Cobrarle más'] },
+        { question: '¿Cómo se prepara un Choco Fresa?', answer: 'Con fresa y chocolate en capas', options: ['Con fresa y chocolate en capas', 'Mezclando todo', 'Con fresa y vainilla', 'Con chocolate y crema'] },
+        { question: '¿Qué hacer si sobra mix en el contenedor?', answer: 'No regresarla, desechar', options: ['No regresarla, desechar', 'Regresarla al contenedor principal', 'Guardarla para el día siguiente', 'Usarla en otro producto'] },
+        { question: '¿Cómo se sirve un Sundae?', answer: 'En vaso con bola(s) de nieve y topping', options: ['En vaso con bola(s) de nieve y topping', 'En cono', 'En copa', 'En plato'] },
+        { question: '¿Qué hacer si un cono se rompe?', answer: 'Hacer uno nuevo', options: ['Hacer uno nuevo', 'Servirlo de todos modos', 'Ofrecer un vaso', 'Pegarlo con otro cono'] },
+        { question: '¿Cómo se prepara un Hawaiiano Blizzard®?', answer: 'Con piña, plátano y coco tostado', options: ['Con piña, plátano y coco tostado', 'Con fresa y piña', 'Con plátano y fresa', 'Con coco y vainilla'] },
+        { question: '¿Qué hacer si la bomba de topping se tapa?', answer: 'Desarmar y limpiar', options: ['Desarmar y limpiar', 'No hacer nada', 'Usar otro topping', 'Reportar y esperar'] },
+        { question: '¿Cómo se almacena la piña?', answer: 'En refrigeración una vez abierta', options: ['En refrigeración una vez abierta', 'En la despensa', 'En el congelador', 'Al aire libre'] },
+        { question: '¿Qué hacer si un cliente pide extra topping?', answer: 'Cobrar extra y agregar 1 cucharada', options: ['Cobrar extra y agregar 1 cucharada', 'No cobrarle', 'Agregar 2 cucharadas', 'Decirle que no se puede'] },
+        { question: '¿Cómo se prepara un Moka Frappé?', answer: 'Con chocolate y café', options: ['Con chocolate y café', 'Solo con café', 'Con chocolate y leche', 'Con chocolate, café y leche'] },
+        { question: '¿Qué hacer si la nieve está muy dura?', answer: 'Revisar temperatura de máquina', options: ['Revisar temperatura de máquina', 'Servirla de todos modos', 'Dejar que se caliente', 'Agregarle agua'] },
+        { question: '¿Cómo se limpia la waflera?', answer: 'Con trapo seco después de usar', options: ['Con trapo seco después de usar', 'Con agua y jabón', 'Con un cepillo', 'Con un trapo húmedo'] },
+        { question: '¿Qué hacer si un cliente pide un producto sin azúcar?', answer: 'Ofrecer opciones sin azúcar', options: ['Ofrecer opciones sin azúcar', 'Decirle que no hay', 'Darle el producto normal', 'Preguntarle por qué no quiere azúcar'] },
+        { question: '¿Cómo se almacenan los conos?', answer: 'En lugar seco a temperatura ambiente', options: ['En lugar seco a temperatura ambiente', 'En el refrigerador', 'En el congelador', 'En el mostrador'] },
+        { question: '¿Qué hacer si un producto se cae al suelo?', answer: 'Desecharlo y hacer uno nuevo', options: ['Desecharlo y hacer uno nuevo', 'Recogerlo y servirlo', 'Limpiarlo con un trapo', 'Dejarlo en el suelo'] },
+        { question: '¿Cómo se prepara un Brownie Blizzard®?', answer: 'Con trozos de brownie', options: ['Con trozos de brownie', 'Con trozos de galleta', 'Con trozos de chocolate', 'Con trozos de pastel'] },
+        { question: '¿Qué hacer si un cliente pide un producto caliente?', answer: 'Ofrecer café o opciones no congeladas', options: ['Ofrecer café o opciones no congeladas', 'Decirle que no hay', 'Hacer un producto caliente', 'Ignorarlo'] },
+        { question: '¿Cómo se almacenan las frutas?', answer: 'En refrigeración una vez abiertas', options: ['En refrigeración una vez abiertas', 'En la despensa', 'En el congelador', 'En el mostrador'] },
+        { question: '¿Qué hacer si un cliente pide un producto con alergenos?', answer: 'Notificar y evitar contaminación cruzada', options: ['Notificar y evitar contaminación cruzada', 'Hacerlo de todos modos', 'Decirle que no hay', 'Ignorarlo'] },
+        { question: '¿Cómo se prepara un Oreo Blizzard®?', answer: 'Con galleta Oreo molida', options: ['Con galleta Oreo molida', 'Con galleta de chocolate', 'Con trozos de chocolate', 'Con crema de chocolate'] },
+        { question: '¿Qué hacer si la máquina de Slush no funciona?', answer: 'Reportar al supervisor', options: ['Reportar al supervisor', 'Intentar arreglarla', 'Dejarla para después', 'Apagarla y prenderla de nuevo'] },
 
-        // Parte 3: Preguntas Abiertas
-        { type: 'oa', question: '¿Qué tres elementos son clave para la experiencia del cliente?', answer: 'Calidad, servicio y limpieza.' },
-        { type: 'oa', question: '¿Cuál es el tiempo de servicio total en el servicio a autos?', answer: '3 minutos.' },
-        { type: 'oa', question: '¿En qué momento se considera que comienza el tiempo de saludo?', answer: 'Cuando el auto es detectado.' },
-        { type: 'oa', question: '¿Cuál es el tiempo meta para el saludo?', answer: '5 segundos.' },
-        { type: 'oa', question: '¿Qué dos cosas necesitas del manual para tu certificación de empleado?', answer: 'Sirve de apoyo y cubre todos los temas.' },
-        { type: 'oa', question: '¿En qué fecha fue emitida la versión del manual?', answer: '4 de marzo de 2025.' },
-        { type: 'oa', question: '¿Qué valores promueve la marca DQ®?', answer: 'Bienestar, éxito y diversión.' },
-        { type: 'oa', question: '¿Qué es lo que busca la compañía de sus clientes?', answer: 'Que tengan una experiencia muy agradable.' },
-        { type: 'oa', question: '¿Qué tres cualidades hacen a un Gran Empleado DQ®?', answer: 'Conocimientos, buen entrenamiento y una buena actitud.' },
-        { type: 'oa', question: '¿Qué tres cosas no se pueden hacer con el manual?', answer: 'Sacarlo de la sucursal, fotocopiarlo o usarlo como contrato.' },
-        { type: 'oa', question: '¿Qué tipo de información puedes esperar encontrar en la guía?', answer: 'Respuestas a las preguntas que puedas tener sobre el negocio.' },
-        { type: 'oa', question: '¿Qué tres elementos son el resultado del éxito de cada tienda DQ®?', answer: 'Actitud, habilidad y cooperación de los empleados.' },
-        { type: 'oa', question: '¿Qué deben hacer los empleados más exitosos?', answer: 'Motivarse a sí mismos.' },
-        { type: 'oa', question: '¿Qué es lo que hace que un trabajo sea disfrutable?', answer: 'Trabajar en algo que disfrutes.' },
-        { type: 'oa', question: '¿Qué tres aspectos del empleado son de interés para la administración?', answer: 'Interés, habilidades y conocimientos.' },
-        { type: 'oa', question: '¿Qué se debe mantener en un alto nivel en el sistema Dairy Queen®?', answer: 'Calidad, servicio y limpieza.' },
-        { type: 'oa', question: '¿Cómo se le indica al empleado que el tiempo de saludo ha terminado?', answer: 'Con un sonido por la diadema.' },
-        { type: 'oa', question: '¿Qué es lo que se mide en el tiempo de toma de orden?', answer: 'Desde que el auto es detectado hasta que se retira del menú.' },
-        { type: 'oa', question: '¿Cuál es la meta de tiempo para la toma de orden?', answer: '1 minuto.' },
-        { type: 'oa', question: '¿Qué es lo que indica que el tiempo de entrega ha comenzado?', answer: 'Que el auto se retiró del menú.' },
-        { type: 'oa', question: '¿Qué es lo que indica que el tiempo de entrega ha terminado?', answer: 'Que el auto se retiró de la ventanilla.' },
-        { type: 'oa', question: '¿Cuánto tiempo dura el tiempo de entrega?', answer: '2 minutos.' },
-        { type: 'oa', question: '¿Para qué se escribió esta guía?', answer: 'Para que los empleados puedan responder a las preguntas sobre el negocio de DQ®.' },
-        { type: 'oa', question: '¿En qué lugar debe estar la guía de empleados?', answer: 'En la tienda.' },
-        { type: 'oa', question: '¿Qué hace que un empleado sea un "Gran Empleado DQ®"?', answer: 'Tener conocimientos, buen entrenamiento y una muy buena actitud.' },
-        { type: 'oa', question: '¿Qué tipo de dudas puedes enviar a la dirección de correo proporcionada?', answer: 'Dudas, sugerencias o simplemente para platicar de la experiencia.' },
-        { type: 'oa', question: '¿Qué se necesita para ser un "Gran Empleado DQ®"?', answer: 'Conocimientos, entrenamiento y actitud.' },
-        { type: 'oa', question: '¿Qué es lo que contribuye al éxito de cada Dairy Queen®?', answer: 'La actitud, habilidad y cooperación de todos los empleados.' },
-        { type: 'oa', question: '¿Qué deben hacer los empleados con el manual?', answer: 'Consultarlo cuando lo necesiten.' },
-        { type: 'oa', question: '¿Qué tipo de carrera puedes desarrollar en Dairy Queen®?', answer: 'Una carrera en administración.' },
-        { type: 'oa', question: '¿Qué tipo de relación se busca con el cliente?', answer: 'Que tenga una experiencia muy agradable.' },
-        { type: 'oa', question: '¿Qué es el tiempo de saludo?', answer: 'El tiempo desde que el auto es detectado hasta que el cajero emite un sonido por la diadema.' },
-        { type: 'oa', question: '¿Qué es el tiempo de toma de orden?', answer: 'El tiempo desde que el auto es detectado hasta que el auto se retira del menú.' },
-        { type: 'oa', question: '¿Qué es el tiempo de entrega?', answer: 'El tiempo desde que el auto se retiró del menú hasta que se retiró de la ventanilla.' },
-        { type: 'oa', question: '¿Cuál es la meta de tiempo total de servicio?', answer: '3 minutos.' },
-        { type: 'oa', question: '¿A qué se refiere el manual con "bienestar"?', answer: 'Uno de los valores de la compañía para los empleados.' },
-        { type: 'oa', question: '¿Qué es lo que te permite el manual para la certificación?', answer: 'Sirve como apoyo y cubre todos los temas.' },
-        { type: 'oa', question: '¿Qué se menciona sobre el "entusiasmo"?', answer: 'Que es una de las habilidades necesarias en un empleado.' },
-        { type: 'oa', question: '¿Qué es lo que necesita la compañía de un empleado para el desarrollo de su carrera?', answer: 'Interés, habilidades, conocimientos y entusiasmo.' },
-        { type: 'oa', question: '¿Qué es lo que se busca lograr con los clientes?', answer: 'Que tengan una experiencia agradable.' },
-        { type: 'oa', question: '¿Qué tres aspectos son importantes para mantener en un alto nivel?', answer: 'Calidad, servicio y limpieza.' },
-        { type: 'oa', question: '¿Qué es lo que hace que un empleado sea bien entrenado?', answer: 'El estudio y el apoyo del manual.' },
-        { type: 'oa', question: '¿Qué se menciona sobre la actitud en el manual?', answer: 'Que es un factor clave para el éxito.' },
-        { type: 'oa', question: '¿Qué se menciona sobre la habilidad en el manual?', answer: 'Que es un factor clave para el éxito.' },
-        { type: 'oa', question: '¿Qué se menciona sobre la cooperación en el manual?', answer: 'Que es un factor clave para el éxito.' },
-        { type: 'oa', question: '¿Qué se menciona sobre la diversión?', answer: 'Que es un valor de la compañía.' },
-        { type: 'oa', question: '¿Quiénes deben motivarse a sí mismos?', answer: 'La gente más exitosa.' },
-        { type: 'oa', question: '¿En qué momento se considera que el tiempo de servicio ha terminado?', answer: 'Cuando el auto se retiró de la ventanilla.' },
-        { type: 'oa', question: '¿Qué tres cosas son el resultado de la actitud, habilidad y cooperación?', answer: 'El éxito de cada tienda DQ®.' },
-        { type: 'oa', question: '¿Qué es lo que la empresa necesita para el desarrollo de sus empleados?', answer: 'Interés, habilidades, conocimientos y entusiasmo.' }
+        // Sección 3: Limpieza y Sanidad
+        { question: '¿Cada cuánto debes lavarte las manos?', answer: 'Cada 30 minutos', options: ['Cada 30 minutos', 'Cada hora', 'Cada 2 horas', 'Solo cuando están sucias'] },
+        { question: '¿Cómo se lavan los trapos?', answer: 'En cubeta con desengrasante y luego sanitizados', options: ['En cubeta con desengrasante y luego sanitizados', 'Solo con agua', 'Con jabón de manos', 'En la lavadora'] },
+        { question: '¿Qué usar para limpiar la máquina de Blizzard®?', answer: 'Agua y sanitizante, luego secar', options: ['Agua y sanitizante, luego secar', 'Jabón y agua', 'Trapos húmedos', 'Solo un trapo seco'] },
+        { question: '¿Qué hacer si se derrama producto?', answer: 'Limpiar inmediatamente y señalizar piso mojado', options: ['Limpiar inmediatamente y señalizar piso mojado', 'Limpiar después', 'Ignorarlo', 'Pedir a un compañero que limpie'] },
+        { question: '¿Se pueden usar uñas postizas?', answer: 'No', options: ['No', 'Sí, si son cortas', 'Sí, si son transparentes', 'Sí, si son discretas'] },
+        { question: '¿Cómo se sanitizan los utensilios?', answer: 'En agua caliente con sanitizante', options: ['En agua caliente con sanitizante', 'Solo con agua caliente', 'Con jabón de manos', 'Con cloro'] },
+        { question: '¿Qué hacer si hay vidrio roto?', answer: 'Barrer y recoger con guantes, luego sanitizar', options: ['Barrer y recoger con guantes, luego sanitizar', 'Solo barrer', 'Recoger con las manos', 'Dejarlo'] },
+        { question: '¿Cómo se limpia el baño?', answer: 'Con desinfectante y papel desechable', options: ['Con desinfectante y papel desechable', 'Con un trapo', 'Con un trapeador', 'Solo con agua'] },
+        { question: '¿Qué hacer si un empleado está enfermo?', answer: 'No venir y presentar justificante del IMSS', options: ['No venir y presentar justificante del IMSS', 'Venir a trabajar', 'Venir y usar cubrebocas', 'Ir al doctor pero no presentar justificante'] },
+        { question: '¿Cómo se almacenan los alimentos?', answer: 'En recipientes tapados y con fecha', options: ['En recipientes tapados y con fecha', 'En recipientes sin tapa', 'En el piso', 'En cajas'] },
+        { question: '¿Qué hacer si hay plagas?', answer: 'Reportar de inmediato al gerente', options: ['Reportar de inmediato al gerente', 'Poner trampas', 'Matarlas con una escoba', 'Ignorarlas'] },
+        { question: '¿Cómo se desechan las bajas?', answer: 'En cubeta designada y se registran', options: ['En cubeta designada y se registran', 'En la basura normal', 'En el drenaje', 'En la calle'] },
+        { question: '¿Qué usar para desengrasar?', answer: 'Desengrasante morado', options: ['Desengrasante morado', 'Cloro', 'Jabón', 'Agua caliente'] },
+        { question: '¿Cómo se limpia el mostrador?', answer: 'Con sanitizante y trapo limpio', options: ['Con sanitizante y trapo limpio', 'Con agua y jabón', 'Con un trapo sucio', 'Con un trapo seco'] },
+        { question: '¿Qué hacer si un trapo está sucio?', answer: 'Lavarlo y sanitizarlo', options: ['Lavarlo y sanitizarlo', 'Usarlo así', 'Tirarlo', 'Dejarlo en un rincón'] },
+        { question: '¿Cómo se almacenan los químicos?', answer: 'En lugar seguro y etiquetado', options: ['En lugar seguro y etiquetado', 'En cualquier lugar', 'En el piso', 'En el almacén sin etiqueta'] },
+        { question: '¿Qué hacer si se ensucia el uniforme?', answer: 'Cambiarse o usar delantal limpio', options: ['Cambiarse o usar delantal limpio', 'Seguir usándolo sucio', 'No hacer nada', 'Pedir un uniforme nuevo'] },
+        { question: '¿Cómo se limpia la máquina de café?', answer: 'Con agua caliente y desincrustante', options: ['Con agua caliente y desincrustante', 'Solo con agua', 'Con jabón', 'Con trapo seco'] },
+        { question: '¿Qué hacer si un cliente vomita?', answer: 'Aislar área, limpiar con guantes y desinfectar', options: ['Aislar área, limpiar con guantes y desinfectar', 'Limpiar con un trapo', 'Llamar a los padres del cliente', 'Ignorarlo'] },
+        { question: '¿Cómo se lavan los trastes?', answer: 'En agua caliente con detergente, luego sanitizar', options: ['En agua caliente con detergente, luego sanitizar', 'Con agua fría', 'Solo con detergente', 'Con un trapo'] },
+        { question: '¿Qué hacer si hay mal olor en el refrigerador?', answer: 'Limpiar y revisar productos vencidos', options: ['Limpiar y revisar productos vencidos', 'Ignorarlo', 'Usar un aromatizante', 'Dejar la puerta abierta'] },
+        { question: '¿Cómo se limpia el piso?', answer: 'Con trapeador y desinfectante', options: ['Con trapeador y desinfectante', 'Solo con una escoba', 'Con un trapo', 'Con las manos'] },
+        { question: '¿Qué hacer si un producto cae al suelo?', answer: 'Desecharlo', options: ['Desecharlo', 'Limpiarlo y usarlo', 'Ofrecérselo a un cliente', 'Dejarlo en el suelo'] },
+        { question: '¿Cómo se sanitizan las mesas?', answer: 'Con spray sanitizante y trapo', options: ['Con spray sanitizante y trapo', 'Con agua y jabón', 'Con un trapo sucio', 'Con un trapo seco'] },
+        { question: '¿Qué hacer si un cliente deja basura en la mesa?', answer: 'Limpiar de inmediato', options: ['Limpiar de inmediato', 'Dejarlo para después', 'Esperar a que se vaya el cliente', 'Ignorarlo'] },
+        { question: '¿Cómo se almacenan los trapos limpios?', answer: 'En cubeta con solución sanitizante', options: ['En cubeta con solución sanitizante', 'En el piso', 'En el mostrador', 'En un cajón'] },
+        { question: '¿Qué hacer si hay humedad en el almacén?', answer: 'Reportar y limpiar', options: ['Reportar y limpiar', 'Ignorarlo', 'Dejarlo para después', 'Usar un deshumidificador'] },
+        { question: '¿Cómo se limpia la vitrina de pasteles?', answer: 'Con vidriolimpiador y trapo seco', options: ['Con vidriolimpiador y trapo seco', 'Con agua y jabón', 'Con un trapo húmedo', 'Con las manos'] },
+        { question: '¿Qué hacer si un empleado no se lava las manos?', answer: 'Recordarle y reportar si persiste', options: ['Recordarle y reportar si persiste', 'Ignorarlo', 'Llamar a un gerente', 'No hacer nada'] },
+        { question: '¿Cómo se desechan los aceites?', answer: 'En contenedor especial, no en drenaje', options: ['En contenedor especial, no en drenaje', 'En el drenaje', 'En la basura normal', 'En la calle'] },
+
+        // Sección 4: Cajero y Dinero
+        { question: '¿Cómo contar el cambio al cliente?', answer: '3 veces: al tomar, al dar, y el cliente cuenta', options: ['3 veces: al tomar, al dar, y el cliente cuenta', '1 vez', '2 veces: al tomar y al dar', '4 veces'] },
+        { question: '¿Qué hacer si un billete parece falso?', answer: 'Revisar con luz y marcador, reportar a supervisor', options: ['Revisar con luz y marcador, reportar a supervisor', 'Aceptarlo', 'Devolverlo', 'Dárselo a otro cliente'] },
+        { question: '¿Quién puede hacer descuentos?', answer: 'Solo supervisores o gerentes', options: ['Solo supervisores o gerentes', 'Cualquier empleado', 'Solo el cajero', 'El cliente'] },
+        { question: '¿Cómo llenar una remesa?', answer: 'Con todos los datos: fecha, firma, cajero, etc.', options: ['Con todos los datos: fecha, firma, cajero, etc.', 'Solo con la fecha', 'Solo con la firma', 'Solo con el monto'] },
+        { question: '¿Qué hacer si sobra o falta dinero?', answer: 'Reportar y firmar pagaré si es necesario', options: ['Reportar y firmar pagaré si es necesario', 'No hacer nada', 'Quedárselo', 'Decirle a un compañero'] },
+        { question: '¿Qué hacer si un cliente paga con dólares?', answer: 'Aceptar según tipo de cambio del día', options: ['Aceptar según tipo de cambio del día', 'No aceptarlos', 'Aceptarlos como pesos', 'Aceptarlos solo si son billetes grandes'] },
+        { question: '¿Cómo se registra una cortesía?', answer: 'Con firma del supervisor y explicación', options: ['Con firma del supervisor y explicación', 'No se registra', 'Solo con la firma del cajero', 'Con el ticket'] },
+        { question: '¿Qué hacer si la registradora se traba?', answer: 'Llamar al supervisor', options: ['Llamar al supervisor', 'Intentar arreglarla', 'Golpearla', 'No hacer nada'] },
+        { question: '¿Cómo se manejan los cupones?', answer: 'Solo los autorizados, con firma del supervisor', options: ['Solo los autorizados, con firma del supervisor', 'Todos los cupones se aceptan', 'No se aceptan cupones', 'Solo los que traen el código de barras'] },
+        { question: '¿Qué hacer si un cliente no lleva suficiente dinero?', answer: 'Ofrecer cancelar o ajustar orden', options: ['Ofrecer cancelar o ajustar orden', 'Regalarle el producto', 'Decirle que se vaya', 'Pedirle que vuelva después'] },
+        { question: '¿Cómo se cierra una caja?', answer: 'Con corte de ventas y verificación de dinero', options: ['Con corte de ventas y verificación de dinero', 'Solo con el corte de ventas', 'Solo con la verificación de dinero', 'Cuando termine el turno'] },
+        { question: '¿Qué hacer si un cliente disputa el cambio?', answer: 'Recontar frente a él y supervisor', options: ['Recontar frente a él y supervisor', 'Discutir con él', 'Decirle que no hay más cambio', 'Llamar a la policía'] },
+        { question: '¿Cómo se registra un reembolso?', answer: 'Con ticket y firma del supervisor', options: ['Con ticket y firma del supervisor', 'Con la firma del cliente', 'Con la firma del cajero', 'Solo con el ticket'] },
+        { question: '¿Qué hacer si la terminal no funciona?', answer: 'Usar efectivo o reportar falla', options: ['Usar efectivo o reportar falla', 'Ignorarla', 'Decirle al cliente que no se puede pagar con tarjeta', 'Intentar arreglarla'] },
+        { question: '¿Cómo se manejan las propinas?', answer: 'Se depositan en caja común', options: ['Se depositan en caja común', 'Se las queda el cajero', 'Se las queda el supervisor', 'Se las queda el gerente'] },
+        { question: '¿Qué hacer si un cliente pide factura?', answer: 'Pedir datos y emitirla', options: ['Pedir datos y emitirla', 'Decirle que no se puede', 'Ignorarlo', 'Decirle que lo haga por internet'] },
+        { question: '¿Cómo se verifica una tarjeta?', answer: 'Revisar firma y nombre', options: ['Revisar firma y nombre', 'No se verifica', 'Pedirle el NIP', 'Pedirle la credencial'] },
+        { question: '¿Qué hacer si un cliente se va sin pagar?', answer: 'Reportar al supervisor', options: ['Reportar al supervisor', 'Ignorarlo', 'Correr detrás de él', 'Llamar a la policía'] },
+        { question: '¿Cómo se registra una venta por agregador?', answer: 'Con código de orden y emplayado', options: ['Con código de orden y emplayado', 'Con el nombre del cliente', 'Con el número de teléfono', 'Con el nombre del repartidor'] },
+        { question: '¿Qué hacer si un repartidor no llega?', answer: 'Guardar producto en congelador', options: ['Guardar producto en congelador', 'Tirarlo', 'Comérselo', 'Dárselo a otro cliente'] },
+
+        // Sección 5: Máquinas y Equipos
+        { question: '¿Qué hacer si la máquina de nieve no enciende?', answer: 'Reportar al supervisor', options: ['Reportar al supervisor', 'Intentar arreglarla', 'Desconectarla y volverla a conectar', 'No hacer nada'] },
+        { question: '¿Cada cuánto se mide el overrun?', answer: 'Cada 2 horas desde las 12:00 pm', options: ['Cada 2 horas desde las 12:00 pm', 'Cada 4 horas', 'Cada hora', 'Una vez al día'] },
+        { question: '¿Cómo se limpia la waflera?', answer: 'Con aceite en aerosol y trapo seco', options: ['Con aceite en aerosol y trapo seco', 'Con agua y jabón', 'Con un cepillo', 'Con un trapo húmedo'] },
+        { question: '¿Qué hacer si la máquina de Blizzard® vibra?', answer: 'Apagar y reportar', options: ['Apagar y reportar', 'Seguir usándola', 'Echarle aceite', 'Golpearla'] },
+        { question: '¿Cómo se arma la bomba de toppings?', answer: 'Siguiendo manual de equipo', options: ['Siguiendo manual de equipo', 'Como uno se imagine', 'Como la arma el compañero', 'Dejarla desarmada'] },
+        { question: '¿Qué hacer si el congelador no enfría?', answer: 'Reportar y mover productos a otro equipo', options: ['Reportar y mover productos a otro equipo', 'Dejar los productos dentro', 'Agregarle hielo', 'Dejar la puerta abierta'] },
+        { question: '¿Cómo se lubrican las partes de la máquina?', answer: 'Solo las indicadas en el manual', options: ['Solo las indicadas en el manual', 'Todas las partes', 'Ninguna parte', 'Solo las que vibran'] },
+        { question: '¿Qué hacer si la máquina de Slush no congela?', answer: 'Revisar temperatura y reportar', options: ['Revisar temperatura y reportar', 'Servir el producto así', 'Agregar más hielo', 'Dejar que se caliente'] },
+        { question: '¿Cómo se cambia el mix en la máquina?', answer: 'Siguiendo procedimiento de rotación', options: ['Siguiendo procedimiento de rotación', 'De la manera más rápida posible', 'Como uno quiera', 'Sin procedimiento'] },
+        { question: '¿Qué hacer si hay fuga de agua en un equipo?', answer: 'Apagar y reportar', options: ['Apagar y reportar', 'Seguir usándolo', 'Poner una cubeta', 'Ignorarla'] },
     ];
 
     let questions = [];
@@ -475,10 +513,7 @@
     const startBtn = document.getElementById('start-btn');
     const questionText = document.getElementById('question-text');
     const questionContent = document.getElementById('question-content');
-    const submitBtn = document.getElementById('submit-btn');
-    const showAnswerBtn = document.getElementById('show-answer-btn');
-    const correctBtn = document.getElementById('correct-btn');
-    const incorrectBtn = document.getElementById('incorrect-btn');
+    const optionsContainer = document.getElementById('options-container');
     const nextBtn = document.getElementById('next-btn');
     const restartBtn = document.getElementById('restart-btn');
     const answerResult = document.getElementById('answer-result');
@@ -490,6 +525,7 @@
     const finalTotalSpan = document.getElementById('final-total');
     const finalCorrectSpan = document.getElementById('final-correct');
     const finalIncorrectSpan = document.getElementById('final-incorrect');
+    const evaluationLevelSpan = document.getElementById('evaluation-level');
 
     // Función para mezclar un array (Fisher-Yates shuffle)
     function shuffleArray(array) {
@@ -541,60 +577,31 @@
 
         const currentQuestion = questions[currentQuestionIndex];
         questionText.textContent = `Pregunta ${currentQuestionIndex + 1}:`;
-        questionContent.innerHTML = `<p class="question-text">${currentQuestion.question}</p>`;
+        questionContent.textContent = currentQuestion.question;
         answerResult.textContent = '';
         
-        // Ocultar todos los botones
-        submitBtn.style.display = 'none';
-        showAnswerBtn.style.display = 'none';
-        correctBtn.style.display = 'none';
-        incorrectBtn.style.display = 'none';
-        nextBtn.style.display = 'none';
+        optionsContainer.innerHTML = '';
+        const shuffledOptions = shuffleArray([...currentQuestion.options]);
+        shuffledOptions.forEach(option => {
+            const btn = document.createElement('button');
+            btn.textContent = option;
+            btn.className = 'option-btn';
+            btn.onclick = () => checkAnswer(option);
+            optionsContainer.appendChild(btn);
+        });
 
-        // Renderizar según el tipo de pregunta
-        if (currentQuestion.type === 'vf') {
-            const vfOptions = ['Verdadero', 'Falso'];
-            const optionsContainer = document.createElement('div');
-            optionsContainer.className = 'options-container';
-            vfOptions.forEach(option => {
-                const btn = document.createElement('button');
-                btn.textContent = option;
-                btn.className = 'option-btn';
-                btn.onclick = () => checkAnswer(option);
-                optionsContainer.appendChild(btn);
-            });
-            questionContent.appendChild(optionsContainer);
-        } else if (currentQuestion.type === 'mc') {
-            const optionsContainer = document.createElement('div');
-            optionsContainer.className = 'options-container';
-            currentQuestion.options.forEach(option => {
-                const btn = document.createElement('button');
-                btn.textContent = option;
-                btn.className = 'option-btn';
-                btn.onclick = () => checkAnswer(option);
-                optionsContainer.appendChild(btn);
-            });
-            questionContent.appendChild(optionsContainer);
-        } else if (currentQuestion.type === 'oa') {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.placeholder = 'Escribe tu respuesta aquí';
-            input.className = 'answer-input';
-            input.id = 'open-answer-input';
-            questionContent.appendChild(input);
-            showAnswerBtn.style.display = 'inline-block';
-            input.focus();
-        }
+        nextBtn.style.display = 'none';
+        updateStats();
     }
 
-    // Revisa la respuesta del usuario para preguntas de verdadero/falso y opción múltiple
+    // Revisa la respuesta del usuario
     function checkAnswer(userAnswer) {
         const currentQuestion = questions[currentQuestionIndex];
         const isCorrect = userAnswer.trim() === currentQuestion.answer.trim();
         const options = document.querySelectorAll('.option-btn');
         
         options.forEach(btn => {
-            btn.disabled = true; // Deshabilitar botones después de responder
+            btn.disabled = true;
             if (btn.textContent.trim() === currentQuestion.answer.trim()) {
                 btn.classList.add('correct');
             } else {
@@ -616,40 +623,6 @@
         updateStats();
     }
 
-    // Muestra la respuesta para preguntas abiertas y permite al usuario autoevaluarse
-    function showAnswer() {
-        const currentQuestion = questions[currentQuestionIndex];
-        const input = document.getElementById('open-answer-input');
-        input.disabled = true;
-
-        answerResult.innerHTML = `
-            <p><strong>Respuesta correcta:</strong> ${currentQuestion.answer}</p>
-            <p>¿Fue tu respuesta correcta?</p>
-        `;
-        answerResult.className = '';
-        
-        showAnswerBtn.style.display = 'none';
-        correctBtn.style.display = 'inline-block';
-        incorrectBtn.style.display = 'inline-block';
-    }
-
-    // Maneja la autoevaluación para preguntas abiertas
-    function handleAnswer(isCorrect) {
-        if (isCorrect) {
-            correctAnswers++;
-            answerResult.textContent = '¡Respuesta marcada como correcta!';
-            answerResult.className = 'correct';
-        } else {
-            incorrectAnswers++;
-            answerResult.textContent = 'Respuesta marcada como incorrecta.';
-            answerResult.className = 'incorrect';
-        }
-        correctBtn.style.display = 'none';
-        incorrectBtn.style.display = 'none';
-        nextBtn.style.display = 'inline-block';
-        updateStats();
-    }
-
     // Pasa a la siguiente pregunta
     function nextQuestion() {
         currentQuestionIndex++;
@@ -660,22 +633,40 @@
         }
     }
 
-    // Muestra los resultados finales
+    // Muestra los resultados finales y la evaluación
     function showResults() {
         showScreen(resultScreen);
         finalTotalSpan.textContent = questions.length;
         finalCorrectSpan.textContent = correctAnswers;
         finalIncorrectSpan.textContent = incorrectAnswers;
+
+        const percentage = (correctAnswers / questions.length) * 100;
+        let level = '';
+        let message = '';
+        let className = '';
+
+        if (percentage >= 85) {
+            level = 'Avanzado';
+            message = '¡Felicidades! Tienes un excelente dominio del manual. Estás listo para tu certificación.';
+            className = 'avanzado';
+        } else if (percentage >= 60) {
+            level = 'Intermedio';
+            message = 'Tienes un buen conocimiento, pero aún hay áreas de mejora. ¡Sigue practicando!';
+            className = 'intermedio';
+        } else {
+            level = 'Básico';
+            message = 'Tus conocimientos son básicos. Te recomiendo estudiar más el manual para alcanzar un nivel intermedio.';
+            className = 'basico';
+        }
+
+        evaluationLevelSpan.textContent = `${level}: ${message}`;
+        evaluationLevelSpan.className = `evaluation ${className}`;
     }
 
     // Event listeners
     startBtn.addEventListener('click', startGame);
-    showAnswerBtn.addEventListener('click', showAnswer);
-    correctBtn.addEventListener('click', () => handleAnswer(true));
-    incorrectBtn.addEventListener('click', () => handleAnswer(false));
     nextBtn.addEventListener('click', nextQuestion);
     restartBtn.addEventListener('click', showStartScreen);
-
 </script>
 </body>
 </html>
