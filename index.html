@@ -15,12 +15,40 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ff6b9d, #4facfe, #00f2fe);
+            background-color: #f0f8ff;
+            background-image: url('image_eefcba.png');
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        body::before {
+            bottom: -50px;
+            left: -50px;
+            background-image: url('image_eefcd8.png');
+            transform: rotate(-15deg);
+        }
+
+        body::after {
+            top: -50px;
+            right: -50px;
+            background-image: url('image_eef9d0.png');
+            transform: rotate(15deg);
         }
 
         .game-container {
@@ -30,8 +58,11 @@
             padding: 30px;
             max-width: 900px;
             width: 100%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             text-align: center;
+            border: 4px solid white;
+            position: relative;
+            z-index: 1;
         }
 
         .screen {
@@ -40,6 +71,11 @@
 
         .screen.active {
             display: block;
+        }
+
+        .logo-img {
+            max-width: 200px;
+            margin: 0 auto 15px;
         }
 
         h1 {
@@ -81,6 +117,7 @@
         }
 
         .btn:hover {
+            background: #e53955;
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(211, 34, 65, 0.4);
         }
@@ -111,12 +148,12 @@
         }
 
         .option:hover {
-            background: #e0e0e0;
-            border-color: #4facfe;
+            background: #e0f2fe;
+            border-color: #0096da;
         }
         
         .option.selected {
-            background: #4facfe;
+            background: #0096da;
             color: white;
             border-color: #007ac1;
         }
@@ -195,8 +232,9 @@
 <div class="game-container">
     <!-- Start Screen -->
     <div id="start-screen" class="screen active">
+        <img src="image.png" alt="Dairy Queen Logo" class="logo-img">
         <h1>Juego de Preguntas DQ🍦</h1>
-        <p>Pon a prueba tus conocimientos sobre el Manual de Operaciones de Dairy Queen🍦. Responde 117 preguntas y descubre tu nivel de preparación. ¡Mucha suerte!</p>
+        <p>Pon a prueba tus conocimientos sobre el Manual de Operaciones de Dairy Queen. Responde 149 preguntas y descubre tu nivel de preparación. ¡Mucha suerte!</p>
         <button id="start-btn" class="btn">Comenzar Juego</button>
     </div>
 
@@ -257,166 +295,172 @@
 
     // BANCO DE 150 PREGUNTAS
     const questions = [
-        // Page 1: Psychological First Aid & Evaluations
-        { question: "¿Cuál es el primer paso en una emergencia psicológica?", options: ["Dar consejos", "Llamar a un profesional", "Escucha activa y acompañamiento", "Ofrecer un vaso de agua"], answer: "Escucha activa y acompañamiento" },
-        { question: "Antes de tocar a una persona en crisis, ¿qué debes hacer?", options: ["Avisarle que lo vas a tocar", "Pedir su autorización", "Tocarlo suavemente en el hombro", "No tocarlo nunca"], answer: "Pedir su autorización" },
-        { question: "En la técnica de respiración de primeros auxilios, ¿cómo se debe respirar?", options: ["Inhalar por la boca, exhalar por la nariz", "Inhalar y exhalar por la boca", "Respirar rápidamente", "Inhalar por la nariz y exhalar por la boca"], answer: "Inhalar por la nariz y exhalar por la boca" },
-        { question: "Después de una crisis, ¿cuál es la recomendación final?", options: ["Decirle que olvide lo sucedido", "Canalizar a un profesional", "Darle un medicamento", "Dejarlo solo para que reflexione"], answer: "Canalizar a un profesional" },
-        { question: "¿Qué significa PRIDE en la filosofía de DQ®?", options: ["Personal Responsability In Delivery Excellence", "Productividad, Respeto, Integridad y Excelencia", "Preparación Rápida, Increíble y Deliciosa", "Personas Responsables de la Entrega Excelente"], answer: "Personal Responsability In Delivery Excellence" },
-        { question: "¿Cuáles son las tres maneras en que se evalúan las tiendas?", options: ["PRIDE, Walk-Thru y FSAC", "Ventas, Limpieza y Servicio", "Gerente, Empleados y Clientes", "Calidad, Rapidez y Amabilidad"], answer: "PRIDE, Walk-Thru y FSAC" },
+        // 1. Primeros Auxilios en una Emergencia Psicológica
+        { question: "¿Cuál es el primer paso en los primeros auxilios psicológicos según el manual?", options: ["Canalizar a un profesional", "Ofrecer consejos", "Escucha activa y acompañamiento", "Pedir que respire inmediatamente"], answer: "Escucha activa y acompañamiento" },
+        { question: "Durante la escucha activa, ¿qué se recomienda hacer si la persona está teniendo una crisis?", options: ["Darle consejos para solucionar el problema", "Dejarla sola para que se calme", "Estar presente con todos los sentidos, ir a un área tranquila y solo escuchar", "Tocarla sin pedir autorización previa"], answer: "Estar presente con todos los sentidos, ir a un área tranquila y solo escuchar" },
+        { question: "Si vas a tocar a una persona en crisis, ¿qué debes hacer primero?", options: ["Tocarla suavemente sin decir nada", "Pedir su autorización", "Tocarla solo si está llorando", "Evitar tocarla en cualquier circunstancia"], answer: "Pedir su autorización" },
+        { question: "Después de la escucha activa, ¿cuál es el siguiente paso si la persona no puede expresar lo que siente?", options: ["Ofrecerle comida", "Pedir que respire, inhale por la nariz y exhale por la boca repetidamente", "Llamar a un familiar", "Canalizarla inmediatamente a un profesional"], answer: "Pedir que respire, inhale por la nariz y exhale por la boca repetidamente" },
+        { question: "¿Qué se debe hacer si la persona te dice que necesita que te quedes con ella?", options: ["Decirle que es mejor que esté sola", "Llamar a su casa", "Quedarse junto con ella", "Seguir pidiéndole que respire"], answer: "Quedarse junto con ella" },
+        { question: "¿Qué se debe hacer si la persona te pide que no le sueltes de la mano?", options: ["Soltarle la mano después de un minuto", "No soltarle la mano", "Preguntarle por qué te pide eso", "Pedirle que se tranquilice primero"], answer: "No soltarle la mano" },
+        { question: "Si una persona está llorando o sollozando y no puede decir lo que necesita, ¿qué se debe hacer?", options: ["Dejarla sola para que se desahogue", "Continuar con la parte de respiración hasta que pueda hablar", "Intentar adivinar lo que necesita", "Llamar a su supervisor"], answer: "Continuar con la parte de respiración hasta que pueda hablar" },
+        { question: "Según el manual, ¿somos profesionales en atención psicológica?", options: ["Sí, y debemos resolver la crisis completamente", "Solo si hemos tomado cursos adicionales", "No, estos pasos son solo una primera ayuda", "Solo en emergencias leves"], answer: "No, estos pasos son solo una primera ayuda" },
+        { question: "Después de una crisis, ¿qué es importante recomendarle a la persona?", options: ["Que tome un descanso", "Que se distraiga con otras actividades", "Que se atienda con un profesional que vea este tipo de situaciones", "Que olvide lo sucedido"], answer: "Que se atienda con un profesional que vea este tipo de situaciones" },
+        { question: "¿Cuál es el propósito principal de los pasos de primeros auxilios psicológicos?", options: ["Curar completamente la condición psicológica del individuo.", "Proporcionar una primera ayuda y estabilización temporal.", "Diagnosticar la condición de salud mental del cliente.", "Sustituir la necesidad de terapia profesional."], answer: "Proporcionar una primera ayuda y estabilización temporal." },
         
-        // Page 2: PRIDE, Walk-Thru & FSAC
-        { question: "Según las bases de PRIDE, 'Prepararse' incluye:", options: ["Sonreír al cliente", "Uniforme completo y manos limpias", "Agradecer al cliente", "Servir el producto correctamente"], answer: "Uniforme completo y manos limpias" },
-        { question: "'Conectar' con el cliente según PRIDE implica:", options: ["Tener la tienda limpia", "Ofrecer el producto del día", "Sonreír, saludar y contacto visual", "Preparar el pedido rápidamente"], answer: "Sonreír, saludar y contacto visual" },
-        { question: "¿Qué se debe hacer en el paso 'Entregar' de PRIDE?", options: ["Revisar el inventario", "Limpiar las mesas", "Servir con una sonrisa y agradecer", "Tomar la orden"], answer: "Servir con una sonrisa y agradecer" },
-        { question: "El objetivo final de PRIDE es:", options: ["Vender más pasteles", "Reducir costos", "Crear fans, no solo clientes", "Obtener buenas calificaciones"], answer: "Crear fans, no solo clientes" },
-        { question: "¿Quién realiza la evaluación 'Walk-Thru'?", options: ["Un cliente misterioso", "El Gerente de Operaciones", "Una compañía externa", "El gerente de la tienda"], answer: "El Gerente de Operaciones" },
-        { question: "¿Qué significa FSAC?", options: ["First Service And Control", "Food Safety And Quality Control", "Fast Service And Quality", "Food Service And Cleanliness"], answer: "Food Safety And Quality Control" },
-        { question: "¿Con qué calificación se aprueba la auditoría FSAC?", options: ["70%", "90%", "85%", "100%"], answer: "85%" },
+        // 2. Evaluación de Turnos y Tiendas y Certificación de Empleados
+        { question: "¿De cuántas maneras son evaluadas las tiendas de Dairy Queen®?", options: ["Una", "Dos", "Tres", "Cuatro"], answer: "Tres" },
+        { question: "¿Qué significa la filosofía DQ® conocida como PRIDE?", options: ["Proactividad y Respeto en la Innovación Diaria y Excelencia", "Productividad, Responsabilidad e Integridad en el Desarrollo Emprendedor", "Personal Responsibility In Delivery Excellence (Nuestra Responsabilidad en Dar Excelencia)", "Promoción, Reconocimiento, Integración y Dedicación para el Éxito"], answer: "Personal Responsibility In Delivery Excellence (Nuestra Responsabilidad en Dar Excelencia)" },
+        { question: "¿Cuáles son las bases para tener PRIDE?", options: ["Calidad, Servicio y Limpieza", "Ser amable, cortés y sonreír", "Prepararse para el éxito, Mantener Pride, Darle al cliente una razón para volver", "Conocer los productos, contacto visual y venta hacia arriba"], answer: "Prepararse para el éxito, Mantener Pride, Darle al cliente una razón para volver" },
+        { question: "¿Con qué frecuencia son evaluadas las tiendas con el PRIDE?", options: ["Semanalmente", "Diariamente", "Cada mes", "Cada trimestre"], answer: "Cada mes" },
+        { question: "¿Qué aspectos abarca la evaluación PRIDE?", options: ["Solo la calidad del producto", "Únicamente el servicio al cliente", "Calidad, Servicio, Limpieza de la tienda y nuestros productos", "Exclusivamente el conocimiento de los empleados"], answer: "Calidad, Servicio, Limpieza de la tienda y nuestros productos" },
+        { question: "¿Cuál es la calificación mínima aprobatoria en la evaluación PRIDE?", options: ["70%", "80%", "90%", "75%"], answer: "80%" },
+        { question: "Si una tienda obtiene menos del 80% en la evaluación PRIDE o Seguridad en Alimentos, ¿qué sucede?", options: ["Solo el gerente pierde su bono", "Se les da una segunda oportunidad sin penalización", "Se les quitará el bono completo de una semana a todos los empleados", "La tienda cierra por un día"], answer: "Se les quitará el bono completo de una semana a todos los empleados" },
+        { question: "¿Qué premio se recibe si la tienda saca arriba de 95% en la evaluación PRIDE o Seguridad en Alimentos?", options: ["Un bono doble", "Algún premio", "Un día libre extra", "Una mención honorífica"], answer: "Algún premio" },
+        { question: "¿Qué evalúa la 'Seguridad en Alimentos'?", options: ["La amabilidad de los empleados", "La velocidad de preparación de los productos", "Procedimientos de limpieza y sanidad", "El conocimiento del menú"], answer: "Procedimientos de limpieza y sanidad" },
+        { question: "¿Cuándo pueden los empleados iniciar su proceso de certificación?", options: ["Después de su primer mes", "A partir de su segunda semana", "Al ser promovidos a supervisores", "Después de seis meses en la empresa"], answer: "A partir de su segunda semana" },
+        { question: "¿Cuántas etapas tiene el proceso de certificación de empleados?", options: ["Dos", "Tres", "Cuatro", "Cinco"], answer: "Cuatro" },
+        { question: "¿Cuáles son las etapas de la certificación de empleados?", options: ["PRIDE, Seguridad, Ventas, Liderazgo", "Horarios, Inventario, Capacitación, Evaluación", "Limpieza, Servicio al cliente, Procedimientos de máquinas/Libro rojo, Producto", "Apariencia, Actitud, Disponibilidad, Profesionalismo"], answer: "Limpieza, Servicio al cliente, Procedimientos de máquinas/Libro rojo, Producto" },
+        { question: "¿Qué obtiene un empleado al certificarse?", options: ["Un aumento de sueldo automático", "Un reconocimiento y pin de certificación", "Un día extra de vacaciones", "La oportunidad de abrir su propia franquicia"], answer: "Un reconocimiento y pin de certificación" },
+        { question: "¿Qué es un requisito para poder ser supervisor en Dairy Queen®?", options: ["Haber ganado el premio al empleado del año", "Estar certificado", "Trabajar al menos un año en la empresa", "Tener estudios universitarios"], answer: "Estar certificado" },
+        { question: "Según el manual, ¿cuál de las siguientes no es una manera en que las tiendas son evaluadas?", options: ["PRIDE", "Seguridad en Alimentos", "Experiencia del Gerente", "Certificación de empleados"], answer: "Experiencia del Gerente" },
         
-        // Page 3: FSAC Violations & Food Safety
-        { question: "Si una tienda reprueba el FSAC, ¿qué sucede?", options: ["La tienda cierra permanentemente", "Se le da una advertencia verbal", "Hay re-entrenamiento y re-auditoría en 30 días", "Se le descuenta el sueldo al gerente"], answer: "Hay re-entrenamiento y re-auditoría en 30 días" },
-        { question: "¿Qué es una violación crítica en FSAC?", options: ["Uniforme sucio", "Algo que puede provocar una enfermedad", "Piso mojado", "Mala actitud con el cliente"], answer: "Algo que puede provocar una enfermedad" },
-        { question: "¿Cuántas violaciones críticas son necesarias para reprobar automáticamente el FSAC?", options: ["Una", "Tres", "Cinco", "Diez"], answer: "Una" },
-        { question: "La 'Zona de peligro de temperatura' para los alimentos se encuentra entre:", options: ["0°C y 20°C", "5°C y 60°C", "10°C y 70°C", "0°F y 100°F"], answer: "5°C y 60°C" },
-        { question: "¿Por cuánto tiempo máximo pueden estar los alimentos en la zona de peligro?", options: ["8 horas", "4 horas", "6 horas", "2 horas"], answer: "4 horas" },
-        { question: "¿A qué temperatura deben mantenerse los alimentos calientes?", options: ["50°C", "Arriba de 60°C", "45°C", "Arriba de 75°C"], answer: "Arriba de 60°C" },
+        // 3. Reconocimientos y Clasificación de Actividades
+        { question: "¿Con qué frecuencia compiten los supervisores y empleados para ser reconocidos como el mejor del año?", options: ["Cada seis meses", "Cada dos años", "Cada año", "Mensualmente"], answer: "Cada año" },
+        { question: "¿Cuál es uno de los requisitos para participar en el premio al supervisor y/o empleado del año?", options: ["Tener menos de 6 meses trabajando en la empresa", "Tener mínimo 6 meses trabajando en la empresa", "No haber ganado ningún bono", "Ser gerente"], answer: "Tener mínimo 6 meses trabajando en la empresa" },
+        { question: "¿Qué porcentaje de bonos ganados se requiere como mínimo para participar en el premio al supervisor y/o empleado del año?", options: ["Menos del 80%", "Exactamente 80%", "Más del 80%", "100%"], answer: "Más del 80%" },
+        { question: "¿Qué obtienen los ganadores del premio al supervisor y/o empleado del año?", options: ["Un bono en efectivo", "Un viaje pagado", "Un reconocimiento", "Un ascenso inmediato"], answer: "Un viaje pagado" },
+        { question: "¿Cómo se clasifican las actividades realizadas en Dairy Queen®?", options: ["Solo primarias", "Solo secundarias", "Primarias y secundarias", "Operativas y administrativas"], answer: "Primarias y secundarias" },
+        { question: "¿Qué tipo de actividades son las que se realizan en presencia del cliente y agregan valor a su visita?", options: ["Actividades administrativas", "Actividades secundarias", "Actividades primarias", "Actividades de soporte"], answer: "Actividades primarias" },
+        { question: "Un ejemplo de actividad primaria es:", options: ["Mantener todo surtido en el área de preparación", "Mantener la tienda limpia durante todo el día", "Dar una alegre bienvenida al cliente", "Llenar el congelador de exhibición"], answer: "Dar una alegre bienvenida al cliente" },
+        { question: "¿Qué tipo de actividades son aquellas que no necesariamente se realizan en presencia de los clientes, pero sí para su beneficio?", options: ["Actividades de marketing", "Actividades primarias", "Actividades secundarias", "Actividades de supervisión"], answer: "Actividades secundarias" },
+        { question: "Un ejemplo de actividad secundaria es:", options: ["Tomar la orden del cliente", "Preparar un producto muy bonito", "Llenar el congelador de exhibición", "Despedir al cliente con cortesía"], answer: "Llenar el congelador de exhibición" },
+        { question: "¿Cuáles son las cuatro áreas principales que se deben aprender y practicar para dar el mejor servicio al cliente?", options: ["Marketing, Finanzas, Recursos Humanos, Operaciones", "Limpieza, Calidad, Seguridad, Innovación", "Reglas de etiqueta, Venta Sugestiva, Operación de la caja registradora, Preparación y entrega de la orden", "Contratación, Capacitación, Evaluación, Promoción"], answer: "Reglas de etiqueta, Venta Sugestiva, Operación de la caja registradora, Preparación y entrega de la orden" },
+        { question: "¿Cuál de las siguientes es una actividad primaria?", options: ["Ayudar al cliente en su decisión de compra.", "Limpiar los baños de la tienda.", "Revisar el inventario de productos.", "Desconectar los calentadores de fudges por la noche."], answer: "Ayudar al cliente en su decisión de compra." },
+        { question: "Si un empleado está manteniendo surtida el área de preparación, ¿qué tipo de actividad está realizando?", options: ["Actividad primaria", "Actividad de marketing", "Actividad secundaria", "Actividad de gestión"], answer: "Actividad secundaria" },
+        { question: "¿Cuál de las siguientes áreas NO es una de las cuatro principales para dar el mejor servicio al cliente?", options: ["Venta Sugestiva", "Operación de la caja registradora", "Preparación y entrega de la orden", "Contabilidad y Finanzas"], answer: "Contabilidad y Finanzas" },
+        { question: "¿Qué significa que una actividad 'agrega valor a la visita del cliente' en el contexto de las actividades primarias?", options: ["Que la actividad ahorra dinero a la empresa.", "Que la actividad mejora la eficiencia operativa.", "Que la actividad mejora la experiencia y satisfacción del cliente durante su visita.", "Que la actividad se realiza sin la presencia del cliente."], answer: "Que la actividad mejora la experiencia y satisfacción del cliente durante su visita." },
+        { question: "¿Cuál es el objetivo de las actividades secundarias?", options: ["Aumentar la visibilidad de la marca.", "Beneficiar al cliente, incluso si no está presente durante su realización.", "Reducir los costos operativos de la tienda.", "Exclusivamente la capacitación del personal."], answer: "Beneficiar al cliente, incluso si no está presente durante su realización." },
         
-        // Page 4: Temperature Logs & Personal Hygiene
-        { question: "¿A qué temperatura deben mantenerse los alimentos fríos?", options: ["10°C o menos", "Debajo de 5°C", "0°C", "Entre 5°C y 10°C"], answer: "Debajo de 5°C" },
-        { question: "¿Con qué frecuencia se deben registrar las temperaturas de los equipos?", options: ["Una vez al día", "Cada 8 horas", "Mínimo 3 veces por turno", "Cuando haya una auditoría"], answer: "Mínimo 3 veces por turno" },
-        { question: "¿Qué se debe hacer si un equipo está fuera de rango de temperatura?", options: ["Ignorarlo si es por poco tiempo", "Avisar al gerente y mover el producto", "Esperar a que se componga solo", "Anotarlo y no hacer nada más"], answer: "Avisar al gerente y mover el producto" },
-        { question: "¿Qué es un contaminante biológico?", options: ["Vidrio o metal", "Bacterias, virus, parásitos", "Sanitizante", "Polvo"], answer: "Bacterias, virus, parásitos" },
-        { question: "Un ejemplo de contaminante químico es:", options: ["Cabello", "Tierra", "Sanitizante", "Un arete"], answer: "Sanitizante" },
-        { question: "Las uñas deben estar:", options: ["Largas y con esmalte", "Cortas, limpias y sin esmalte", "Con esmalte transparente", "Como el empleado prefiera"], answer: "Cortas, limpias y sin esmalte" },
-        
-        // Page 5: Hand Washing & Illness
-        { question: "No se permite el uso de joyería como:", options: ["Anillo de matrimonio liso", "Relojes y pulseras", "Aretes pequeños", "Collar debajo del uniforme"], answer: "Relojes y pulseras" },
-        { question: "¿Cuánto tiempo debe durar el lavado de manos (tallado con jabón)?", options: ["5 segundos", "10 a 15 segundos", "30 segundos", "1 minuto"], answer: "10 a 15 segundos" },
-        { question: "Después de lavarse las manos, ¿cómo se deben secar?", options: ["Con el mandil", "Sacudiéndolas al aire", "Con toallas de papel de un solo uso", "Con un trapo de tela"], answer: "Con toallas de papel de un solo uso" },
-        { question: "¿Cuándo es obligatorio lavarse las manos?", options: ["Después de tocar dinero", "Después de ir al baño", "Después de tocarse la cara", "Todas las anteriores"], answer: "Todas las anteriores" },
-        { question: "Un empleado NO debe trabajar si tiene síntomas como:", options: ["Dolor de cabeza leve", "Vómito, diarrea o fiebre", "Cansancio", "Dolor muscular"], answer: "Vómito, diarrea o fiebre" },
-        { question: "Si un empleado se corta, ¿qué debe hacer?", options: ["Seguir trabajando con cuidado", "Lavar la herida y cubrirla con una bandita y un guante", "Solo ponerse una bandita", "Irse a casa inmediatamente"], answer: "Lavar la herida y cubrirla con una bandita y un guante" },
-        
-        // Page 6: Uniform Policy
-        { question: "La camisa del uniforme debe estar:", options: ["Desabotonada arriba", "Fajada todo el tiempo", "Por fuera del pantalón", "Arremangada"], answer: "Fajada todo el tiempo" },
-        { question: "¿Qué tipo de pantalón es aceptable para el uniforme?", options: ["Pantalón de mezclilla azul", "Pantalón de gabardina negro o azul marino", "Pants deportivos", "Leggings"], answer: "Pantalón de gabardina negro o azul marino" },
-        { question: "El calzado requerido para el uniforme es:", options: ["Tenis de cualquier color", "Sandalias", "Zapatos negros antiderrapantes", "Botas de trabajo"], answer: "Zapatos negros antiderrapantes" },
-        { question: "¿Cómo debe estar el cabello?", options: ["Suelto si está corto", "Recogido y cubierto con una gorra o red", "Teñido de colores brillantes", "Con gel o spray"], answer: "Recogido y cubierto con una gorra o red" },
-        { question: "¿Qué pieza del uniforme es obligatoria para todos los empleados?", options: ["Gorra o visera con logo de DQ", "Mandil", "Sudadera de DQ", "Pin con su nombre"], answer: "Gorra o visera con logo de DQ" },
-        { question: "El uso de mandil es obligatorio para:", options: ["Solo los que preparan alimentos", "Todos los empleados en turno", "Solo el gerente", "Quienes atienden en caja"], answer: "Todos los empleados en turno" },
-        
-        // Page 7: Product Hold Times (Grill)
-        { question: "¿Cuál es el tiempo de vida de la carne de hamburguesa una vez cocida?", options: ["30 minutos", "15 minutos", "60 minutos", "10 minutos"], answer: "15 minutos" },
-        { question: "¿Cuánto tiempo puede mantenerse el pollo (chicken strips) en la mantenedora?", options: ["45 minutos", "60 minutos", "30 minutos", "20 minutos"], answer: "30 minutos" },
-        { question: "¿Cuál es la vida en anaquel del pan de hamburguesa una vez abierto el paquete?", options: ["Hasta la fecha de caducidad", "24 horas", "3 días", "48 horas"], answer: "24 horas" },
-        { question: "Los vegetales preparados (lechuga, jitomate, cebolla) tienen una vida de anaquel de:", options: ["12 horas", "Fin de turno", "4 horas", "24 horas"], answer: "Fin de turno" },
-        { question: "El queso americano fuera de refrigeración dura:", options: ["8 horas", "4 horas", "Todo el día", "2 horas"], answer: "4 horas" },
-        
-        // Page 8: Product Hold Times (Fryer, Toppings)
-        { question: "Una vez cocidas, ¿cuál es el tiempo de vida de las papas a la francesa?", options: ["15 minutos", "5 minutos", "10 minutos", "7 minutos"], answer: "7 minutos" },
-        { question: "¿Cuál es la vida de anaquel de los aros de cebolla cocidos?", options: ["7 minutos", "10 minutos", "5 minutos", "15 minutos"], answer: "5 minutos" },
-        { question: "Las frutas en la mesa de toppings (fresa, piña, etc.) tienen una vida de:", options: ["24 horas", "4 horas", "8 horas", "12 horas"], answer: "4 horas" },
-        { question: "Los toppings secos (chispas, nuez, etc.) en la mesa de toppings duran:", options: ["Una semana", "24 horas", "48 horas", "Hasta que se acaben"], answer: "24 horas" },
-        { question: "El chocolate para cono (cone dip) en la olla tiene una vida útil de:", options: ["Fin de turno", "4 horas", "12 horas", "8 horas"], answer: "Fin de turno" },
-        
-        // Page 9: FIFO & Thawing
-        { question: "¿Qué significa el sistema PEPS (o FIFO en inglés)?", options: ["Producto Especial Para Servir", "Primero en Entrar, Primero en Salir", "Poner Encima Para Sacar", "Pedido Especial Para Supervisor"], answer: "Primero en Entrar, Primero en Salir" },
-        { question: "El propósito del sistema PEPS es:", options: ["Asegurar la rotación de producto y reducir merma", "Vender los productos más caros primero", "Facilitar el conteo de inventario", "Ordenar la bodega por tamaño"], answer: "Asegurar la rotación de producto y reducir merma" },
-        { question: "¿Cuál es el método correcto para descongelar la carne?", options: ["En el microondas", "Bajo el chorro de agua caliente", "En refrigeración", "A temperatura ambiente"], answer: "En refrigeración" },
-        { question: "¿Cuánto tiempo antes se debe sacar la carne para descongelar en refrigeración?", options: ["12 horas", "48 horas", "24 horas", "6 horas"], answer: "24 horas" },
-        { question: "El producto descongelado debe usarse dentro de un máximo de:", options: ["24 horas", "72 horas", "48 horas", "Una semana"], answer: "72 horas" },
-        
-        // Page 10: Sanitizer & Sinks
-        { question: "El sanitizante Kay-5 se prepara diluyendo un sobre en:", options: ["5 litros de agua", "20 litros de agua", "10 litros de agua", "1 litro de agua"], answer: "10 litros de agua" },
-        { question: "¿Para qué se usa la solución de Kay-5?", options: ["Para trapear el piso", "Para lavar y sanitizar utensilios y superficies", "Para lavarse las manos", "Para limpiar los baños"], answer: "Para lavar y sanitizar utensilios y superficies" },
-        { question: "¿Cuál es el primer compartimento de la tarja de 3 compartimentos?", options: ["Enjuague", "Sanitizado", "Secado", "Lavado con jabón y agua caliente"], answer: "Lavado con jabón y agua caliente" },
-        { question: "El segundo compartimento de la tarja de 3 se usa para:", options: ["Enjuagar con agua limpia", "Lavar con jabón", "Sanitizar", "Escurrir"], answer: "Enjuagar con agua limpia" },
-        { question: "En el tercer compartimento de la tarja de 3, los utensilios se sumergen en sanitizante por:", options: ["10 segundos", "2 minutos", "30 segundos", "60 segundos"], answer: "60 segundos" },
-        
-        // Page 11: Test Strips & Cleaning Tools
-        { question: "¿Cómo se deben secar los utensilios después de sanitizarlos?", options: ["Con un trapo seco", "Con una toalla de papel", "Al aire en un escurridor limpio", "Con una secadora de aire"], answer: "Al aire en un escurridor limpio" },
-        { question: "La concentración del sanitizante (Kay-5) debe ser de:", options: ["50-100 ppm", "200-300 ppm", "150-250 ppm", "300-400 ppm"], answer: "150-250 ppm" },
-        { question: "¿Para qué se utilizan las tiras reactivas?", options: ["Para medir la temperatura del agua", "Para verificar la concentración del sanitizante", "Para probar la calidad del aceite", "Para detectar bacterias en los alimentos"], answer: "Para verificar la concentración del sanitizante" },
-        { question: "Los trapos para limpiar superficies de preparación de alimentos deben mantenerse en:", options: ["Una cubeta con agua y jabón", "Una cubeta con solución sanitizante", "Secos sobre la mesa", "En el bolsillo del mandil"], answer: "Una cubeta con solución sanitizante" },
-        { question: "¿De qué color son los utensilios (pinzas, tablas) para productos de pollo CRUDO?", options: ["Rojo", "Verde", "Amarillo", "Azul"], answer: "Amarillo" },
-        
-        // Page 12: Cross-Contamination & Utensils
-        { question: "Los utensilios de color rojo se utilizan para:", options: ["Pollo cocido", "Carne cruda", "Vegetales", "Pescado"], answer: "Carne cruda" },
-        { question: "Para evitar la contaminación cruzada, ¿qué se debe hacer?", options: ["Lavar las manos frecuentemente", "Usar diferentes tablas y utensilios para crudos y cocidos", "Almacenar alimentos crudos debajo de los cocidos", "Todas las anteriores"], answer: "Todas las anteriores" },
-        { question: "Las tablas de cortar verdes son para:", options: ["Carnes", "Pescado", "Frutas y vegetales", "Pan"], answer: "Frutas y vegetales" },
-        { question: "Almacenar la carne cruda arriba de la lechuga en el refrigerador es un riesgo de:", options: ["Contaminación física", "Contaminación química", "Contaminación cruzada", "No es un riesgo"], answer: "Contaminación cruzada" },
-        { question: "La cantidad correcta de mezcla para un Blizzard de 12 oz es:", options: ["Hasta el borde", "5 oz", "Una pulgada bajo el borde", "3/4 del vaso"], answer: "5 oz" },
-        
-        // Page 13: Guest Service Cycle
-        { question: "¿Cuál es el primer paso en el Ciclo de Servicio al Cliente?", options: ["Tomar la orden", "Una cálida y sincera bienvenida", "Entregar el producto", "Recibir el pago"], answer: "Una cálida y sincera bienvenida" },
-        { question: "Al tomar la orden, se debe:", options: ["Apresurar al cliente", "Escuchar atentamente y sugerir productos", "No hacer contacto visual", "Interrumpir para hacer preguntas"], answer: "Escuchar atentamente y sugerir productos" },
-        { question: "El tercer paso del Ciclo de Servicio es:", options: ["Ensamblar la orden", "Agradecer al cliente", "Limpiar la mesa", "Invitar al cliente a regresar"], answer: "Ensamblar la orden" },
-        { question: "¿Qué se debe hacer al entregar la orden?", options: ["Entregarla con una sonrisa y verificar que esté completa", "Solo colocarla en el mostrador", "Gritar el número de la orden", "Preguntar si quieren algo más"], answer: "Entregarla con una sonrisa y verificar que esté completa" },
-        { question: "El último paso del ciclo de servicio es:", options: ["Cobrar", "Limpiar el lobby", "Una sincera despedida y agradecimiento", "Surtir el área de condimentos"], answer: "Una sincera despedida y agradecimiento" },
-        
-        // Page 14: BLAST & Drive-Thru
-        { question: "El acrónimo BLAST para la recuperación de clientes significa:", options: ["Believe, Listen, Apologize, Satisfy, Thank", "Buy, Leave, Apologize, Say, Thanks", "Be fast, Look nice, Act professional, Smile, Thank", "Believe, Look, Act, Smile, Treat"], answer: "Believe, Listen, Apologize, Satisfy, Thank" },
-        { question: "En BLAST, 'Listen' (Escuchar) significa:", options: ["Interrumpir para dar soluciones", "Dejar que el cliente se desahogue sin interrupciones", "Tomar notas de lo que dice", "Juzgar si la queja es válida"], answer: "Dejar que el cliente se desahogue sin interrupciones" },
-        { question: "En el paso 'Satisfy' (Satisfacer) de BLAST, ¿qué se debe hacer?", options: ["Darle la razón al cliente siempre", "Ofrecer una solución razonable al problema", "Decirle que no se puede hacer nada", "Llamar al gerente inmediatamente"], answer: "Ofrecer una solución razonable al problema" },
-        { question: "La meta de tiempo total en el Drive-Thru (desde la bocina hasta la salida) es:", options: ["5 minutos", "3 minutos", "2 minutos 30 segundos", "4 minutos"], answer: "2 minutos 30 segundos" },
-        { question: "¿Cuál es la prioridad número uno en la operación de la tienda?", options: ["La limpieza", "El inventario", "El Drive-Thru", "Las ventas de pasteles"], answer: "El Drive-Thru" },
-        
-        // Page 15: Drive-Thru Speed & Cake Sales
-        { question: "Para agilizar el servicio en Drive-Thru, se recomienda:", options: ["Tener un solo empleado atendiendo", "Usar frases cortas y claras", "No ofrecer postres", "Esperar a que el cliente pregunte todo"], answer: "Usar frases cortas y claras" },
-        { question: "El empleado que toma la orden en Drive-Thru debe usar:", options: ["Un tono de voz monótono", "Un tono de voz sonriente y entusiasta", "Un volumen muy alto", "Palabras muy técnicas"], answer: "Un tono de voz sonriente y entusiasta" },
-        { question: "¿Qué se debe hacer si un pedido en Drive-Thru va a tardar?", options: ["Pedirle al cliente que espere en la ventana", "Cancelar el pedido", "Pedirle amablemente que se estacione en un lugar designado", "Apresurar la cocina sacrificando la calidad"], answer: "Pedirle amablemente que se estacione en un lugar designado" },
-        { question: "¿Cómo se debe promover la venta de pasteles?", options: ["Mencionándolos a cada cliente", "Teniendo la exhibición limpia, llena y atractiva", "Poniendo un letrero afuera", "Todas las anteriores"], answer: "Todas las anteriores" },
-        { question: "Al entregar un pastel, ¿qué se debe hacer?", options: ["Solo meterlo en una bolsa", "Abrir la caja y mostrárselo al cliente para su aprobación", "Decirle el precio de nuevo", "Pedirle que lo revise en su casa"], answer: "Abrir la caja y mostrárselo al cliente para su aprobación" },
-        
-        // Page 16: Blizzard Preparation
-        { question: "¿Cuál es el estándar de calidad que debe cumplir cada Blizzard?", options: ["Debe ser servido con una cuchara larga", "Debe ser volteado sin que se derrame", "Debe tener un domo de crema batida", "Debe llevar chispas de chocolate"], answer: "Debe ser volteado sin que se derrame" },
-        { question: "¿A qué velocidad se debe mezclar un Blizzard?", options: ["A la más alta por 10 segundos", "A la más baja por 1 minuto", "Cerca de 100 RPM", "Depende del ingrediente"], answer: "Cerca de 100 RPM" },
-        { question: "Si un Blizzard no pasa la prueba de ser volteado, ¿qué se debe hacer?", options: ["Servirlo de todas formas", "Volverlo a mezclar", "Añadir más mezcla", "Desecharlo y hacerlo de nuevo"], answer: "Desecharlo y hacerlo de nuevo" },
-        { question: "El husillo (spindle) de la máquina de Blizzard debe ser:", options: ["Enjuagado con agua después de cada uso", "Limpiado con un trapo", "Sanitizado cada 4 horas", "Lavado solo al final del día"], answer: "Enjuagado con agua después de cada uso" },
-        { question: "Para un Blizzard, los ingredientes (toppings) se añaden:", options: ["Después de mezclar la nieve", "Antes de poner la nieve en el vaso", "Después de poner la nieve y antes de mezclar", "Al final como decoración"], answer: "Después de poner la nieve y antes de mezclar" },
-        
-        // Page 17: Cones & Sundaes
-        { question: "¿Cuál es la característica principal de un cono de nieve DQ?", options: ["El 'rizo' o 'copete' en la punta", "El tamaño del cono", "La temperatura de la nieve", "El color de la nieve"], answer: "El 'rizo' o 'copete' en la punta" },
-        { question: "El peso estándar para un cono mediano es de:", options: ["3 oz", "7 oz", "5 oz", "9 oz"], answer: "5 oz" },
-        { question: "Al preparar un cono cubierto de chocolate (dipped cone), la nieve debe estar:", options: ["Sumergida por completo hasta el barquillo", "Cubierta solo en la punta", "Sumergida por 10 segundos", "Parcialmente cubierta"], answer: "Sumergida por completo hasta el barquillo" },
-        { question: "¿Cómo se debe servir un sundae?", options: ["La nieve debe tocar los lados del vaso", "Con el topping cubriendo toda la superficie de la nieve", "Con una bola de nieve en el centro", "Todas las anteriores"], answer: "Con una bola de nieve en el centro" },
-        { question: "La cantidad de topping para un sundae mediano es de:", options: ["3 oz", "1 oz", "2 oz", "Depende del sabor"], answer: "2 oz" },
-        
-        // Page 18: Royal Treats & Shakes
-        { question: "¿Qué distingue a un 'Royal Treat'?", options: ["Lleva un ingrediente especial en el centro", "Es más grande que un sundae", "Solo se vende en ciertas temporadas", "Viene en una copa especial"], answer: "Lleva un ingrediente especial en el centro" },
-        { question: "En un Royal Rocky Road Brownie, el centro se rellena con:", options: ["Caramelo", "Malvaviscos", "Chocolate", "Fresas"], answer: "Malvaviscos" },
-        { question: "Para preparar una malteada (shake), ¿qué ingredientes se usan?", options: ["Nieve, leche y saborizante", "Hielo, leche y fruta", "Yogurt, nieve y saborizante", "Nieve y jugo"], answer: "Nieve, leche y saborizante" },
-        { question: "Una malteada bien preparada debe ser:", options: ["Tan espesa que no suba por el popote", "Lo suficientemente espesa para ser bebida con popote", "Líquida y ligera", "Caliente"], answer: "Lo suficientemente espesa para ser bebida con popote" },
-        { question: "Los vasos y tapas de malteadas deben estar:", options: ["Almacenados cerca de la máquina", "Limpios y sanitizados", "Fríos", "A temperatura ambiente"], answer: "Limpios y sanitizados" },
-        
-        // Page 19: Waffles & Topping Cabinet
-        { question: "¿Cómo debe ser servido un Waffle Bowl Sundae?", options: ["El waffle debe estar frío", "El waffle debe estar tibio y crujiente", "El waffle debe estar remojado en la nieve", "El waffle se sirve por separado"], answer: "El waffle debe estar tibio y crujiente" },
-        { question: "La temperatura de la wafflera debe estar en un rango que permita:", options: ["Cocinar el waffle en 5 minutos", "Dorar el waffle sin quemarlo", "Mantener los waffles calientes todo el día", "Cocinarlo lentamente"], answer: "Dorar el waffle sin quemarlo" },
-        { question: "El gabinete de toppings (Topping Cabinet) debe mantenerse a una temperatura de:", options: ["Congelación", "Ambiente", "Caliente (arriba de 60°C)", "Refrigeración (debajo de 5°C)"], answer: "Refrigeración (debajo de 5°C)" },
-        { question: "Las bombas y cucharones de los toppings deben:", options: ["Dejarse dentro de los contenedores", "Lavarse y sanitizarse al menos cada 4 horas", "Limpiarse con un trapo húmedo", "Enjuagarse solo con agua"], answer: "Lavarse y sanitizarse al menos cada 4 horas" },
-        { question: "Si un topping se contamina con otro, ¿qué se debe hacer?", options: ["Mezclarlos", "Retirar la parte contaminada", "Desechar todo el contenedor del topping contaminado", "Servirlo así"], answer: "Desechar todo el contenedor del topping contaminado" },
-        
-        // Page 20: Chill & Grill Standards
-        { question: "La temperatura de la máquina de nieve (soft serve) debe ser de:", options: ["-10°C a -8°C", "-5°C a -4°C", "0°C", "1°C a 3°C"], answer: "-5°C a -4°C" },
-        { question: "El 'overrun' en la nieve se refiere a:", options: ["La cantidad de mezcla que se desperdicia", "La cantidad de aire incorporado en la mezcla", "La velocidad a la que sale la nieve", "La temperatura final del producto"], answer: "La cantidad de aire incorporado en la mezcla" },
-        { question: "La plancha (grill) debe limpiarse:", options: ["Solo al final del día", "Cada 4 horas", "Después de cada uso o cuando sea necesario", "Una vez por semana"], answer: "Después de cada uso o cuando sea necesario" },
-        { question: "La temperatura del aceite de la freidora debe ser de aproximadamente:", options: ["150°C", "200°C", "177°C", "165°C"], answer: "177°C" },
-        { question: "El aceite de la freidora debe ser filtrado:", options: ["Una vez a la semana", "Nunca", "Diariamente", "Cada mes"], answer: "Diariamente" },
-        
-        // Page 21: Machine Cleaning
-        { question: "¿Con qué frecuencia se debe realizar el lavado completo de la máquina de nieve?", options: ["Diariamente", "Cada 3 días", "Semanalmente", "Cuando falle"], answer: "Diariamente" },
-        { question: "Para lavar la máquina de nieve por la noche, se pasa una solución de:", options: ["Agua con jabón", "Agua caliente solamente", "10L de agua con un sobre de sanitizer KAY-5®", "Vinagre y agua"], answer: "10L de agua con un sobre de sanitizer KAY-5®" },
-        { question: "Por la mañana, antes de armar la máquina de nieve, ¿qué se hace con las piezas?", options: ["Se secan con un trapo", "Se enjuagan y se arman", "Se lavan, sanitizan y se dejan listas", "Se lubrican con aceite vegetal"], answer: "Se lavan, sanitizan y se dejan listas" },
-        { question: "Después de pasar el sanitizer por la máquina de nieve en la mañana, ¿qué se debe hacer?", options: ["Empezar a servir a los clientes", "Desechar la primera nieve que sale", "Enjuagarla con agua de la llave", "Esperar 30 minutos"], answer: "Desechar la primera nieve que sale" },
-        { question: "El procedimiento de limpieza de la máquina de slush es:", options: ["Igual que la de nieve", "Similar al de la máquina de nieve, siguiendo sus especificaciones", "Solo se enjuaga con agua", "Se limpia solo por fuera"], answer: "Similar al de la máquina de nieve, siguiendo sus especificaciones" },
-        
-        // Page 22: Troubleshooting
-        { question: "Si una máquina no enciende, ¿cuál es el primer paso a verificar?", options: ["Llamar a un técnico", "Que no haya otras máquinas en enchufes incorrectos", "Presionar el botón de RESET", "Revisar el manual de la máquina"], answer: "Que no haya otras máquinas en enchufes incorrectos" },
-        { question: "El segundo paso si una máquina no funciona es:", options: ["Golpearla suavemente", "Desconectarla y volverla a conectar", "Revisar los térmicos (breakers)", "Verificar el nivel de aceite"], answer: "Revisar los térmicos (breakers)" },
-        { question: "Si la máquina tiene un botón de RESET y no funciona, ¿qué se debe hacer?", options: ["Presionarlo repetidamente", "Presionarlo una vez y verificar si se solucionó", "No tocarlo, es peligroso", "Desarmar la máquina"], answer: "Presionarlo una vez y verificar si se solucionó" },
-        { question: "Si después de los 3 pasos básicos la máquina sigue sin funcionar, se debe:", options: ["Intentar arreglarla uno mismo", "Dejarla apagada todo el día", "Llamar al gerente o al técnico autorizado", "Pedir una máquina nueva"], answer: "Llamar al gerente o al técnico autorizado" },
-        { question: "Es importante NO conectar máquinas en enchufes que:", options: ["Estén en la pared", "No les corresponden", "Sean de color rojo", "Estén cerca del agua"], answer: "No les corresponden" }
+        // 4. Reglas de Etiqueta en el Mostrador
+        { question: "¿Qué abarcan las reglas de etiqueta en el mostrador?", options: ["Solo la preparación de productos", "Únicamente el manejo de la caja registradora", "Todos los aspectos del contacto que tienen los empleados con los clientes", "Exclusivamente la limpieza de la tienda"], answer: "Todos los aspectos del contacto que tienen los empleados con los clientes" },
+        { question: "Según el manual, ¿en qué se fija mucho el cliente respecto a los empleados?", options: ["En la velocidad de servicio", "En el conocimiento del menú", "En cómo se ven (apariencia personal)", "En el precio de los productos"], answer: "En cómo se ven (apariencia personal)" },
+        { question: "¿Cuáles son los tres puntos indispensables y obligatorios en la atención del cliente?", options: ["Venta sugestiva, rapidez y eficiencia", "Escucha, soluciones y reporte", "Saludo, agradecimiento y despedida", "Apariencia, actitud y profesionalismo"], answer: "Saludo, agradecimiento y despedida" },
+        { question: "¿Qué se debe hacer al saludar a un cliente?", options: ["Esperar a que el cliente hable primero", "Solo sonreír", "Sonreír y saludarlo amablemente tú primero, sin importar lo que estés haciendo", "Preguntarle directamente qué quiere ordenar"], answer: "Sonreír y saludarlo amablemente tú primero, sin importar lo que estés haciendo" },
+        { question: "Si conoces el nombre de un cliente regular, ¿qué se recomienda hacer?", options: ["Evitar usar su nombre para no ser demasiado familiar", "Solo saludarlo con un 'hola'", "Utilizar su nombre para ser amigable", "Preguntarle cómo ha estado"], answer: "Utilizar su nombre para ser amigable" },
+        { question: "¿Por qué se debe agradecer al cliente su visita?", options: ["Para que compre más productos", "Para cumplir con una política interna", "Porque nos elige de entre tantas opciones en el mercado", "Para obtener una mejor calificación en PRIDE"], answer: "Porque nos elige de entre tantas opciones en el mercado" },
+        { question: "¿Cuál de estas frases es un ejemplo de agradecimiento al cliente?", options: ["'¿Qué desea?'", "'Su orden ya casi está lista.'", "'Hola buen días, gracias por su visita, ¿en qué le puedo ayudar?'", "'Ya puede pasar a recoger su orden.'"], answer: "'Hola buen días, gracias por su visita, ¿en qué le puedo ayudar?'" },
+        { question: "¿Qué se busca al seguir los tres pasos de 'saludar, agradecer y despedir'?", options: ["Disminuir el tiempo de espera del cliente", "Aumentar las ventas de productos específicos", "La 'satisfacción total' del cliente", "Que el cliente se registre en el programa de lealtad"], answer: "La 'satisfacción total' del cliente" },
+        { question: "Según el manual, ¿quién es el verdadero jefe?", options: ["El gerente de la tienda", "El supervisor", "El cliente", "El dueño de la franquicia"], answer: "El cliente" },
+        { question: "En cuanto a la actitud y disponibilidad, ¿cómo deben ser los empleados?", options: ["Relajados y esperando instrucciones", "Rápidos, pero sin interacción", "Amables, corteses y prontos a servir, esforzándose al máximo", "Solo enfocados en su tarea específica"], answer: "Amables, corteses y prontos a servir, esforzándose al máximo" },
+        { question: "¿Qué impresión da un empleado que siempre está ocupado, incluso si no hay clientes?", options: ["Que hay escasez de personal", "Que está muy estresado", "Una impresión más profesional", "Que no tiene nada que hacer"], answer: "Una impresión más profesional" },
+        { question: "¿Qué es considerado lo peor para la imagen de la empresa, según el manual?", options: ["Que un cliente se queje del precio", "Que los productos no se preparen a tiempo", "Que los empleados detrás del mostrador estén sin hacer nada o platicando entre ellos", "Que la tienda no esté completamente llena de clientes"], answer: "Que los empleados detrás del mostrador estén sin hacer nada o platicando entre ellos" },
+        { question: "Si un cliente llega mientras un empleado está realizando otra actividad, ¿cuál debe ser la prioridad?", options: ["Terminar la actividad actual antes de atender al cliente", "Pedir al cliente que espere un momento", "Atender al cliente inmediatamente", "Ignorar al cliente hasta que haya terminado"], answer: "Atender al cliente inmediatamente" },
+        { question: "¿Cuál es un aspecto importante de la apariencia personal de los empleados?", options: ["Usar joyas llamativas.", "Llevar ropa informal y cómoda.", "Estar bien aseado y peinado, con el uniforme listo y vestido de manera adecuada.", "Usar cualquier tipo de calzado."], answer: "Estar bien aseado y peinado, con el uniforme listo y vestido de manera adecuada." },
+        { question: "La 'satisfacción total' del cliente se dispara positivamente si el empleado realiza los pasos de:", options: ["Venta sugestiva, cobro y entrega.", "Saludo, agradecimiento y despedida.", "Limpieza, preparación y profesionalismo.", "Escucha, solución y reporte."], answer: "Saludo, agradecimiento y despedida." },
+
+        // 5. Venta Sugestiva
+        { question: "¿Cuál es el objetivo general de la venta sugestiva?", options: ["Reducir los costos de producción", "Hacer esfuerzos para tener clientes contentos que nos visiten y compren más seguido", "Solamente limpiar la tienda", "Exclusivamente mejorar la apariencia del producto"], answer: "Hacer esfuerzos para tener clientes contentos que nos visiten y compren más seguido" },
+        { question: "¿Qué elementos incluye la venta sugestiva además de las acciones del cajero?", options: ["Solo la ubicación de la sucursal", "Únicamente la calidad de los productos", "Imagen de la tienda, trato amable, ubicación, mantenimiento del edificio y calidad de productos", "Promociones y descuentos especiales"], answer: "Imagen de la tienda, trato amable, ubicación, mantenimiento del edificio y calidad de productos" },
+        { question: "Según el manual, ¿qué papel desempeña el cajero en la venta sugestiva?", options: ["Un simple tomador de órdenes", "Un vendedor que busca la satisfacción del cliente y buenas ventas", "Un asistente de limpieza", "Un supervisor de área"], answer: "Un vendedor que busca la satisfacción del cliente y buenas ventas" },
+        { question: "¿Qué habilidad debe desarrollar un cajero para la venta sugestiva?", options: ["La capacidad de memorizar precios", "Conocer bien los productos para describirlos y prepararlos correctamente", "Ser rápido en el cobro", "Minimizar la interacción con el cliente"], answer: "Conocer bien los productos para describirlos y prepararlos correctamente" },
+        { question: "¿Qué se debe evitar al tener contacto visual con el cliente?", options: ["Sonreír", "Mantener una buena postura", "Recargarse en el mostrador", "Verlo a los ojos"], answer: "Recargarse en el mostrador" },
+        { question: "¿Qué es la 'venta hacia arriba'?", options: ["Vender solo los productos más caros", "Esfuerzos para que el cliente compre más y más seguido", "Promocionar productos de temporada", "Ofrecer productos solo a clientes regulares"], answer: "Esfuerzos para que el cliente compre más y más seguido" },
+        { question: "Al tomar una orden, ¿qué se debe tomar en cuenta con respecto a la creencia en el producto?", options: ["Que el producto es el más barato del mercado", "Creer en la calidad y sabor del producto que se está vendiendo", "No es necesario creer en el producto", "Solo vender lo que el cliente ya conoce"], answer: "Creer en la calidad y sabor del producto que se está vendiendo" },
+        { question: "Si un cliente pide una sugerencia, ¿qué debe hacer el empleado?", options: ["Decirle que no puede dar sugerencias", "Referirlo a un compañero", "No tener miedo en darla", "Solo dar opciones muy básicas"], answer: "No tener miedo en darla" },
+        { question: "¿Cómo se debe describir los productos en la tienda?", options: ["De manera breve y directa", "Solo mencionando los ingredientes", "De una manera que se antoje y prepararlos lo más bonitos posibles", "Comparándolos con productos de la competencia"], answer: "De una manera que se antoje y prepararlos lo más bonitos posibles" },
+        { question: "Al ofrecer productos de diferentes tamaños, ¿cuál se debe mencionar primero?", options: ["El tamaño más pequeño", "El tamaño mediano", "El tamaño más grande", "El tamaño que el cliente prefiera"], answer: "El tamaño más grande" },
+        { question: "¿Por qué se sugiere ofrecer los productos más grandes primero?", options: ["Porque son los más fáciles de preparar", "Para agilizar el servicio", "Porque salen más baratos onza por onza y el cliente se beneficia", "Porque son los que tienen más margen de ganancia"], answer: "Porque salen más baratos onza por onza y el cliente se beneficia" },
+        { question: "¿Cuál es el producto más distintivo de Dairy Queen®?", options: ["Los sundaes", "Los conos", "El Blizzard®", "La Dilly® bar"], answer: "El Blizzard®" },
+        { question: "Si un cliente no conoce los productos, ¿por dónde se recomienda empezar a ofrecer?", options: ["Con los conos y Dilly® bar", "Con las bebidas de Café", "Ofreciendo el Blizzard® y enfatizando lo rico y popular", "Con los Royal Treats®"], answer: "Ofreciendo el Blizzard® y enfatizando lo rico y popular" },
+        { question: "¿Qué se debe evitar al ofrecer productos a un cliente que nunca ha visitado un Dairy Queen®?", options: ["Explicar los productos", "Dar demasiadas opciones al mismo tiempo, que sea revoltoso y confuso", "Ayudar al cliente a decidir", "Mencionar solo un par de productos"], answer: "Dar demasiadas opciones al mismo tiempo, que sea revoltoso y confuso" },
+        { question: "¿Qué se debe ofrecer siempre como un extra topping?", options: ["Un vaso adicional", "Un extra topping en el producto, como nueces en un Sundae o chocolate en un cono", "Otro producto diferente", "Una servilleta extra"], answer: "Un extra topping en el producto, como nueces en un Sundae o chocolate en un cono" },
+        { question: "Al terminar de repetir la orden del cliente, ¿qué frase se debe usar para dejar la puerta abierta a más compras?", options: ["'Eso es todo, ¿verdad?'", "'Su total es...'", "'¿Le gustaría algo más?'", "'Pase a la siguiente caja.'"], answer: "'¿Le gustaría algo más?'" },
+        { question: "¿Qué se debe hacer con el link de la encuesta DQ®platícanos al entregar el ticket?", options: ["Ignorarlo, no es importante.", "Solo mencionarlo de pasada.", "Subrayarlo con plumón amarillo e invitar al cliente a contestarla.", "Romper el ticket después de que el cliente pague."], answer: "Subrayarlo con plumón amarillo e invitar al cliente a contestarla." },
+        { question: "¿Cuál de las siguientes acciones NO es parte de la venta sugestiva?", options: ["Mantener la tienda limpia y bonita.", "Ocultar los precios de los productos.", "Describir los productos de manera que se antojen.", "Ofrecer el tamaño más grande primero."], answer: "Ocultar los precios de los productos." },
+        { question: "El manual indica que 'mientras más bonitos se ven más buenos saben.' ¿A qué se refiere esto?", options: ["Que la presentación no afecta el sabor, pero sí la percepción.", "Que solo se deben vender productos visualmente atractivos.", "Que una presentación atractiva mejora la percepción de calidad y sabor del producto.", "Que la belleza del producto es lo único importante."], answer: "Que una presentación atractiva mejora la percepción de calidad y sabor del producto." },
+        { question: "Al ofrecer un extra topping, ¿qué ejemplo se da para un cono?", options: ["'¿Le gustaría con chispas de chocolate?'", "'¿Le gustaría cubierto de chocolate?'", "'¿Le gustaría con más nieve?'", "'¿Le gustaría con una cereza?'"], answer: "'¿Le gustaría cubierto de chocolate?'" },
+
+        // 6. Operación de la Caja Registradora
+        { question: "¿Qué se debe hacer después de que el cliente termina de ordenar?", options: ["Cobrar inmediatamente", "Empezar a preparar la orden", "Repetir la orden para que el cliente confirme", "Preguntarle si quiere algo más"], answer: "Repetir la orden para que el cliente confirme" },
+        { question: "¿Cómo debe decir el cajero el total de la cuenta y lo que recibe del cliente?", options: ["Anotarlo en un papel", "En silencio", "En voz alta", "Solo mostrándole el total en la pantalla"], answer: "En voz alta" },
+        { question: "¿Cuántas veces se debe contar el dinero para la feria (cambio)?", options: ["Una vez por el cajero", "Dos veces por el cajero", "Tres veces (dos por el cajero, una por el cliente)", "Solo una vez en voz alta por el cajero"], answer: "Tres veces (dos por el cajero, una por el cliente)" },
+        { question: "¿Cuál es el primer paso al tomar una orden en la caja registradora?", options: ["Preguntar el nombre del cliente", "Saludar primero", "Decir el total", "Pedir el tipo de pago"], answer: "Saludar primero" },
+        { question: "En el procedimiento de fin de semana, ¿qué se debe hacer al cobrar la orden?", options: ["Solo decir el total", "Preguntar a nombre de quién quedará la orden y si se puede quedar con el ticket", "Entregar el ticket al cliente de inmediato", "Esperar a que el cliente pague"], answer: "Preguntar a nombre de quién quedará la orden y si se puede quedar con el ticket" },
+        { question: "Si no hay clientes esperando a ser atendidos después de tomar una orden, ¿qué debe hacer el cajero?", options: ["Tomar un descanso", "Ayudar a preparar o entregar producto, previamente lavando y desinfectando sus manos", "Limpiar el mostrador", "Revisar el inventario"], answer: "Ayudar a preparar o entregar producto, previamente lavando y desinfectando sus manos" },
+        { question: "Si una orden va a tomar mucho tiempo, ¿qué se le debe indicar al cliente?", options: ["Que la orden no se puede hacer", "El tiempo estimado y si gusta, que tome asiento", "Que espere de pie", "Que vuelva más tarde"], answer: "El tiempo estimado y si gusta, que tome asiento" },
+        { question: "Cuando hay mucha gente, como los sábados y domingos, ¿qué se debe evitar que hagan los clientes en el comedor?", options: ["Que pidan muchos productos", "Que hagan preguntas", "Que se vayan a sentar y pedirles que esperen a un lado", "Que usen sus teléfonos"], answer: "Que se vayan a sentar y pedirles que esperen a un lado" },
+        { question: "Si la fila en el comedor es de más de tres clientes distintos, ¿cuántas cajas registradoras deben estar abiertas?", options: ["Una", "Dos", "Tres", "Cuatro"], answer: "Dos" },
+        { question: "En el drive-thru, ¿qué se debe preguntar al cliente aparte de cuánto es el total, si hay mucha gente?", options: ["Si quiere factura", "Si es cliente frecuente", "Con cuánto va a pagar (efectivo o tarjeta)", "Si tiene algún cupón"], answer: "Con cuánto va a pagar (efectivo o tarjeta)" },
+        { question: "En fines de semana, ¿a quién se le pasa el ticket con el nombre del cliente para la orden?", options: ["Al gerente", "Al supervisor", "Al entregador", "Al personal de cocina"], answer: "Al entregador" },
+        { question: "¿Qué precaución se debe tomar con los tickets de órdenes si se toman varias seguidas?", options: ["Tirar los tickets de las órdenes ya entregadas.", "Entregar cada ticket al cliente inmediatamente.", "Acomodar los tickets uno debajo del anterior para no confundir las órdenes.", "Guardar todos los tickets en un cajón."], answer: "Acomodar los tickets uno debajo del anterior para no confundir las órdenes." },
+        { question: "¿Qué se debe hacer antes de ayudar a preparar o entregar producto si no hay clientes esperando?", options: ["Pedir permiso al supervisor.", "Lavar y desinfectar las manos.", "Tomar un breve descanso.", "Revisar el correo electrónico."], answer: "Lavar y desinfectar las manos." },
+        { question: "En el drive-thru, una vez que el cliente indica su forma de pago, ¿qué se le pide amablemente?", options: ["Que espere su orden en la fila.", "'Gracias, si gusta pasar a ventanilla.'", "Que espere a que se le entregue el recibo.", "Que verifique el total en su aplicación."], answer: "'Gracias, si gusta pasar a ventanilla.'" },
+        { question: "El objetivo de contar el dinero de la feria tres veces es:", options: ["Para practicar las habilidades matemáticas.", "Asegurar la precisión del cambio y evitar errores.", "Para que el cliente no pueda reclamar después.", "Para alargar el tiempo de espera del cliente."], answer: "Asegurar la precisión del cambio y evitar errores." },
+
+        // 7. Problemas con los Clientes
+        { question: "Si una queja de un cliente no es sencilla, ¿qué es lo mejor que se puede hacer?", options: ["Intentar resolverla a toda costa uno mismo", "Ignorarla y esperar que el cliente se vaya", "Acudir inmediatamente al supervisor", "Darle un producto gratis para compensar"], answer: "Acudir inmediatamente al supervisor" },
+        { question: "¿Quién debería ser capaz de resolver una queja, idealmente?", options: ["Solo el gerente", "Solo el supervisor", "Quien recibe la queja", "Cualquier empleado"], answer: "Quien recibe la queja" },
+        { question: "¿Cuál es el primer paso para resolver una queja de un cliente?", options: ["Ofrecer una solución", "Escuchar la queja", "Preséntate respetuosamente", "Agradecer la queja"], answer: "Preséntate respetuosamente" },
+        { question: "Cuando el cliente está expresando su queja, ¿qué se debe evitar hacer?", options: ["Mantener contacto visual", "Asentir", "Interrumpir", "Tomar notas"], answer: "Interrumpir" },
+        { question: "Al ofrecer una solución al cliente, ¿qué se debe evitar dar?", options: ["Una alternativa al producto", "Una compensación", "Excusas", "Un descuento"], answer: "Excusas" },
+        { question: "¿Qué se debe hacer después de ofrecer una solución al cliente por su queja?", options: ["Pedirle que se retire", "Preguntarle si está satisfecho", "Agradecer al cliente por su queja", "Llamar a seguridad"], answer: "Agradecer al cliente por su queja" },
+        { question: "¿A quién se debe reportar el incidente después de resolver una queja?", options: ["A ningún lado, si ya se resolvió", "Al equipo de marketing", "Al gerente", "Al cliente por escrito"], answer: "Al gerente" },
+        { question: "¿Cuál de las siguientes es una acción incorrecta al manejar una queja?", options: ["Escuchar atentamente.", "Ofrecer una solución.", "Agradecer la queja.", "Justificar el problema con excusas."], answer: "Justificar el problema con excusas." },
+        { question: "¿Por qué es importante reportar el incidente al gerente, incluso después de resolver una queja?", options: ["Para que el gerente pueda castigar al empleado responsable.", "Para que la gerencia esté al tanto y pueda identificar patrones o áreas de mejora.", "Para que el cliente reciba un seguimiento adicional.", "Es un paso opcional si la queja fue menor."], answer: "Para que la gerencia esté al tanto y pueda identificar patrones o áreas de mejora." },
+        { question: "El respeto es fundamental al presentarse ante un cliente con una queja para:", options: ["Demostrar autoridad.", "Establecer un tono positivo y profesional para la resolución.", "Intimidar al cliente.", "Cumplir con un protocolo sin más."], answer: "Establecer un tono positivo y profesional para la resolución." },
+
+        // 8. La Nieve de Dairy Queen®, Overrun y Temperatura
+        { question: "¿Qué tipo de producto es la nieve de Dairy Queen®?", options: ["Un producto lácteo completamente congelado", "Un helado duro", "Un producto lácteo semi congelado", "Un sorbete"], answer: "Un producto lácteo semi congelado" },
+        { question: "¿Qué ingredientes principales contiene la mezcla de la nieve de Dairy Queen®?", options: ["Agua, frutas y saborizantes", "Solo leche y azúcar", "Leche, crema, azúcar, jarabe de maíz, estabilizador, emulsificador y saborizantes", "Hielo, sal y jarabe"], answer: "Leche, crema, azúcar, jarabe de maíz, estabilizador, emulsificador y saborizantes" },
+        { question: "En comparación con las nieves duras normales, ¿qué porcentaje menos de calorías tiene la nieve de Dairy Queen®?", options: ["10%", "20%", "30%", "50%"], answer: "30%" },
+        { question: "¿Qué porcentaje menos de grasa tiene la nieve de Dairy Queen® en comparación con las nieves duras normales?", options: ["10%", "20%", "30%", "50%"], answer: "50%" },
+        { question: "¿Es la nieve de Dairy Queen® un producto Light?", options: ["Sí, totalmente", "Solo en algunos sabores", "No, pero es reducida en grasa y baja en calorías", "Es un producto bajo en carbohidratos"], answer: "No, pero es reducida en grasa y baja en calorías" },
+        { question: "¿Qué es el Overrun?", options: ["La cantidad de azúcar en la mezcla", "La cantidad de aire incorporado a la mezcla durante el proceso de congelamiento", "La temperatura de la nieve", "El tiempo de congelación de la mezcla"], answer: "La cantidad de aire incorporado a la mezcla durante el proceso de congelamiento" },
+        { question: "¿Qué porcentaje de aire debe tener la nieve de Dairy Queen®?", options: ["20%", "40%", "50%", "100%"], answer: "40%" },
+        { question: "Si 1 litro de mezcla produce 1.4 litros de nieve, ¿qué porcentaje de aire tiene?", options: ["20%", "40%", "50%", "100%"], answer: "40%" },
+        { question: "¿Qué característica presenta la nieve si el overrun sube de 40%?", options: ["Apariencia granulada", "Textura chiclosa", "Apariencia bofa y textura como de bombón", "Nieve pesada"], answer: "Apariencia bofa y textura como de bombón" },
+        { question: "Si el overrun baja de 40%, ¿cómo se verá la nieve?", options: ["Con marquitas de burbujas", "Apariencia granulada, brillante o húmeda, y textura chiclosa", "No se podrá hacer el curl", "Poco sabor a vainilla"], answer: "Apariencia granulada, brillante o húmeda, y textura chiclosa" },
+        { question: "¿Con qué frecuencia deben ser monitoreados el overrun y las temperaturas?", options: ["Semanalmente", "Mensualmente", "A diario", "Cada 30 minutos"], answer: "A diario" },
+        { question: "¿Dónde se deben anotar el overrun y las temperaturas monitoreados?", options: ["En una hoja de control diaria", "En una aplicación móvil", "En el libro rojo", "En el pizarrón de la cocina"], answer: "En el libro rojo" },
+        { question: "¿Cada cuánto tiempo se debe medir el overrun entre las 12:00 y las 6:00 pm?", options: ["Cada hora", "Cada dos horas", "Cada tres horas", "Cada cuatro horas"], answer: "Cada dos horas" },
+        { question: "¿Cuándo es preferible medir el overrun?", options: ["Al inicio del día", "Al final del día", "Cuando hay movimiento (uso continuo de la máquina)", "Después de 30 minutos sin uso de la máquina"], answer: "Cuando hay movimiento (uso continuo de la máquina)" },
+        { question: "¿Cuánto tiempo puede durar la mezcla congelada en el walk in freezer?", options: ["14 días", "30 días", "6 meses", "Un año a -18°C"], answer: "Un año a -18°C" },
+        { question: "¿Cuál es la temperatura ideal para la mezcla refrigerada en el walk in cooler?", options: ["-18°C", "Entre 0°C a 4°C", "10°C a 15°C", "40°C"], answer: "Entre 0°C a 4°C" },
+        { question: "¿Cuál debe ser la temperatura de la nieve al momento de salir de la máquina?", options: ["-5°C", "-10°C", "-7.8°C", "0°C"], answer: "-7.8°C" },
+        { question: "Antes de tomar la temperatura de la mezcla, ¿qué se debe hacer con el galón?", options: ["Calentarlo un poco", "Agitarlo y probar la mezcla del tapón", "Dejarlo reposar", "Vaciarlo en otro contenedor"], answer: "Agitarlo y probar la mezcla del tapón" },
+        { question: "¿Por qué la nieve tiene apariencia bofa y textura de bombón si el overrun sube de 40%?", options: ["Porque tiene demasiado azúcar.", "Porque se ha incorporado demasiado aire a la mezcla.", "Porque la máquina está muy fría.", "Porque los ingredientes no se mezclaron correctamente."], answer: "Porque se ha incorporado demasiado aire a la mezcla." },
+        { question: "Si la máquina de nieve 'truena y truena', ¿qué problema de overrun es probable que esté ocurriendo?", options: ["Overrun demasiado bajo.", "La temperatura de la nieve es muy baja.", "Overrun demasiado alto.", "La mezcla está caducada."], answer: "Overrun demasiado bajo." },
+
+        // 9. Preparación de Productos y Temperaturas
+        { question: "¿Cuáles son los tres componentes principales de los conos y sundaes?", options: ["Nieve, topping, cereza", "Vaso, cuchara, servilleta", "BASE, BOLA Y CURL", "Azúcar, leche, crema"], answer: "BASE, BOLA Y CURL" },
+        { question: "¿Cuántas onzas y bolas de nieve debe tener un cono chico?", options: ["5 oz, 1 bola", "7 oz, 2 bolas", "4 oz, 1 bola", "4 oz, 2 bolas"], answer: "4 oz, 2 bolas" },
+        { question: "¿Cuál es el peso de nieve y el número de bolas para un sundae chico?", options: ["7 oz, 3 bolas", "5 oz, 2 bolas", "5 oz, 3 bolas", "7 oz, 2 bolas"], answer: "5 oz, 3 bolas" },
+        { question: "¿Cuánto topping lleva un sundae mediano?", options: ["1 oz", "1.5 oz", "2 oz", "0.5 oz"], answer: "1.5 oz" },
+        { question: "Al preparar un Blizzard® mini, chico o mediano, ¿hasta dónde se debe llenar el vaso de nieve?", options: ["Hasta el borde del vaso", "Hasta 1 dedo debajo de la orilla del vaso", "Hasta la mitad del vaso", "Hasta la marca de la porción"], answer: "Hasta 1 dedo debajo de la orilla del vaso" },
+        { question: "¿A qué velocidad se debe poner la máquina de Blizzard® para los tamaños mini, chico y mediano?", options: ["'70'", "'50'", "'100'", "'0'"], answer: "'100'" },
+        { question: "¿Cuánto tiempo aproximado se debe batir un Blizzard® de tamaño mini, chico o mediano?", options: ["5 segundos", "8 segundos", "10 segundos", "15 segundos"], answer: "8 segundos" },
+        { question: "¿Cómo se debe servir un Blizzard®?", options: ["Normal, con la cuchara", "Con el vaso tapado", "Al revés con cuchara grande y servilleta", "En una bandeja"], answer: "Al revés con cuchara grande y servilleta" },
+        { question: "¿En cuántos pasos se prepara un Blizzard® grande?", options: ["Uno", "Dos", "Tres", "Cuatro"], answer: "Dos" },
+        { question: "Al preparar un Blizzard® grande, ¿a qué velocidad se bate la primera mitad de los ingredientes?", options: ["'100'", "'70'", "'50'", "'0'"], answer: "'70'" },
+        { question: "¿Qué cantidad de ingredientes se usa para la primera mitad de un Blizzard® de cuarto de galón?", options: ["La misma cantidad que un Blizzard® chico", "La misma cantidad que un Blizzard® mediano", "El doble que un Blizzard® grande", "La mitad de los ingredientes totales"], answer: "La misma cantidad que un Blizzard® mediano" },
+        { question: "Para la entrega de un Blizzard® de cuarto de galón, ¿qué se debe incluir en la Bolsa #12?", options: ["Solo el Blizzard®", "2 cucharas grandes y 4 servilletas", "4 cucharas grandes y 8 servilletas", "Solo una cuchara pequeña"], answer: "4 cucharas grandes y 8 servilletas" },
+        { question: "¿Cómo deben ser las tres bolas de nieve en una Banana Split?", options: ["De diferentes tamaños para variedad", "Del mismo tamaño, peso, diámetro, con los curl en la misma dirección", "Dos grandes y una pequeña", "Sin curl para facilitar los toppings"], answer: "Del mismo tamaño, peso, diámetro, con los curl en la misma dirección" },
+        { question: "¿Cuánto topping de piña se pone en la bola del centro de una Banana Split?", options: ["0.5 oz", "0.75 oz (¾ de oz)", "1 oz", "1.5 oz"], answer: "0.75 oz (¾ de oz)" },
+        { question: "¿Qué forma debe tener el plátano cortado para la Banana Split?", options: ["En rodajas", "En cubos", "En 4 partes, cortando longitudinal y transversalmente las rebanadas", "Entero sin cortar"], answer: "En 4 partes, cortando longitudinal y transversalmente las rebanadas" },
+        { question: "¿Cuál es el peso final que debe tener una Banana Split?", options: ["7 oz", "10 oz", "14 oz", "20 oz"], answer: "14 oz" },
+        { question: "¿Cuál es el peso final de un Cono Waffle?", options: ["6 oz", "7.25 oz", "8 oz", "10.75 oz"], answer: "7.25 oz" },
+        { question: "¿Cuál debe ser el peso de la nieve para una Dilly® Bar?", options: ["2 oz", "2.5 oz", "3 oz", "3.5 oz"], answer: "2.5 oz" },
+        { question: "¿Cuánto tiempo se congela una Dilly® Bar en el Flash Freezer?", options: ["2 horas", "30 minutos", "20 minutos", "1 hora"], answer: "30 minutos" },
+        { question: "¿Cuál es la temperatura ideal para cubrir las Dilly® Bars con chocolate cobertura?", options: ["38°C", "41°C", "47°C", "49°C"], answer: "47°C" },
+        { question: "¿Cuál es la vida de anaquel de una Dilly® Bar y un DQ® Sandwich?", options: ["5 días", "7 días", "10 días", "14 días"], answer: "7 días" },
+        { question: "Al preparar un DQ® Sandwich, ¿qué se debe evitar al presionar la segunda galleta sobre la nieve?", options: ["Que la galleta se rompa", "Que la nieve se derrita", "Que salgan 'lonjitas' de nieve fuera de la galleta", "Que el palito se mueva"], answer: "Que salgan 'lonjitas' de nieve fuera de la galleta" },
+        { question: "Si un pastel se elaboró el 01/01/2024, ¿cuál es su fecha de consumo preferente?", options: ["08/01/2024", "10/01/2024", "11/01/2024", "14/01/2024"], answer: "11/01/2024" },
+        { question: "¿Cuál es la temperatura ideal para la nieve al momento de salir de la máquina, según la tabla de temperaturas?", options: ["-8.3°C", "-7.8°C", "-7.2°C", "0°C"], answer: "-7.8°C" },
+        { question: "Según los estándares de calidad de los productos, ¿qué se debe hacer si los vasos se ensucian al prepararlos?", options: ["Tirarlos y usar uno nuevo.", "Limpiarlos con una servilleta.", "Ignorar la suciedad si es mínima.", "Pedir al cliente que lo limpie."], answer: "Tirarlos y usar uno nuevo." },
+        { question: "Para dar estabilidad al palito de una Dilly® Bar, ¿cómo se debe insertar?", options: ["Verticalmente en el centro de la bola.", "Horizontalmente y luego inclinarlo hacia arriba.", "Directamente en el molde antes de la nieve.", "Después de que la Dilly® Bar esté completamente congelada."], answer: "Horizontalmente y luego inclinarlo hacia arriba." },
+        { question: "¿Por qué se debe emplayar un Blizzard® de cuarto de galón con película plástica?", options: ["Para mantenerlo más frío.", "Para protegerlo de la contaminación cruzada.", "Para evitar que se salga la tapadera y se derrame producto en el traslado.", "Para facilitar el transporte del cliente."], answer: "Para evitar que se salga la tapadera y se derrame producto en el traslado." },
+        { question: "La primera bola de nieve de un sundae debe quedar:", options: ["Completamente dentro del contenedor.", "Completamente fuera del contenedor.", "Mitad dentro del contenedor y mitad fuera de este.", "En el centro de la base."], answer: "Mitad dentro del contenedor y mitad fuera de este." },
+        { question: "Según la tabla de temperaturas, ¿cuál es el rango de temperatura aceptable para la mezcla descongelada?", options: ["-18°C", "0 a 4°C", "35 a 41°C", "60 a 63°C"], answer: "0 a 4°C" }
     ];
     
     // Función para barajar las preguntas
@@ -551,6 +595,5 @@
 </script>
 </body>
 </html>
-
-
-
+<!DOCTYPE html>
+<html lang="es">
