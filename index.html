@@ -30,604 +30,485 @@
             padding: 30px;
             max-width: 900px;
             width: 100%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
-        .header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 10px;
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
         }
 
         h1 {
-            color: #d81b60;
-            font-weight: 700;
-            font-size: 2.5em;
+            color: #d32241;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
         }
 
-        p.subtitle {
-            color: #444;
-            font-size: 1.1em;
+        h2 {
+            color: #007ac1;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        #question-screen h2 {
+            min-height: 80px;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
         }
 
         .btn {
-            background-color: #007bff;
-            color: #fff;
+            background: #d32241;
+            color: white;
             border: none;
             padding: 15px 30px;
-            font-size: 1em;
-            border-radius: 10px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
-            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(211, 34, 65, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .btn:hover {
-            background-color: #0056b3;
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
-        }
-
-        .question-box {
-            background: #fff;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .question-text {
-            font-size: 1.4em;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 20px;
-            line-height: 1.5;
+            box-shadow: 0 8px 20px rgba(211, 34, 65, 0.4);
         }
         
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2em;
-            }
-            .question-text {
-                font-size: 1.2em;
-            }
-            .game-container {
-                padding: 20px;
-            }
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
-        .options-container {
+        #options-container {
             display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
-            grid-template-columns: 1fr;
-            margin-bottom: 20px;
-        }
-        
-        @media (min-width: 600px) {
-            .options-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            margin-top: 30px;
         }
 
-        .option-btn {
-            background-color: #e9ecef;
-            color: #495057;
-            border: 2px solid #e9ecef;
-            padding: 15px;
-            font-size: 1em;
-            border-radius: 10px;
+        .option {
+            background: #f0f0f0;
+            border: 2px solid transparent;
+            padding: 20px;
+            border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-align: left;
-            font-weight: 600;
-            white-space: normal;
+            font-size: 1rem;
+            color: #333;
         }
 
-        .option-btn:hover {
-            background-color: #dee2e6;
-            transform: translateY(-2px);
+        .option:hover {
+            background: #e0e0e0;
+            border-color: #4facfe;
+        }
+        
+        .option.selected {
+            background: #4facfe;
+            color: white;
+            border-color: #007ac1;
         }
 
-        .option-btn.correct {
+        .option.correct {
             background-color: #28a745;
-            color: #fff;
+            color: white;
             border-color: #218838;
         }
 
-        .option-btn.incorrect {
+        .option.incorrect {
             background-color: #dc3545;
-            color: #fff;
+            color: white;
             border-color: #c82333;
         }
 
-        .answer-input {
-            width: 100%;
-            padding: 12px;
-            font-size: 1em;
-            border-radius: 10px;
-            border: 2px solid #ced4da;
-            margin-bottom: 20px;
-            transition: border-color 0.3s;
-        }
-
-        .answer-input:focus {
-            outline: none;
-            border-color: #007bff;
-        }
-
-        .button-group {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .button-group .btn {
-            flex-grow: 1;
-            max-width: 200px;
-        }
-
-        #answer-result {
-            margin-top: 20px;
-            font-size: 1.2em;
-            font-weight: 700;
-        }
-
-        #answer-result.correct {
-            color: #28a745;
-        }
-
-        #answer-result.incorrect {
-            color: #dc3545;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            width: 100%;
-            margin-top: 20px;
-            font-weight: 600;
-            font-size: 1.1em;
-            gap: 10px;
-        }
-
-        .stats div {
-            padding: 10px 20px;
-            border-radius: 10px;
-        }
-
-        .stats .correct {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .stats .incorrect {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .stats .question-count {
-            background-color: #e2e3e5;
-            color: #383d41;
-        }
-
-        #start-screen, #result-screen {
-            animation: fadeIn 0.8s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .results-summary {
-            margin-top: 20px;
-        }
-
-        .results-summary h2 {
-            color: #d81b60;
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .results-summary p {
-            font-size: 1.2em;
+        #progress-container {
+            text-align: right;
             color: #555;
-            margin-bottom: 15px;
+            font-weight: 600;
         }
 
-        .results-summary .evaluation {
-            font-size: 1.5em;
-            font-weight: 700;
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        .results-summary .evaluation.basico {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        .results-summary .evaluation.intermedio {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-        .results-summary .evaluation.avanzado {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .results-summary ul {
-            list-style-type: none;
-            padding: 0;
-            text-align: left;
-            margin: 0 auto;
-            max-width: 400px;
-        }
-
-        .results-summary li {
-            font-size: 1.1em;
-            margin-bottom: 5px;
+        #game-stats-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
+            margin-top: 20px;
         }
 
-        .results-summary li .label {
+        #score-container .score-item {
             font-weight: 600;
+            font-size: 1rem;
+            margin-right: 15px;
         }
 
-        .results-summary li .value {
-            font-weight: 400;
+        #score-container .correct-text {
+            color: #218838;
         }
+
+        #score-container .incorrect-text {
+            color: #c82333;
+        }
+
+        #result-screen p {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .evaluation {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .evaluation.avanzado {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .evaluation.intermedio {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .evaluation.basico {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
     </style>
 </head>
 <body>
 
 <div class="game-container">
-    <div id="start-screen">
-        <h1>Juego de Preguntas DQ®</h1>
-        <p class="subtitle">Pon a prueba tu conocimiento del manual de empleados de Dairy Queen®.</p>
-        <button id="start-btn" class="btn">Comenzar</button>
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen active">
+        <h1>Juego de Preguntas DQ</h1>
+        <p>Pon a prueba tus conocimientos sobre el Manual de Operaciones de Dairy Queen. Responde 150 preguntas y descubre tu nivel de preparación. ¡Mucha suerte!</p>
+        <button id="start-btn" class="btn">Comenzar Juego</button>
     </div>
 
-    <div id="game-screen" style="display: none;">
-        <div class="header">
-            <h2 id="question-text"></h2>
+    <!-- Question Screen -->
+    <div id="question-screen" class="screen">
+        <h2 id="question-text"></h2>
+        <div id="options-container"></div>
+        <div id="game-stats-container">
+            <div id="score-container">
+                <span class="score-item correct-text">Correctas: <span id="correct-score">0</span></span>
+                <span class="score-item incorrect-text">Incorrectas: <span id="incorrect-score">0</span></span>
+            </div>
+            <div id="progress-container">
+                Pregunta <span id="current-question"></span> / <span id="total-questions"></span>
+            </div>
         </div>
-        
-        <div class="question-box">
-            <p class="question-text" id="question-content"></p>
-        </div>
-
-        <div id="options-container" class="options-container"></div>
-
-        <div id="answer-result"></div>
-
-        <div class="button-group">
-            <button id="next-btn" class="btn" style="display: none;">Siguiente Pregunta</button>
-        </div>
-
-        <div class="stats">
-            <div class="question-count">Pregunta <span id="current-question">0</span> / <span id="total-questions">150</span></div>
-            <div class="correct">Aciertos: <span id="correct-count">0</span></div>
-            <div class="incorrect">Errores: <span id="incorrect-count">0</span></div>
-        </div>
+        <button id="next-btn" class="btn" style="margin-top: 20px;" disabled>Siguiente</button>
     </div>
 
-    <div id="result-screen" style="display: none;">
-        <div class="results-summary">
-            <h2>Resultados Finales</h2>
-            <p>¡Has completado el cuestionario!</p>
-            <ul>
-                <li><span class="label">Total de Preguntas:</span> <span class="value" id="final-total"></span></li>
-                <li><span class="label">Aciertos:</span> <span class="value" id="final-correct"></span></li>
-                <li><span class="label">Errores:</span> <span class="value" id="final-incorrect"></span></li>
-            </ul>
-            <div id="evaluation-level" class="evaluation"></div>
+    <!-- Result Screen -->
+    <div id="result-screen" class="screen">
+        <h1>Resultados Finales</h1>
+        <p>Has completado el juego. Aquí están tus resultados:</p>
+        <p>Total de Preguntas: <span id="final-total"></span></p>
+        <p>Respuestas Correctas: <span id="final-correct"></span></p>
+        <p>Respuestas Incorrectas: <span id="final-incorrect"></span></p>
+        <div id="evaluation-level" class="evaluation">
+            Tu nivel es <span id="evaluation-level-span"></span>
         </div>
-        <button id="restart-btn" class="btn" style="margin-top: 20px;">Reiniciar Cuestionario</button>
+        <button id="restart-btn" class="btn" style="margin-top: 30px;">Jugar de Nuevo</button>
     </div>
 </div>
 
 <script>
-    // Lista completa de preguntas de opción múltiple
-    const allQuestions = [
-        // Sección 1: Introducción a la Empresa
-        { question: '¿En qué año se vendió el primer producto de Dairy Queen®?', answer: '1938', options: ['1938', '1945', '1950', '1920'] },
-        { question: '¿Cuál es el eslogan de Dairy Queen®?', answer: 'El sabor de la alegría', options: ['El sabor de la alegría', 'El mejor postre', 'La dulzura de la vida', 'El sabor de la felicidad'] },
-        { question: '¿A qué grupo empresarial pertenece DQ en México?', answer: 'Grupo Ganfer', options: ['Grupo Ganfer', 'Grupo Femsa', 'Grupo Alsea', 'Grupo Bimbo'] },
-        { question: '¿Cuáles son los 4 pilares más importantes para DQ?', answer: 'Clientes, empleados, comunidad, dueños', options: ['Clientes, empleados, comunidad, dueños', 'Calidad, servicio, limpieza, rapidez', 'Ventas, costos, publicidad, marketing', 'Gerentes, supervisores, staff, limpieza'] },
-        { question: '¿Qué significa PRIDE?', answer: 'Personal Responsibility In Delivery Excellence', options: ['Personal Responsibility In Delivery Excellence', 'Personal Response Is Delicious Everyday', 'Proudly Respectful In Dairy Excellence', 'Proudly Reliable In Delivering Everything'] },
-        { question: '¿Qué días se elaboran pasteles de chocolate?', answer: 'Martes y jueves', options: ['Martes y jueves', 'Lunes y viernes', 'Miércoles y sábado', 'Todos los días'] },
-        { question: '¿Cuántos días de vacaciones corresponden tras 1 año de trabajo?', answer: '12 días', options: ['12 días', '6 días', '10 días', '15 días'] },
-        { question: '¿Qué hacer si se sufre acoso laboral?', answer: 'Reportarlo a un gerente o al correo bsantos@ggef.mx', options: ['Reportarlo a un gerente o al correo bsantos@ggef.mx', 'Ignorarlo', 'Reportarlo a un compañero', 'Renunciar'] },
-        { question: '¿Cuál es la política sobre uso de celulares?', answer: 'No usarlos durante el turno. Se guardan en una caja.', options: ['No usarlos durante el turno. Se guardan en una caja.', 'Se pueden usar en los descansos', 'Se pueden usar en caso de emergencia', 'Se pueden usar si no hay clientes'] },
-        { question: '¿Qué pasa si se pierde o rompe parte del uniforme?', answer: 'Se descuenta de sueldo y se repone', options: ['Se descuenta de sueldo y se repone', 'Se regala uno nuevo', 'No pasa nada', 'Se le presta uno al empleado'] },
-        { question: '¿Cuántos descuentos de empleado tienes al día?', answer: '1 en bebida y 1 en producto de nieve', options: ['1 en bebida y 1 en producto de nieve', '2 en bebida', '2 en producto de nieve', '3 en cualquier producto'] },
-        { question: '¿Se puede usar el descuento en horario laboral?', answer: 'No, solo antes o después del turno', options: ['No, solo antes o después del turno', 'Sí, en el descanso', 'Sí, si hay permiso del gerente', 'Sí, si es un producto pequeño'] },
-        { question: '¿Qué pasa si faltas sin avisar?', answer: 'Pierdes el bono indefinidamente', options: ['Pierdes el bono indefinidamente', 'Se descuenta del sueldo', 'No pasa nada', 'Te despiden'] },
-        { question: '¿Cuánto tiempo de descanso tienes si trabajas 7 horas?', answer: '30 minutos con goce de sueldo', options: ['30 minutos con goce de sueldo', '20 minutos sin goce de sueldo', '15 minutos con goce de sueldo', '45 minutos sin goce de sueldo'] },
-        { question: '¿Puedes comer en el comedor con uniforme?', answer: 'No, porque el cliente puede malinterpretar', options: ['No, porque el cliente puede malinterpretar', 'Sí, siempre y cuando sea en el comedor', 'Sí, pero sin que te vean los clientes', 'Sí, pero solo si es un producto de DQ'] },
-        { question: '¿Qué hacer en caso de una crisis psicológica?', answer: 'Escucha activa, respiración, preguntar qué necesita, canalizar a profesional', options: ['Escucha activa, respiración, preguntar qué necesita, canalizar a profesional', 'Llamar a los padres del empleado', 'Decirle que se tranquilice', 'No hacer nada'] },
-        { question: '¿Cuáles son los 5 valores de DQ?', answer: 'Responsabilidad, respeto, honestidad, lealtad, actitud positiva', options: ['Responsabilidad, respeto, honestidad, lealtad, actitud positiva', 'Calidad, servicio, limpieza, rapidez, eficiencia', 'Puntualidad, honestidad, limpieza, lealtad, respeto', 'Actitud positiva, respeto, responsabilidad, honestidad, amabilidad'] },
-        { question: '¿Qué hacer si un cliente se queja?', answer: 'Escuchar, ofrecer solución, agradecer, reportar al gerente', options: ['Escuchar, ofrecer solución, agradecer, reportar al gerente', 'Ignorar al cliente', 'Llamar a seguridad', 'Decirle que la queja no es válida'] },
-        { question: '¿Qué es el overrun?', answer: 'Cantidad de aire en la nieve (debe ser 40%)', options: ['Cantidad de aire en la nieve (debe ser 40%)', 'Cantidad de nieve en el cono', 'Cantidad de chocolate en la nieve', 'Cantidad de sabor en la nieve'] },
-        { question: '¿A qué temperatura debe salir la nieve de la máquina?', answer: '-7.8°C', options: ['-7.8°C', '-5°C', '-10°C', '-2°C'] },
-        { question: '¿Qué hacer si recibes un billete falso?', answer: 'Revisar con luz y marcador, reportar al supervisor', options: ['Revisar con luz y marcador, reportar al supervisor', 'Aceptarlo y no decir nada', 'No aceptarlo y devolverlo', 'Llamar a la policía'] },
-        { question: '¿Quién puede autorizar un descuento?', answer: 'Solo supervisores o gerentes', options: ['Solo supervisores o gerentes', 'Cualquier empleado', 'Solo el cajero', 'El cliente'] },
-        { question: '¿Qué hacer si un cliente olvida su tarjeta?', answer: 'Guardarla y destruirla si no regresa', options: ['Guardarla y destruirla si no regresa', 'Llamar al banco', 'Guardarla por 1 año', 'Darle la tarjeta a otro cliente'] },
-        { question: '¿Cuál es la política de higiene de manos?', answer: 'Lavarse cada 30 minutos', options: ['Lavarse cada 30 minutos', 'Lavarse cada hora', 'Lavarse al inicio y final del turno', 'Lavarse cuando están sucias'] },
-        { question: '¿Se permiten uñas postizas o esmalte?', answer: 'No', options: ['No', 'Sí, si son cortas', 'Sí, si es transparente', 'Sí, si es discreto'] },
-        { question: '¿Qué hacer si se derrama producto?', answer: 'Limpiar de inmediato y señalizar', options: ['Limpiar de inmediato y señalizar', 'Limpiar después', 'Dejar que el supervisor limpie', 'Dejar que se seque'] },
-        { question: '¿Cómo se debe portar el cabello?', answer: 'Recogido y dentro de la gorra/cofia', options: ['Recogido y dentro de la gorra/cofia', 'Suelto', 'Con una red para el cabello', 'Como uno quiera'] },
-        { question: '¿Qué hacer si un equipo no enciende?', answer: 'Reportar de inmediato al supervisor', options: ['Reportar de inmediato al supervisor', 'Intentar arreglarlo', 'Dejarlo para después', 'Pedirle a un compañero que lo vea'] },
-        { question: '¿Qué hacer si un cliente se intoxica?', answer: 'Avisar al gerente y llamar a emergencias', options: ['Avisar al gerente y llamar a emergencias', 'Ofrecerle un vaso de agua', 'Decirle que no fue por la comida', 'No hacer nada'] },
-        { question: '¿Qué es el sistema TAPS?', answer: 'Asignación de puestos en horas pico (llenador, preparador, etc.)', options: ['Asignación de puestos en horas pico (llenador, preparador, etc.)', 'Sistema de pedidos automatizado', 'Sistema de limpieza de equipos', 'Sistema de rotación de empleados'] },
-
-        // Sección 2: Productos y Preparación
-        { question: '¿Cuántas onzas lleva un cono chico?', answer: '4 oz', options: ['4 oz', '6 oz', '3 oz', '5 oz'] },
-        { question: '¿Cómo se forma el “curl” en un cono?', answer: 'Movimiento circular: 9 – 1 – 7 en sentido horario', options: ['Movimiento circular: 9 – 1 – 7 en sentido horario', 'Movimiento de arriba a abajo', 'Movimiento de lado a lado', 'Movimiento en forma de S'] },
-        { question: '¿Qué hacer si un Blizzard® no se voltea?', answer: 'Se regala al cliente y el empleado paga el producto', options: ['Se regala al cliente y el empleado paga el producto', 'Se le da al cliente de todos modos', 'Se vuelve a batir', 'Se desecha y no se cobra'] },
-        { question: '¿Cuánto tiempo se bate un Blizzard®?', answer: '8 segundos', options: ['8 segundos', '15 segundos', '5 segundos', '10 segundos'] },
-        { question: '¿Qué ingredientes lleva un Banana Split?', answer: '3 bolas de nieve, piña, fresa, chocolate, plátano, chantilly', options: ['3 bolas de nieve, piña, fresa, chocolate, plátano, chantilly', '2 bolas de nieve, fresa, piña, plátano, chantilly', '4 bolas de nieve, chocolate, fresa, plátano, piña', '3 bolas de nieve, piña, fresa, plátano, cereza, chocolate'] },
-        { question: '¿Cómo se prepara la base de Slush?', answer: '15L agua + 2.3kg azúcar + polvo base, completar hasta 19L', options: ['15L agua + 2.3kg azúcar + polvo base, completar hasta 19L', '20L agua + 2.3kg azúcar + polvo base', '15L agua + 1.5kg azúcar + polvo base', '19L agua + 2.3kg azúcar + polvo base'] },
-        { question: '¿Qué temperatura debe tener el chocolate para Dilly Bar?', answer: '49°C', options: ['49°C', '30°C', '55°C', '40°C'] },
-        { question: '¿Cuánto pesa una Dilly Bar?', answer: '3 oz', options: ['3 oz', '4 oz', '2 oz', '5 oz'] },
-        { question: '¿Cómo se almacenan los Novelties®?', answer: 'En bolsas individuales o six packs en congelador', options: ['En bolsas individuales o six packs en congelador', 'En cajas grandes', 'En bolsas al aire libre', 'En el refrigerador'] },
-        { question: '¿Qué es el “TAPS”?', answer: 'Sistema de asignación de puestos en horas pico', options: ['Sistema de asignación de puestos en horas pico', 'Sistema de preparación de alimentos', 'Sistema de limpieza de equipos', 'Sistema de inventario'] },
-        { question: '¿Cuánto mix lleva un Blizzard® grande?', answer: '21 oz', options: ['21 oz', '16 oz', '12 oz', '24 oz'] },
-        { question: '¿Qué hacer si la nieve tiene poco aire?', answer: 'Ajustar aerómetro o revisar bombas', options: ['Ajustar aerómetro o revisar bombas', 'Aumentar la temperatura', 'Bajar la temperatura', 'No hacer nada'] },
-        { question: '¿Cómo se sirve un Pecan Mudslide®?', answer: 'En vaso transparente con nueces y toppings', options: ['En vaso transparente con nueces y toppings', 'En cono', 'En vaso opaco', 'En plato'] },
-        { question: '¿Qué lleva un Triple Chocolate Parfait®?', answer: 'Cocoa, brownies, choco chunks', options: ['Cocoa, brownies, choco chunks', 'Chocolate, fresa, crema', 'Nieve, chocolate, nueces', 'Leche, chocolate, plátano'] },
-        { question: '¿Cómo se prepara una malteada?', answer: 'Leche + topping + nieve, batir a velocidad 30', options: ['Leche + topping + nieve, batir a velocidad 30', 'Solo con leche y topping', 'Leche + topping + nieve, batir a velocidad 50', 'Solo con nieve y topping'] },
-        { question: '¿Qué hacer si un producto se ve feo?', answer: 'No entregarlo, rehacerlo', options: ['No entregarlo, rehacerlo', 'Entregarlo y disculparse', 'Regalarlo al cliente', 'Tirarlo a la basura'] },
-        { question: '¿Cómo se almacena la mix?', answer: 'En refrigeración a 0-4°C por 14 días', options: ['En refrigeración a 0-4°C por 14 días', 'En el congelador', 'En la despensa', 'En la barra de servicio'] },
-        { question: '¿Qué hacer si un ingrediente está vencido?', answer: 'Desecharlo y notificar al supervisor', options: ['Desecharlo y notificar al supervisor', 'Usarlo de todas formas', 'Preguntar a un compañero', 'Guardarlo para después'] },
-        { question: '¿Cómo se decora un pastel?', answer: 'Con chantilly, fruta, chocolate, según sabor', options: ['Con chantilly, fruta, chocolate, según sabor', 'Solo con chantilly', 'Solo con chocolate', 'Solo con fruta'] },
-        { question: '¿Qué hacer si un pastel se cae?', answer: 'Reportar y hacer uno nuevo', options: ['Reportar y hacer uno nuevo', 'Levantarlo y ponerlo en la vitrina', 'Regalarlo al cliente', 'Tirarlo a la basura'] },
-        { question: '¿Cómo se mide el overrun?', answer: 'Con vaso de 6 oz y báscula', options: ['Con vaso de 6 oz y báscula', 'A ojo', 'Con una taza de medir', 'Con la máquina de nieve'] },
-        { question: '¿Qué hacer si la máquina de Blizzard® hace ruido?', answer: 'Apagar y reportar', options: ['Apagar y reportar', 'Seguir usándola', 'Echarle aceite', 'Golpearla'] },
-        { question: '¿Cómo se limpia la máquina de nieve?', answer: 'Con agua y sanitizante, sin lubricar partes incorrectas', options: ['Con agua y sanitizante, sin lubricar partes incorrectas', 'Con jabón y agua', 'Con trapos húmedos', 'Solo con agua'] },
-        { question: '¿Qué hacer si no hay suficiente mix?', answer: 'Preparar cilindros de reserva', options: ['Preparar cilindros de reserva', 'Esperar a que llegue el mix', 'Usar menos mix en los productos', 'Cerrar la tienda'] },
-        { question: '¿Cómo se hace un Café Frappé?', answer: 'Base slush + café + nieve + chantilly', options: ['Base slush + café + nieve + chantilly', 'Solo base slush y café', 'Solo nieve y café', 'Café + leche + azúcar'] },
-        { question: '¿Qué hacer si un cliente pide un sabor no disponible?', answer: 'Ofrecer alternativa', options: ['Ofrecer alternativa', 'Decirle que no hay y no hacer nada más', 'Decirle que espere a que haya', 'Ignorarlo'] },
-        { question: '¿Cómo se almacenan los toppings?', answer: 'En recipientes tapados con fecha de apertura', options: ['En recipientes tapados con fecha de apertura', 'Al aire libre', 'En el piso', 'En cajas sin tapa'] },
-        { question: '¿Qué hacer si un producto se quema en la waflera?', answer: 'Desechar y ajustar tiempo', options: ['Desechar y ajustar tiempo', 'Raspar la parte quemada', 'Servirlo de todos modos', 'Regalarlo al cliente'] },
-        { question: '¿Cómo se sirve un Royal Treat®?', answer: 'En copa con toppings y chantilly', options: ['En copa con toppings y chantilly', 'En cono', 'En vaso de plástico', 'En plato'] },
-        { question: '¿Qué hacer si un cliente alérgico pide un producto?', answer: 'Notificar al supervisor y evitar contaminación', options: ['Notificar al supervisor y evitar contaminación', 'Decirle que no es un problema', 'Hacerlo de todos modos', 'Decirle que no se puede'] },
-        { question: '¿Cuánto chocolate se usa para cubrir una Dilly Bar?', answer: '1 oz', options: ['1 oz', '2 oz', '0.5 oz', '3 oz'] },
-        { question: '¿Qué es un Blizzard® de cuarto de galón?', answer: 'El doble de un Blizzard® mediano', options: ['El doble de un Blizzard® mediano', 'La mitad de un Blizzard® chico', 'El doble de un Blizzard® chico', 'Un Blizzard® grande'] },
-        { question: '¿Cómo se prepara la galleta Crunch para pasteles?', answer: '5 partes de galleta + 1 parte de chocolate', options: ['5 partes de galleta + 1 parte de chocolate', '3 partes de galleta + 1 parte de chocolate', '10 partes de galleta + 2 partes de chocolate', 'Solo galleta'] },
-        { question: '¿Qué hacer si la nieve está granulada?', answer: 'Revisar overrun y temperatura', options: ['Revisar overrun y temperatura', 'Ajustar la máquina', 'Servirla de todos modos', 'Desecharla'] },
-        { question: '¿Cómo se bate la crema para decoración?', answer: '7-8 minutos a velocidad media', options: ['7-8 minutos a velocidad media', '3-4 minutos a velocidad alta', '10 minutos a velocidad baja', '1 minuto a velocidad alta'] },
-        { question: '¿Qué hacer si la crema batida queda líquida?', answer: 'Batir más tiempo', options: ['Batir más tiempo', 'Agregar más azúcar', 'Agregar más leche', 'Desecharla'] },
-        { question: '¿Cómo se almacenan los pasteles?', answer: 'En congelador a -18°C a -23°C', options: ['En congelador a -18°C a -23°C', 'En el refrigerador', 'En la despensa', 'En la vitrina'] },
-        { question: '¿Qué hacer si un pastel no se desmolda?', answer: 'Usar secadora de pelo en el aro', options: ['Usar secadora de pelo en el aro', 'Usar un cuchillo', 'Golpearlo', 'Dejar que se descongele'] },
-        { question: '¿Cómo se identifica el lote de un pastel?', answer: 'Con clave: inicial de quien lo hizo + día + inicial de quien decoró', options: ['Con clave: inicial de quien lo hizo + día + inicial de quien decoró', 'Con el nombre del pastel', 'Con el sabor', 'Con la fecha de caducidad'] },
-        { question: '¿Qué hacer si un cliente pide un pastel personalizado?', answer: 'Anotar en cuaderno de pedidos', options: ['Anotar en cuaderno de pedidos', 'Decirle que no se puede', 'Hacerlo de inmediato', 'Cobrarle más'] },
-        { question: '¿Cómo se prepara un Choco Fresa?', answer: 'Con fresa y chocolate en capas', options: ['Con fresa y chocolate en capas', 'Mezclando todo', 'Con fresa y vainilla', 'Con chocolate y crema'] },
-        { question: '¿Qué hacer si sobra mix en el contenedor?', answer: 'No regresarla, desechar', options: ['No regresarla, desechar', 'Regresarla al contenedor principal', 'Guardarla para el día siguiente', 'Usarla en otro producto'] },
-        { question: '¿Cómo se sirve un Sundae?', answer: 'En vaso con bola(s) de nieve y topping', options: ['En vaso con bola(s) de nieve y topping', 'En cono', 'En copa', 'En plato'] },
-        { question: '¿Qué hacer si un cono se rompe?', answer: 'Hacer uno nuevo', options: ['Hacer uno nuevo', 'Servirlo de todos modos', 'Ofrecer un vaso', 'Pegarlo con otro cono'] },
-        { question: '¿Cómo se prepara un Hawaiiano Blizzard®?', answer: 'Con piña, plátano y coco tostado', options: ['Con piña, plátano y coco tostado', 'Con fresa y piña', 'Con plátano y fresa', 'Con coco y vainilla'] },
-        { question: '¿Qué hacer si la bomba de topping se tapa?', answer: 'Desarmar y limpiar', options: ['Desarmar y limpiar', 'No hacer nada', 'Usar otro topping', 'Reportar y esperar'] },
-        { question: '¿Cómo se almacena la piña?', answer: 'En refrigeración una vez abierta', options: ['En refrigeración una vez abierta', 'En la despensa', 'En el congelador', 'Al aire libre'] },
-        { question: '¿Qué hacer si un cliente pide extra topping?', answer: 'Cobrar extra y agregar 1 cucharada', options: ['Cobrar extra y agregar 1 cucharada', 'No cobrarle', 'Agregar 2 cucharadas', 'Decirle que no se puede'] },
-        { question: '¿Cómo se prepara un Moka Frappé?', answer: 'Con chocolate y café', options: ['Con chocolate y café', 'Solo con café', 'Con chocolate y leche', 'Con chocolate, café y leche'] },
-        { question: '¿Qué hacer si la nieve está muy dura?', answer: 'Revisar temperatura de máquina', options: ['Revisar temperatura de máquina', 'Servirla de todos modos', 'Dejar que se caliente', 'Agregarle agua'] },
-        { question: '¿Cómo se limpia la waflera?', answer: 'Con trapo seco después de usar', options: ['Con trapo seco después de usar', 'Con agua y jabón', 'Con un cepillo', 'Con un trapo húmedo'] },
-        { question: '¿Qué hacer si un cliente pide un producto sin azúcar?', answer: 'Ofrecer opciones sin azúcar', options: ['Ofrecer opciones sin azúcar', 'Decirle que no hay', 'Darle el producto normal', 'Preguntarle por qué no quiere azúcar'] },
-        { question: '¿Cómo se almacenan los conos?', answer: 'En lugar seco a temperatura ambiente', options: ['En lugar seco a temperatura ambiente', 'En el refrigerador', 'En el congelador', 'En el mostrador'] },
-        { question: '¿Qué hacer si un producto se cae al suelo?', answer: 'Desecharlo y hacer uno nuevo', options: ['Desecharlo y hacer uno nuevo', 'Recogerlo y servirlo', 'Limpiarlo con un trapo', 'Dejarlo en el suelo'] },
-        { question: '¿Cómo se prepara un Brownie Blizzard®?', answer: 'Con trozos de brownie', options: ['Con trozos de brownie', 'Con trozos de galleta', 'Con trozos de chocolate', 'Con trozos de pastel'] },
-        { question: '¿Qué hacer si un cliente pide un producto caliente?', answer: 'Ofrecer café o opciones no congeladas', options: ['Ofrecer café o opciones no congeladas', 'Decirle que no hay', 'Hacer un producto caliente', 'Ignorarlo'] },
-        { question: '¿Cómo se almacenan las frutas?', answer: 'En refrigeración una vez abiertas', options: ['En refrigeración una vez abiertas', 'En la despensa', 'En el congelador', 'En el mostrador'] },
-        { question: '¿Qué hacer si un cliente pide un producto con alergenos?', answer: 'Notificar y evitar contaminación cruzada', options: ['Notificar y evitar contaminación cruzada', 'Hacerlo de todos modos', 'Decirle que no hay', 'Ignorarlo'] },
-        { question: '¿Cómo se prepara un Oreo Blizzard®?', answer: 'Con galleta Oreo molida', options: ['Con galleta Oreo molida', 'Con galleta de chocolate', 'Con trozos de chocolate', 'Con crema de chocolate'] },
-        { question: '¿Qué hacer si la máquina de Slush no funciona?', answer: 'Reportar al supervisor', options: ['Reportar al supervisor', 'Intentar arreglarla', 'Dejarla para después', 'Apagarla y prenderla de nuevo'] },
-
-        // Sección 3: Limpieza y Sanidad
-        { question: '¿Cada cuánto debes lavarte las manos?', answer: 'Cada 30 minutos', options: ['Cada 30 minutos', 'Cada hora', 'Cada 2 horas', 'Solo cuando están sucias'] },
-        { question: '¿Cómo se lavan los trapos?', answer: 'En cubeta con desengrasante y luego sanitizados', options: ['En cubeta con desengrasante y luego sanitizados', 'Solo con agua', 'Con jabón de manos', 'En la lavadora'] },
-        { question: '¿Qué usar para limpiar la máquina de Blizzard®?', answer: 'Agua y sanitizante, luego secar', options: ['Agua y sanitizante, luego secar', 'Jabón y agua', 'Trapos húmedos', 'Solo un trapo seco'] },
-        { question: '¿Qué hacer si se derrama producto?', answer: 'Limpiar inmediatamente y señalizar piso mojado', options: ['Limpiar inmediatamente y señalizar piso mojado', 'Limpiar después', 'Ignorarlo', 'Pedir a un compañero que limpie'] },
-        { question: '¿Se pueden usar uñas postizas?', answer: 'No', options: ['No', 'Sí, si son cortas', 'Sí, si son transparentes', 'Sí, si son discretas'] },
-        { question: '¿Cómo se sanitizan los utensilios?', answer: 'En agua caliente con sanitizante', options: ['En agua caliente con sanitizante', 'Solo con agua caliente', 'Con jabón de manos', 'Con cloro'] },
-        { question: '¿Qué hacer si hay vidrio roto?', answer: 'Barrer y recoger con guantes, luego sanitizar', options: ['Barrer y recoger con guantes, luego sanitizar', 'Solo barrer', 'Recoger con las manos', 'Dejarlo'] },
-        { question: '¿Cómo se limpia el baño?', answer: 'Con desinfectante y papel desechable', options: ['Con desinfectante y papel desechable', 'Con un trapo', 'Con un trapeador', 'Solo con agua'] },
-        { question: '¿Qué hacer si un empleado está enfermo?', answer: 'No venir y presentar justificante del IMSS', options: ['No venir y presentar justificante del IMSS', 'Venir a trabajar', 'Venir y usar cubrebocas', 'Ir al doctor pero no presentar justificante'] },
-        { question: '¿Cómo se almacenan los alimentos?', answer: 'En recipientes tapados y con fecha', options: ['En recipientes tapados y con fecha', 'En recipientes sin tapa', 'En el piso', 'En cajas'] },
-        { question: '¿Qué hacer si hay plagas?', answer: 'Reportar de inmediato al gerente', options: ['Reportar de inmediato al gerente', 'Poner trampas', 'Matarlas con una escoba', 'Ignorarlas'] },
-        { question: '¿Cómo se desechan las bajas?', answer: 'En cubeta designada y se registran', options: ['En cubeta designada y se registran', 'En la basura normal', 'En el drenaje', 'En la calle'] },
-        { question: '¿Qué usar para desengrasar?', answer: 'Desengrasante morado', options: ['Desengrasante morado', 'Cloro', 'Jabón', 'Agua caliente'] },
-        { question: '¿Cómo se limpia el mostrador?', answer: 'Con sanitizante y trapo limpio', options: ['Con sanitizante y trapo limpio', 'Con agua y jabón', 'Con un trapo sucio', 'Con un trapo seco'] },
-        { question: '¿Qué hacer si un trapo está sucio?', answer: 'Lavarlo y sanitizarlo', options: ['Lavarlo y sanitizarlo', 'Usarlo así', 'Tirarlo', 'Dejarlo en un rincón'] },
-        { question: '¿Cómo se almacenan los químicos?', answer: 'En lugar seguro y etiquetado', options: ['En lugar seguro y etiquetado', 'En cualquier lugar', 'En el piso', 'En el almacén sin etiqueta'] },
-        { question: '¿Qué hacer si se ensucia el uniforme?', answer: 'Cambiarse o usar delantal limpio', options: ['Cambiarse o usar delantal limpio', 'Seguir usándolo sucio', 'No hacer nada', 'Pedir un uniforme nuevo'] },
-        { question: '¿Cómo se limpia la máquina de café?', answer: 'Con agua caliente y desincrustante', options: ['Con agua caliente y desincrustante', 'Solo con agua', 'Con jabón', 'Con trapo seco'] },
-        { question: '¿Qué hacer si un cliente vomita?', answer: 'Aislar área, limpiar con guantes y desinfectar', options: ['Aislar área, limpiar con guantes y desinfectar', 'Limpiar con un trapo', 'Llamar a los padres del cliente', 'Ignorarlo'] },
-        { question: '¿Cómo se lavan los trastes?', answer: 'En agua caliente con detergente, luego sanitizar', options: ['En agua caliente con detergente, luego sanitizar', 'Con agua fría', 'Solo con detergente', 'Con un trapo'] },
-        { question: '¿Qué hacer si hay mal olor en el refrigerador?', answer: 'Limpiar y revisar productos vencidos', options: ['Limpiar y revisar productos vencidos', 'Ignorarlo', 'Usar un aromatizante', 'Dejar la puerta abierta'] },
-        { question: '¿Cómo se limpia el piso?', answer: 'Con trapeador y desinfectante', options: ['Con trapeador y desinfectante', 'Solo con una escoba', 'Con un trapo', 'Con las manos'] },
-        { question: '¿Qué hacer si un producto cae al suelo?', answer: 'Desecharlo', options: ['Desecharlo', 'Limpiarlo y usarlo', 'Ofrecérselo a un cliente', 'Dejarlo en el suelo'] },
-        { question: '¿Cómo se sanitizan las mesas?', answer: 'Con spray sanitizante y trapo', options: ['Con spray sanitizante y trapo', 'Con agua y jabón', 'Con un trapo sucio', 'Con un trapo seco'] },
-        { question: '¿Qué hacer si un cliente deja basura en la mesa?', answer: 'Limpiar de inmediato', options: ['Limpiar de inmediato', 'Dejarlo para después', 'Esperar a que se vaya el cliente', 'Ignorarlo'] },
-        { question: '¿Cómo se almacenan los trapos limpios?', answer: 'En cubeta con solución sanitizante', options: ['En cubeta con solución sanitizante', 'En el piso', 'En el mostrador', 'En un cajón'] },
-        { question: '¿Qué hacer si hay humedad en el almacén?', answer: 'Reportar y limpiar', options: ['Reportar y limpiar', 'Ignorarlo', 'Dejarlo para después', 'Usar un deshumidificador'] },
-        { question: '¿Cómo se limpia la vitrina de pasteles?', answer: 'Con vidriolimpiador y trapo seco', options: ['Con vidriolimpiador y trapo seco', 'Con agua y jabón', 'Con un trapo húmedo', 'Con las manos'] },
-        { question: '¿Qué hacer si un empleado no se lava las manos?', answer: 'Recordarle y reportar si persiste', options: ['Recordarle y reportar si persiste', 'Ignorarlo', 'Llamar a un gerente', 'No hacer nada'] },
-        { question: '¿Cómo se desechan los aceites?', answer: 'En contenedor especial, no en drenaje', options: ['En contenedor especial, no en drenaje', 'En el drenaje', 'En la basura normal', 'En la calle'] },
-
-        // Sección 4: Cajero y Dinero
-        { question: '¿Cómo contar el cambio al cliente?', answer: '3 veces: al tomar, al dar, y el cliente cuenta', options: ['3 veces: al tomar, al dar, y el cliente cuenta', '1 vez', '2 veces: al tomar y al dar', '4 veces'] },
-        { question: '¿Qué hacer si un billete parece falso?', answer: 'Revisar con luz y marcador, reportar a supervisor', options: ['Revisar con luz y marcador, reportar a supervisor', 'Aceptarlo', 'Devolverlo', 'Dárselo a otro cliente'] },
-        { question: '¿Quién puede hacer descuentos?', answer: 'Solo supervisores o gerentes', options: ['Solo supervisores o gerentes', 'Cualquier empleado', 'Solo el cajero', 'El cliente'] },
-        { question: '¿Cómo llenar una remesa?', answer: 'Con todos los datos: fecha, firma, cajero, etc.', options: ['Con todos los datos: fecha, firma, cajero, etc.', 'Solo con la fecha', 'Solo con la firma', 'Solo con el monto'] },
-        { question: '¿Qué hacer si sobra o falta dinero?', answer: 'Reportar y firmar pagaré si es necesario', options: ['Reportar y firmar pagaré si es necesario', 'No hacer nada', 'Quedárselo', 'Decirle a un compañero'] },
-        { question: '¿Qué hacer si un cliente paga con dólares?', answer: 'Aceptar según tipo de cambio del día', options: ['Aceptar según tipo de cambio del día', 'No aceptarlos', 'Aceptarlos como pesos', 'Aceptarlos solo si son billetes grandes'] },
-        { question: '¿Cómo se registra una cortesía?', answer: 'Con firma del supervisor y explicación', options: ['Con firma del supervisor y explicación', 'No se registra', 'Solo con la firma del cajero', 'Con el ticket'] },
-        { question: '¿Qué hacer si la registradora se traba?', answer: 'Llamar al supervisor', options: ['Llamar al supervisor', 'Intentar arreglarla', 'Golpearla', 'No hacer nada'] },
-        { question: '¿Cómo se manejan los cupones?', answer: 'Solo los autorizados, con firma del supervisor', options: ['Solo los autorizados, con firma del supervisor', 'Todos los cupones se aceptan', 'No se aceptan cupones', 'Solo los que traen el código de barras'] },
-        { question: '¿Qué hacer si un cliente no lleva suficiente dinero?', answer: 'Ofrecer cancelar o ajustar orden', options: ['Ofrecer cancelar o ajustar orden', 'Regalarle el producto', 'Decirle que se vaya', 'Pedirle que vuelva después'] },
-        { question: '¿Cómo se cierra una caja?', answer: 'Con corte de ventas y verificación de dinero', options: ['Con corte de ventas y verificación de dinero', 'Solo con el corte de ventas', 'Solo con la verificación de dinero', 'Cuando termine el turno'] },
-        { question: '¿Qué hacer si un cliente disputa el cambio?', answer: 'Recontar frente a él y supervisor', options: ['Recontar frente a él y supervisor', 'Discutir con él', 'Decirle que no hay más cambio', 'Llamar a la policía'] },
-        { question: '¿Cómo se registra un reembolso?', answer: 'Con ticket y firma del supervisor', options: ['Con ticket y firma del supervisor', 'Con la firma del cliente', 'Con la firma del cajero', 'Solo con el ticket'] },
-        { question: '¿Qué hacer si la terminal no funciona?', answer: 'Usar efectivo o reportar falla', options: ['Usar efectivo o reportar falla', 'Ignorarla', 'Decirle al cliente que no se puede pagar con tarjeta', 'Intentar arreglarla'] },
-        { question: '¿Cómo se manejan las propinas?', answer: 'Se depositan en caja común', options: ['Se depositan en caja común', 'Se las queda el cajero', 'Se las queda el supervisor', 'Se las queda el gerente'] },
-        { question: '¿Qué hacer si un cliente pide factura?', answer: 'Pedir datos y emitirla', options: ['Pedir datos y emitirla', 'Decirle que no se puede', 'Ignorarlo', 'Decirle que lo haga por internet'] },
-        { question: '¿Cómo se verifica una tarjeta?', answer: 'Revisar firma y nombre', options: ['Revisar firma y nombre', 'No se verifica', 'Pedirle el NIP', 'Pedirle la credencial'] },
-        { question: '¿Qué hacer si un cliente se va sin pagar?', answer: 'Reportar al supervisor', options: ['Reportar al supervisor', 'Ignorarlo', 'Correr detrás de él', 'Llamar a la policía'] },
-        { question: '¿Cómo se registra una venta por agregador?', answer: 'Con código de orden y emplayado', options: ['Con código de orden y emplayado', 'Con el nombre del cliente', 'Con el número de teléfono', 'Con el nombre del repartidor'] },
-        { question: '¿Qué hacer si un repartidor no llega?', answer: 'Guardar producto en congelador', options: ['Guardar producto en congelador', 'Tirarlo', 'Comérselo', 'Dárselo a otro cliente'] },
-
-        // Sección 5: Máquinas y Equipos
-        { question: '¿Qué hacer si la máquina de nieve no enciende?', answer: 'Reportar al supervisor', options: ['Reportar al supervisor', 'Intentar arreglarla', 'Desconectarla y volverla a conectar', 'No hacer nada'] },
-        { question: '¿Cada cuánto se mide el overrun?', answer: 'Cada 2 horas desde las 12:00 pm', options: ['Cada 2 horas desde las 12:00 pm', 'Cada 4 horas', 'Cada hora', 'Una vez al día'] },
-        { question: '¿Cómo se limpia la waflera?', answer: 'Con aceite en aerosol y trapo seco', options: ['Con aceite en aerosol y trapo seco', 'Con agua y jabón', 'Con un cepillo', 'Con un trapo húmedo'] },
-        { question: '¿Qué hacer si la máquina de Blizzard® vibra?', answer: 'Apagar y reportar', options: ['Apagar y reportar', 'Seguir usándola', 'Echarle aceite', 'Golpearla'] },
-        { question: '¿Cómo se arma la bomba de toppings?', answer: 'Siguiendo manual de equipo', options: ['Siguiendo manual de equipo', 'Como uno se imagine', 'Como la arma el compañero', 'Dejarla desarmada'] },
-        { question: '¿Qué hacer si el congelador no enfría?', answer: 'Reportar y mover productos a otro equipo', options: ['Reportar y mover productos a otro equipo', 'Dejar los productos dentro', 'Agregarle hielo', 'Dejar la puerta abierta'] },
-        { question: '¿Cómo se lubrican las partes de la máquina?', answer: 'Solo las indicadas en el manual', options: ['Solo las indicadas en el manual', 'Todas las partes', 'Ninguna parte', 'Solo las que vibran'] },
-        { question: '¿Qué hacer si la máquina de Slush no congela?', answer: 'Revisar temperatura y reportar', options: ['Revisar temperatura y reportar', 'Servir el producto así', 'Agregar más hielo', 'Dejar que se caliente'] },
-        { question: '¿Cómo se cambia el mix en la máquina?', answer: 'Siguiendo procedimiento de rotación', options: ['Siguiendo procedimiento de rotación', 'De la manera más rápida posible', 'Como uno quiera', 'Sin procedimiento'] },
-        { question: '¿Qué hacer si hay fuga de agua en un equipo?', answer: 'Apagar y reportar', options: ['Apagar y reportar', 'Seguir usándolo', 'Poner una cubeta', 'Ignorarla'] },
-    ];
-
-    let questions = [];
-    let currentQuestionIndex = 0;
-    let correctAnswers = 0;
-    let incorrectAnswers = 0;
-
     const startScreen = document.getElementById('start-screen');
-    const gameScreen = document.getElementById('game-screen');
+    const questionScreen = document.getElementById('question-screen');
     const resultScreen = document.getElementById('result-screen');
-    
     const startBtn = document.getElementById('start-btn');
-    const questionText = document.getElementById('question-text');
-    const questionContent = document.getElementById('question-content');
-    const optionsContainer = document.getElementById('options-container');
     const nextBtn = document.getElementById('next-btn');
     const restartBtn = document.getElementById('restart-btn');
-    const answerResult = document.getElementById('answer-result');
 
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
     const currentQuestionSpan = document.getElementById('current-question');
     const totalQuestionsSpan = document.getElementById('total-questions');
-    const correctCountSpan = document.getElementById('correct-count');
-    const incorrectCountSpan = document.getElementById('incorrect-count');
+    const correctScoreSpan = document.getElementById('correct-score');
+    const incorrectScoreSpan = document.getElementById('incorrect-score');
+
     const finalTotalSpan = document.getElementById('final-total');
     const finalCorrectSpan = document.getElementById('final-correct');
     const finalIncorrectSpan = document.getElementById('final-incorrect');
-    const evaluationLevelSpan = document.getElementById('evaluation-level');
+    const evaluationLevelSpan = document.getElementById('evaluation-level-span');
 
-    // Función para mezclar un array (Fisher-Yates shuffle)
-    function shuffleArray(array) {
+    let currentQuestionIndex = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    let selectedOption = null;
+
+    // BANCO DE 150 PREGUNTAS
+    const questions = [
+        // Page 1: Psychological First Aid & Evaluations
+        { question: "¿Cuál es el primer paso en una emergencia psicológica?", options: ["Dar consejos", "Llamar a un profesional", "Escucha activa y acompañamiento", "Ofrecer un vaso de agua"], answer: "Escucha activa y acompañamiento" },
+        { question: "Antes de tocar a una persona en crisis, ¿qué debes hacer?", options: ["Avisarle que lo vas a tocar", "Pedir su autorización", "Tocarlo suavemente en el hombro", "No tocarlo nunca"], answer: "Pedir su autorización" },
+        { question: "En la técnica de respiración de primeros auxilios, ¿cómo se debe respirar?", options: ["Inhalar por la boca, exhalar por la nariz", "Inhalar y exhalar por la boca", "Respirar rápidamente", "Inhalar por la nariz y exhalar por la boca"], answer: "Inhalar por la nariz y exhalar por la boca" },
+        { question: "Después de una crisis, ¿cuál es la recomendación final?", options: ["Decirle que olvide lo sucedido", "Canalizar a un profesional", "Darle un medicamento", "Dejarlo solo para que reflexione"], answer: "Canalizar a un profesional" },
+        { question: "¿Qué significa PRIDE en la filosofía de DQ®?", options: ["Personal Responsability In Delivery Excellence", "Productividad, Respeto, Integridad y Excelencia", "Preparación Rápida, Increíble y Deliciosa", "Personas Responsables de la Entrega Excelente"], answer: "Personal Responsability In Delivery Excellence" },
+        { question: "¿Cuáles son las tres maneras en que se evalúan las tiendas?", options: ["PRIDE, Walk-Thru y FSAC", "Ventas, Limpieza y Servicio", "Gerente, Empleados y Clientes", "Calidad, Rapidez y Amabilidad"], answer: "PRIDE, Walk-Thru y FSAC" },
+        
+        // Page 2: PRIDE, Walk-Thru & FSAC
+        { question: "Según las bases de PRIDE, 'Prepararse' incluye:", options: ["Sonreír al cliente", "Uniforme completo y manos limpias", "Agradecer al cliente", "Servir el producto correctamente"], answer: "Uniforme completo y manos limpias" },
+        { question: "'Conectar' con el cliente según PRIDE implica:", options: ["Tener la tienda limpia", "Ofrecer el producto del día", "Sonreír, saludar y contacto visual", "Preparar el pedido rápidamente"], answer: "Sonreír, saludar y contacto visual" },
+        { question: "¿Qué se debe hacer en el paso 'Entregar' de PRIDE?", options: ["Revisar el inventario", "Limpiar las mesas", "Servir con una sonrisa y agradecer", "Tomar la orden"], answer: "Servir con una sonrisa y agradecer" },
+        { question: "El objetivo final de PRIDE es:", options: ["Vender más pasteles", "Reducir costos", "Crear fans, no solo clientes", "Obtener buenas calificaciones"], answer: "Crear fans, no solo clientes" },
+        { question: "¿Quién realiza la evaluación 'Walk-Thru'?", options: ["Un cliente misterioso", "El Gerente de Operaciones", "Una compañía externa", "El gerente de la tienda"], answer: "El Gerente de Operaciones" },
+        { question: "¿Qué significa FSAC?", options: ["First Service And Control", "Food Safety And Quality Control", "Fast Service And Quality", "Food Service And Cleanliness"], answer: "Food Safety And Quality Control" },
+        { question: "¿Con qué calificación se aprueba la auditoría FSAC?", options: ["70%", "90%", "85%", "100%"], answer: "85%" },
+        
+        // Page 3: FSAC Violations & Food Safety
+        { question: "Si una tienda reprueba el FSAC, ¿qué sucede?", options: ["La tienda cierra permanentemente", "Se le da una advertencia verbal", "Hay re-entrenamiento y re-auditoría en 30 días", "Se le descuenta el sueldo al gerente"], answer: "Hay re-entrenamiento y re-auditoría en 30 días" },
+        { question: "¿Qué es una violación crítica en FSAC?", options: ["Uniforme sucio", "Algo que puede provocar una enfermedad", "Piso mojado", "Mala actitud con el cliente"], answer: "Algo que puede provocar una enfermedad" },
+        { question: "¿Cuántas violaciones críticas son necesarias para reprobar automáticamente el FSAC?", options: ["Una", "Tres", "Cinco", "Diez"], answer: "Una" },
+        { question: "La 'Zona de peligro de temperatura' para los alimentos se encuentra entre:", options: ["0°C y 20°C", "5°C y 60°C", "10°C y 70°C", "0°F y 100°F"], answer: "5°C y 60°C" },
+        { question: "¿Por cuánto tiempo máximo pueden estar los alimentos en la zona de peligro?", options: ["8 horas", "4 horas", "6 horas", "2 horas"], answer: "4 horas" },
+        { question: "¿A qué temperatura deben mantenerse los alimentos calientes?", options: ["50°C", "Arriba de 60°C", "45°C", "Arriba de 75°C"], answer: "Arriba de 60°C" },
+        
+        // Page 4: Temperature Logs & Personal Hygiene
+        { question: "¿A qué temperatura deben mantenerse los alimentos fríos?", options: ["10°C o menos", "Debajo de 5°C", "0°C", "Entre 5°C y 10°C"], answer: "Debajo de 5°C" },
+        { question: "¿Con qué frecuencia se deben registrar las temperaturas de los equipos?", options: ["Una vez al día", "Cada 8 horas", "Mínimo 3 veces por turno", "Cuando haya una auditoría"], answer: "Mínimo 3 veces por turno" },
+        { question: "¿Qué se debe hacer si un equipo está fuera de rango de temperatura?", options: ["Ignorarlo si es por poco tiempo", "Avisar al gerente y mover el producto", "Esperar a que se componga solo", "Anotarlo y no hacer nada más"], answer: "Avisar al gerente y mover el producto" },
+        { question: "¿Qué es un contaminante biológico?", options: ["Vidrio o metal", "Bacterias, virus, parásitos", "Sanitizante", "Polvo"], answer: "Bacterias, virus, parásitos" },
+        { question: "Un ejemplo de contaminante químico es:", options: ["Cabello", "Tierra", "Sanitizante", "Un arete"], answer: "Sanitizante" },
+        { question: "Las uñas deben estar:", options: ["Largas y con esmalte", "Cortas, limpias y sin esmalte", "Con esmalte transparente", "Como el empleado prefiera"], answer: "Cortas, limpias y sin esmalte" },
+        
+        // Page 5: Hand Washing & Illness
+        { question: "No se permite el uso de joyería como:", options: ["Anillo de matrimonio liso", "Relojes y pulseras", "Aretes pequeños", "Collar debajo del uniforme"], answer: "Relojes y pulseras" },
+        { question: "¿Cuánto tiempo debe durar el lavado de manos (tallado con jabón)?", options: ["5 segundos", "10 a 15 segundos", "30 segundos", "1 minuto"], answer: "10 a 15 segundos" },
+        { question: "Después de lavarse las manos, ¿cómo se deben secar?", options: ["Con el mandil", "Sacudiéndolas al aire", "Con toallas de papel de un solo uso", "Con un trapo de tela"], answer: "Con toallas de papel de un solo uso" },
+        { question: "¿Cuándo es obligatorio lavarse las manos?", options: ["Después de tocar dinero", "Después de ir al baño", "Después de tocarse la cara", "Todas las anteriores"], answer: "Todas las anteriores" },
+        { question: "Un empleado NO debe trabajar si tiene síntomas como:", options: ["Dolor de cabeza leve", "Vómito, diarrea o fiebre", "Cansancio", "Dolor muscular"], answer: "Vómito, diarrea o fiebre" },
+        { question: "Si un empleado se corta, ¿qué debe hacer?", options: ["Seguir trabajando con cuidado", "Lavar la herida y cubrirla con una bandita y un guante", "Solo ponerse una bandita", "Irse a casa inmediatamente"], answer: "Lavar la herida y cubrirla con una bandita y un guante" },
+        
+        // Page 6: Uniform Policy
+        { question: "La camisa del uniforme debe estar:", options: ["Desabotonada arriba", "Fajada todo el tiempo", "Por fuera del pantalón", "Arremangada"], answer: "Fajada todo el tiempo" },
+        { question: "¿Qué tipo de pantalón es aceptable para el uniforme?", options: ["Pantalón de mezclilla azul", "Pantalón de gabardina negro o azul marino", "Pants deportivos", "Leggings"], answer: "Pantalón de gabardina negro o azul marino" },
+        { question: "El calzado requerido para el uniforme es:", options: ["Tenis de cualquier color", "Sandalias", "Zapatos negros antiderrapantes", "Botas de trabajo"], answer: "Zapatos negros antiderrapantes" },
+        { question: "¿Cómo debe estar el cabello?", options: ["Suelto si está corto", "Recogido y cubierto con una gorra o red", "Teñido de colores brillantes", "Con gel o spray"], answer: "Recogido y cubierto con una gorra o red" },
+        { question: "¿Qué pieza del uniforme es obligatoria para todos los empleados?", options: ["Gorra o visera con logo de DQ", "Mandil", "Sudadera de DQ", "Pin con su nombre"], answer: "Gorra o visera con logo de DQ" },
+        { question: "El uso de mandil es obligatorio para:", options: ["Solo los que preparan alimentos", "Todos los empleados en turno", "Solo el gerente", "Quienes atienden en caja"], answer: "Todos los empleados en turno" },
+        
+        // Page 7: Product Hold Times (Grill)
+        { question: "¿Cuál es el tiempo de vida de la carne de hamburguesa una vez cocida?", options: ["30 minutos", "15 minutos", "60 minutos", "10 minutos"], answer: "15 minutos" },
+        { question: "¿Cuánto tiempo puede mantenerse el pollo (chicken strips) en la mantenedora?", options: ["45 minutos", "60 minutos", "30 minutos", "20 minutos"], answer: "30 minutos" },
+        { question: "¿Cuál es la vida en anaquel del pan de hamburguesa una vez abierto el paquete?", options: ["Hasta la fecha de caducidad", "24 horas", "3 días", "48 horas"], answer: "24 horas" },
+        { question: "Los vegetales preparados (lechuga, jitomate, cebolla) tienen una vida de anaquel de:", options: ["12 horas", "Fin de turno", "4 horas", "24 horas"], answer: "Fin de turno" },
+        { question: "El queso americano fuera de refrigeración dura:", options: ["8 horas", "4 horas", "Todo el día", "2 horas"], answer: "4 horas" },
+        
+        // Page 8: Product Hold Times (Fryer, Toppings)
+        { question: "Una vez cocidas, ¿cuál es el tiempo de vida de las papas a la francesa?", options: ["15 minutos", "5 minutos", "10 minutos", "7 minutos"], answer: "7 minutos" },
+        { question: "¿Cuál es la vida de anaquel de los aros de cebolla cocidos?", options: ["7 minutos", "10 minutos", "5 minutos", "15 minutos"], answer: "5 minutos" },
+        { question: "Las frutas en la mesa de toppings (fresa, piña, etc.) tienen una vida de:", options: ["24 horas", "4 horas", "8 horas", "12 horas"], answer: "4 horas" },
+        { question: "Los toppings secos (chispas, nuez, etc.) en la mesa de toppings duran:", options: ["Una semana", "24 horas", "48 horas", "Hasta que se acaben"], answer: "24 horas" },
+        { question: "El chocolate para cono (cone dip) en la olla tiene una vida útil de:", options: ["Fin de turno", "4 horas", "12 horas", "8 horas"], answer: "Fin de turno" },
+        
+        // Page 9: FIFO & Thawing
+        { question: "¿Qué significa el sistema PEPS (o FIFO en inglés)?", options: ["Producto Especial Para Servir", "Primero en Entrar, Primero en Salir", "Poner Encima Para Sacar", "Pedido Especial Para Supervisor"], answer: "Primero en Entrar, Primero en Salir" },
+        { question: "El propósito del sistema PEPS es:", options: ["Asegurar la rotación de producto y reducir merma", "Vender los productos más caros primero", "Facilitar el conteo de inventario", "Ordenar la bodega por tamaño"], answer: "Asegurar la rotación de producto y reducir merma" },
+        { question: "¿Cuál es el método correcto para descongelar la carne?", options: ["En el microondas", "Bajo el chorro de agua caliente", "En refrigeración", "A temperatura ambiente"], answer: "En refrigeración" },
+        { question: "¿Cuánto tiempo antes se debe sacar la carne para descongelar en refrigeración?", options: ["12 horas", "48 horas", "24 horas", "6 horas"], answer: "24 horas" },
+        { question: "El producto descongelado debe usarse dentro de un máximo de:", options: ["24 horas", "72 horas", "48 horas", "Una semana"], answer: "72 horas" },
+        
+        // Page 10: Sanitizer & Sinks
+        { question: "El sanitizante Kay-5 se prepara diluyendo un sobre en:", options: ["5 litros de agua", "20 litros de agua", "10 litros de agua", "1 litro de agua"], answer: "10 litros de agua" },
+        { question: "¿Para qué se usa la solución de Kay-5?", options: ["Para trapear el piso", "Para lavar y sanitizar utensilios y superficies", "Para lavarse las manos", "Para limpiar los baños"], answer: "Para lavar y sanitizar utensilios y superficies" },
+        { question: "¿Cuál es el primer compartimento de la tarja de 3 compartimentos?", options: ["Enjuague", "Sanitizado", "Secado", "Lavado con jabón y agua caliente"], answer: "Lavado con jabón y agua caliente" },
+        { question: "El segundo compartimento de la tarja de 3 se usa para:", options: ["Enjuagar con agua limpia", "Lavar con jabón", "Sanitizar", "Escurrir"], answer: "Enjuagar con agua limpia" },
+        { question: "En el tercer compartimento de la tarja de 3, los utensilios se sumergen en sanitizante por:", options: ["10 segundos", "2 minutos", "30 segundos", "60 segundos"], answer: "60 segundos" },
+        
+        // Page 11: Test Strips & Cleaning Tools
+        { question: "¿Cómo se deben secar los utensilios después de sanitizarlos?", options: ["Con un trapo seco", "Con una toalla de papel", "Al aire en un escurridor limpio", "Con una secadora de aire"], answer: "Al aire en un escurridor limpio" },
+        { question: "La concentración del sanitizante (Kay-5) debe ser de:", options: ["50-100 ppm", "200-300 ppm", "150-250 ppm", "300-400 ppm"], answer: "150-250 ppm" },
+        { question: "¿Para qué se utilizan las tiras reactivas?", options: ["Para medir la temperatura del agua", "Para verificar la concentración del sanitizante", "Para probar la calidad del aceite", "Para detectar bacterias en los alimentos"], answer: "Para verificar la concentración del sanitizante" },
+        { question: "Los trapos para limpiar superficies de preparación de alimentos deben mantenerse en:", options: ["Una cubeta con agua y jabón", "Una cubeta con solución sanitizante", "Secos sobre la mesa", "En el bolsillo del mandil"], answer: "Una cubeta con solución sanitizante" },
+        { question: "¿De qué color son los utensilios (pinzas, tablas) para productos de pollo CRUDO?", options: ["Rojo", "Verde", "Amarillo", "Azul"], answer: "Amarillo" },
+        
+        // Page 12: Cross-Contamination & Utensils
+        { question: "Los utensilios de color rojo se utilizan para:", options: ["Pollo cocido", "Carne cruda", "Vegetales", "Pescado"], answer: "Carne cruda" },
+        { question: "Para evitar la contaminación cruzada, ¿qué se debe hacer?", options: ["Lavar las manos frecuentemente", "Usar diferentes tablas y utensilios para crudos y cocidos", "Almacenar alimentos crudos debajo de los cocidos", "Todas las anteriores"], answer: "Todas las anteriores" },
+        { question: "Las tablas de cortar verdes son para:", options: ["Carnes", "Pescado", "Frutas y vegetales", "Pan"], answer: "Frutas y vegetales" },
+        { question: "Almacenar la carne cruda arriba de la lechuga en el refrigerador es un riesgo de:", options: ["Contaminación física", "Contaminación química", "Contaminación cruzada", "No es un riesgo"], answer: "Contaminación cruzada" },
+        { question: "La cantidad correcta de mezcla para un Blizzard de 12 oz es:", options: ["Hasta el borde", "5 oz", "Una pulgada bajo el borde", "3/4 del vaso"], answer: "5 oz" },
+        
+        // Page 13: Guest Service Cycle
+        { question: "¿Cuál es el primer paso en el Ciclo de Servicio al Cliente?", options: ["Tomar la orden", "Una cálida y sincera bienvenida", "Entregar el producto", "Recibir el pago"], answer: "Una cálida y sincera bienvenida" },
+        { question: "Al tomar la orden, se debe:", options: ["Apresurar al cliente", "Escuchar atentamente y sugerir productos", "No hacer contacto visual", "Interrumpir para hacer preguntas"], answer: "Escuchar atentamente y sugerir productos" },
+        { question: "El tercer paso del Ciclo de Servicio es:", options: ["Ensamblar la orden", "Agradecer al cliente", "Limpiar la mesa", "Invitar al cliente a regresar"], answer: "Ensamblar la orden" },
+        { question: "¿Qué se debe hacer al entregar la orden?", options: ["Entregarla con una sonrisa y verificar que esté completa", "Solo colocarla en el mostrador", "Gritar el número de la orden", "Preguntar si quieren algo más"], answer: "Entregarla con una sonrisa y verificar que esté completa" },
+        { question: "El último paso del ciclo de servicio es:", options: ["Cobrar", "Limpiar el lobby", "Una sincera despedida y agradecimiento", "Surtir el área de condimentos"], answer: "Una sincera despedida y agradecimiento" },
+        
+        // Page 14: BLAST & Drive-Thru
+        { question: "El acrónimo BLAST para la recuperación de clientes significa:", options: ["Believe, Listen, Apologize, Satisfy, Thank", "Buy, Leave, Apologize, Say, Thanks", "Be fast, Look nice, Act professional, Smile, Thank", "Believe, Look, Act, Smile, Treat"], answer: "Believe, Listen, Apologize, Satisfy, Thank" },
+        { question: "En BLAST, 'Listen' (Escuchar) significa:", options: ["Interrumpir para dar soluciones", "Dejar que el cliente se desahogue sin interrupciones", "Tomar notas de lo que dice", "Juzgar si la queja es válida"], answer: "Dejar que el cliente se desahogue sin interrupciones" },
+        { question: "En el paso 'Satisfy' (Satisfacer) de BLAST, ¿qué se debe hacer?", options: ["Darle la razón al cliente siempre", "Ofrecer una solución razonable al problema", "Decirle que no se puede hacer nada", "Llamar al gerente inmediatamente"], answer: "Ofrecer una solución razonable al problema" },
+        { question: "La meta de tiempo total en el Drive-Thru (desde la bocina hasta la salida) es:", options: ["5 minutos", "3 minutos", "2 minutos 30 segundos", "4 minutos"], answer: "2 minutos 30 segundos" },
+        { question: "¿Cuál es la prioridad número uno en la operación de la tienda?", options: ["La limpieza", "El inventario", "El Drive-Thru", "Las ventas de pasteles"], answer: "El Drive-Thru" },
+        
+        // Page 15: Drive-Thru Speed & Cake Sales
+        { question: "Para agilizar el servicio en Drive-Thru, se recomienda:", options: ["Tener un solo empleado atendiendo", "Usar frases cortas y claras", "No ofrecer postres", "Esperar a que el cliente pregunte todo"], answer: "Usar frases cortas y claras" },
+        { question: "El empleado que toma la orden en Drive-Thru debe usar:", options: ["Un tono de voz monótono", "Un tono de voz sonriente y entusiasta", "Un volumen muy alto", "Palabras muy técnicas"], answer: "Un tono de voz sonriente y entusiasta" },
+        { question: "¿Qué se debe hacer si un pedido en Drive-Thru va a tardar?", options: ["Pedirle al cliente que espere en la ventana", "Cancelar el pedido", "Pedirle amablemente que se estacione en un lugar designado", "Apresurar la cocina sacrificando la calidad"], answer: "Pedirle amablemente que se estacione en un lugar designado" },
+        { question: "¿Cómo se debe promover la venta de pasteles?", options: ["Mencionándolos a cada cliente", "Teniendo la exhibición limpia, llena y atractiva", "Poniendo un letrero afuera", "Todas las anteriores"], answer: "Todas las anteriores" },
+        { question: "Al entregar un pastel, ¿qué se debe hacer?", options: ["Solo meterlo en una bolsa", "Abrir la caja y mostrárselo al cliente para su aprobación", "Decirle el precio de nuevo", "Pedirle que lo revise en su casa"], answer: "Abrir la caja y mostrárselo al cliente para su aprobación" },
+        
+        // Page 16: Blizzard Preparation
+        { question: "¿Cuál es el estándar de calidad que debe cumplir cada Blizzard?", options: ["Debe ser servido con una cuchara larga", "Debe ser volteado sin que se derrame", "Debe tener un domo de crema batida", "Debe llevar chispas de chocolate"], answer: "Debe ser volteado sin que se derrame" },
+        { question: "¿A qué velocidad se debe mezclar un Blizzard?", options: ["A la más alta por 10 segundos", "A la más baja por 1 minuto", "Cerca de 100 RPM", "Depende del ingrediente"], answer: "Cerca de 100 RPM" },
+        { question: "Si un Blizzard no pasa la prueba de ser volteado, ¿qué se debe hacer?", options: ["Servirlo de todas formas", "Volverlo a mezclar", "Añadir más mezcla", "Desecharlo y hacerlo de nuevo"], answer: "Desecharlo y hacerlo de nuevo" },
+        { question: "El husillo (spindle) de la máquina de Blizzard debe ser:", options: ["Enjuagado con agua después de cada uso", "Limpiado con un trapo", "Sanitizado cada 4 horas", "Lavado solo al final del día"], answer: "Enjuagado con agua después de cada uso" },
+        { question: "Para un Blizzard, los ingredientes (toppings) se añaden:", options: ["Después de mezclar la nieve", "Antes de poner la nieve en el vaso", "Después de poner la nieve y antes de mezclar", "Al final como decoración"], answer: "Después de poner la nieve y antes de mezclar" },
+        
+        // Page 17: Cones & Sundaes
+        { question: "¿Cuál es la característica principal de un cono de nieve DQ?", options: ["El 'rizo' o 'copete' en la punta", "El tamaño del cono", "La temperatura de la nieve", "El color de la nieve"], answer: "El 'rizo' o 'copete' en la punta" },
+        { question: "El peso estándar para un cono mediano es de:", options: ["3 oz", "7 oz", "5 oz", "9 oz"], answer: "5 oz" },
+        { question: "Al preparar un cono cubierto de chocolate (dipped cone), la nieve debe estar:", options: ["Sumergida por completo hasta el barquillo", "Cubierta solo en la punta", "Sumergida por 10 segundos", "Parcialmente cubierta"], answer: "Sumergida por completo hasta el barquillo" },
+        { question: "¿Cómo se debe servir un sundae?", options: ["La nieve debe tocar los lados del vaso", "Con el topping cubriendo toda la superficie de la nieve", "Con una bola de nieve en el centro", "Todas las anteriores"], answer: "Con una bola de nieve en el centro" },
+        { question: "La cantidad de topping para un sundae mediano es de:", options: ["3 oz", "1 oz", "2 oz", "Depende del sabor"], answer: "2 oz" },
+        
+        // Page 18: Royal Treats & Shakes
+        { question: "¿Qué distingue a un 'Royal Treat'?", options: ["Lleva un ingrediente especial en el centro", "Es más grande que un sundae", "Solo se vende en ciertas temporadas", "Viene en una copa especial"], answer: "Lleva un ingrediente especial en el centro" },
+        { question: "En un Royal Rocky Road Brownie, el centro se rellena con:", options: ["Caramelo", "Malvaviscos", "Chocolate", "Fresas"], answer: "Malvaviscos" },
+        { question: "Para preparar una malteada (shake), ¿qué ingredientes se usan?", options: ["Nieve, leche y saborizante", "Hielo, leche y fruta", "Yogurt, nieve y saborizante", "Nieve y jugo"], answer: "Nieve, leche y saborizante" },
+        { question: "Una malteada bien preparada debe ser:", options: ["Tan espesa que no suba por el popote", "Lo suficientemente espesa para ser bebida con popote", "Líquida y ligera", "Caliente"], answer: "Lo suficientemente espesa para ser bebida con popote" },
+        { question: "Los vasos y tapas de malteadas deben estar:", options: ["Almacenados cerca de la máquina", "Limpios y sanitizados", "Fríos", "A temperatura ambiente"], answer: "Limpios y sanitizados" },
+        
+        // Page 19: Waffles & Topping Cabinet
+        { question: "¿Cómo debe ser servido un Waffle Bowl Sundae?", options: ["El waffle debe estar frío", "El waffle debe estar tibio y crujiente", "El waffle debe estar remojado en la nieve", "El waffle se sirve por separado"], answer: "El waffle debe estar tibio y crujiente" },
+        { question: "La temperatura de la wafflera debe estar en un rango que permita:", options: ["Cocinar el waffle en 5 minutos", "Dorar el waffle sin quemarlo", "Mantener los waffles calientes todo el día", "Cocinarlo lentamente"], answer: "Dorar el waffle sin quemarlo" },
+        { question: "El gabinete de toppings (Topping Cabinet) debe mantenerse a una temperatura de:", options: ["Congelación", "Ambiente", "Caliente (arriba de 60°C)", "Refrigeración (debajo de 5°C)"], answer: "Refrigeración (debajo de 5°C)" },
+        { question: "Las bombas y cucharones de los toppings deben:", options: ["Dejarse dentro de los contenedores", "Lavarse y sanitizarse al menos cada 4 horas", "Limpiarse con un trapo húmedo", "Enjuagarse solo con agua"], answer: "Lavarse y sanitizarse al menos cada 4 horas" },
+        { question: "Si un topping se contamina con otro, ¿qué se debe hacer?", options: ["Mezclarlos", "Retirar la parte contaminada", "Desechar todo el contenedor del topping contaminado", "Servirlo así"], answer: "Desechar todo el contenedor del topping contaminado" },
+        
+        // Page 20: Chill & Grill Standards
+        { question: "La temperatura de la máquina de nieve (soft serve) debe ser de:", options: ["-10°C a -8°C", "-5°C a -4°C", "0°C", "1°C a 3°C"], answer: "-5°C a -4°C" },
+        { question: "El 'overrun' en la nieve se refiere a:", options: ["La cantidad de mezcla que se desperdicia", "La cantidad de aire incorporado en la mezcla", "La velocidad a la que sale la nieve", "La temperatura final del producto"], answer: "La cantidad de aire incorporado en la mezcla" },
+        { question: "La plancha (grill) debe limpiarse:", options: ["Solo al final del día", "Cada 4 horas", "Después de cada uso o cuando sea necesario", "Una vez por semana"], answer: "Después de cada uso o cuando sea necesario" },
+        { question: "La temperatura del aceite de la freidora debe ser de aproximadamente:", options: ["150°C", "200°C", "177°C", "165°C"], answer: "177°C" },
+        { question: "El aceite de la freidora debe ser filtrado:", options: ["Una vez a la semana", "Nunca", "Diariamente", "Cada mes"], answer: "Diariamente" },
+        
+        // Page 21: Machine Cleaning
+        { question: "¿Con qué frecuencia se debe realizar el lavado completo de la máquina de nieve?", options: ["Diariamente", "Cada 3 días", "Semanalmente", "Cuando falle"], answer: "Diariamente" },
+        { question: "Para lavar la máquina de nieve por la noche, se pasa una solución de:", options: ["Agua con jabón", "Agua caliente solamente", "10L de agua con un sobre de sanitizer KAY-5®", "Vinagre y agua"], answer: "10L de agua con un sobre de sanitizer KAY-5®" },
+        { question: "Por la mañana, antes de armar la máquina de nieve, ¿qué se hace con las piezas?", options: ["Se secan con un trapo", "Se enjuagan y se arman", "Se lavan, sanitizan y se dejan listas", "Se lubrican con aceite vegetal"], answer: "Se lavan, sanitizan y se dejan listas" },
+        { question: "Después de pasar el sanitizer por la máquina de nieve en la mañana, ¿qué se debe hacer?", options: ["Empezar a servir a los clientes", "Desechar la primera nieve que sale", "Enjuagarla con agua de la llave", "Esperar 30 minutos"], answer: "Desechar la primera nieve que sale" },
+        { question: "El procedimiento de limpieza de la máquina de slush es:", options: ["Igual que la de nieve", "Similar al de la máquina de nieve, siguiendo sus especificaciones", "Solo se enjuaga con agua", "Se limpia solo por fuera"], answer: "Similar al de la máquina de nieve, siguiendo sus especificaciones" },
+        
+        // Page 22: Troubleshooting
+        { question: "Si una máquina no enciende, ¿cuál es el primer paso a verificar?", options: ["Llamar a un técnico", "Que no haya otras máquinas en enchufes incorrectos", "Presionar el botón de RESET", "Revisar el manual de la máquina"], answer: "Que no haya otras máquinas en enchufes incorrectos" },
+        { question: "El segundo paso si una máquina no funciona es:", options: ["Golpearla suavemente", "Desconectarla y volverla a conectar", "Revisar los térmicos (breakers)", "Verificar el nivel de aceite"], answer: "Revisar los térmicos (breakers)" },
+        { question: "Si la máquina tiene un botón de RESET y no funciona, ¿qué se debe hacer?", options: ["Presionarlo repetidamente", "Presionarlo una vez y verificar si se solucionó", "No tocarlo, es peligroso", "Desarmar la máquina"], answer: "Presionarlo una vez y verificar si se solucionó" },
+        { question: "Si después de los 3 pasos básicos la máquina sigue sin funcionar, se debe:", options: ["Intentar arreglarla uno mismo", "Dejarla apagada todo el día", "Llamar al gerente o al técnico autorizado", "Pedir una máquina nueva"], answer: "Llamar al gerente o al técnico autorizado" },
+        { question: "Es importante NO conectar máquinas en enchufes que:", options: ["Estén en la pared", "No les corresponden", "Sean de color rojo", "Estén cerca del agua"], answer: "No les corresponden" }
+    ];
+    
+    // Función para barajar las preguntas
+    function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
-        return array;
     }
 
-    // Oculta todas las pantallas y muestra la que se especifica
+
+    // Muestra una pantalla y oculta las demás
     function showScreen(screen) {
-        startScreen.style.display = 'none';
-        gameScreen.style.display = 'none';
-        resultScreen.style.display = 'none';
-        screen.style.display = 'block';
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        screen.classList.add('active');
     }
 
-    // Inicializa el juego
+    // Inicia el juego
     function startGame() {
-        questions = shuffleArray([...allQuestions]);
+        shuffle(questions);
         currentQuestionIndex = 0;
         correctAnswers = 0;
         incorrectAnswers = 0;
-        updateStats();
-        showScreen(gameScreen);
-        displayQuestion();
+        correctScoreSpan.textContent = '0';
+        incorrectScoreSpan.textContent = '0';
+        showScreen(questionScreen);
+        showQuestion();
     }
-
+    
     // Muestra la pantalla de inicio
     function showStartScreen() {
         showScreen(startScreen);
     }
 
-    // Actualiza los contadores en la pantalla
-    function updateStats() {
+    // Muestra la pregunta actual y sus opciones
+    function showQuestion() {
+        selectedOption = null;
+        const question = questions[currentQuestionIndex];
+        questionText.textContent = question.question;
+        optionsContainer.innerHTML = '';
+        
+        shuffle(question.options);
+
+        question.options.forEach(option => {
+            const button = document.createElement('button');
+            button.textContent = option;
+            button.classList.add('option');
+            button.addEventListener('click', () => selectOption(button, option));
+            optionsContainer.appendChild(button);
+        });
+
         currentQuestionSpan.textContent = currentQuestionIndex + 1;
         totalQuestionsSpan.textContent = questions.length;
-        correctCountSpan.textContent = correctAnswers;
-        incorrectCountSpan.textContent = incorrectAnswers;
+        nextBtn.disabled = true;
     }
 
-    // Muestra la pregunta actual
-    function displayQuestion() {
-        if (currentQuestionIndex >= questions.length) {
-            showResults();
-            return;
-        }
+    // Maneja la selección de una opción
+    function selectOption(button, option) {
+        if (selectedOption) return;
 
-        const currentQuestion = questions[currentQuestionIndex];
-        questionText.textContent = `Pregunta ${currentQuestionIndex + 1}:`;
-        questionContent.textContent = currentQuestion.question;
-        answerResult.textContent = '';
-        
-        optionsContainer.innerHTML = '';
-        const shuffledOptions = shuffleArray([...currentQuestion.options]);
-        shuffledOptions.forEach(option => {
-            const btn = document.createElement('button');
-            btn.textContent = option;
-            btn.className = 'option-btn';
-            btn.onclick = () => checkAnswer(option);
-            optionsContainer.appendChild(btn);
-        });
-
-        nextBtn.style.display = 'none';
-        updateStats();
-    }
-
-    // Revisa la respuesta del usuario
-    function checkAnswer(userAnswer) {
-        const currentQuestion = questions[currentQuestionIndex];
-        const isCorrect = userAnswer.trim() === currentQuestion.answer.trim();
-        const options = document.querySelectorAll('.option-btn');
-        
-        options.forEach(btn => {
-            btn.disabled = true;
-            if (btn.textContent.trim() === currentQuestion.answer.trim()) {
-                btn.classList.add('correct');
-            } else {
-                btn.classList.add('incorrect');
-            }
-        });
+        selectedOption = button;
+        const question = questions[currentQuestionIndex];
+        const isCorrect = option === question.answer;
 
         if (isCorrect) {
             correctAnswers++;
-            answerResult.textContent = '¡Respuesta correcta!';
-            answerResult.className = 'correct';
+            button.classList.add('correct');
         } else {
             incorrectAnswers++;
-            answerResult.textContent = `Respuesta incorrecta. La respuesta correcta es: ${currentQuestion.answer}`;
-            answerResult.className = 'incorrect';
+            button.classList.add('incorrect');
+            // Muestra la respuesta correcta
+            const correctButton = Array.from(optionsContainer.children).find(btn => btn.textContent === question.answer);
+            if (correctButton) {
+                correctButton.classList.add('correct');
+            }
         }
         
-        nextBtn.style.display = 'inline-block';
-        updateStats();
-    }
+        correctScoreSpan.textContent = correctAnswers;
+        incorrectScoreSpan.textContent = incorrectAnswers;
 
-    // Pasa a la siguiente pregunta
+        Array.from(optionsContainer.children).forEach(btn => {
+            btn.style.pointerEvents = 'none'; // Deshabilita más clics
+        });
+
+        nextBtn.disabled = false;
+    }
+    
+    // Pasa a la siguiente pregunta o muestra los resultados
     function nextQuestion() {
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
-            displayQuestion();
+            showQuestion();
         } else {
             showResults();
         }
@@ -660,7 +541,7 @@
         }
 
         evaluationLevelSpan.textContent = `${level}: ${message}`;
-        evaluationLevelSpan.className = `evaluation ${className}`;
+        evaluationLevelSpan.parentElement.className = `evaluation ${className}`;
     }
 
     // Event listeners
@@ -670,3 +551,4 @@
 </script>
 </body>
 </html>
+
